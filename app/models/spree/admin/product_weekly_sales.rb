@@ -5,6 +5,7 @@ module Spree
 
             def self.by_taxon_id(taxon_id)
                 products_sales = ProductWeeklySales.find_all_by_taxon_id(taxon_id) 
+                return if products_sales.nil? or products_sales.empty?
                 sales_aggregate_by_product = {}
                 product_ids = ProductWeeklySales.select(:product_id).uniq.map { |pws| pws.product_id }
                 product_ids.each do |p_id|

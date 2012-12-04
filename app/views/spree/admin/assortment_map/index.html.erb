@@ -2,9 +2,13 @@
 <%= stylesheet_link_tag "admin/assortment_map" %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
 <%= javascript_include_tag "admin/assortment_map" %>
+<% if !@data.nil?%>
 
-<script>
+    <script>
     var list = <%= raw @data %>;
     render_tree_map(list);
-</script>
+    </script>
+<% else %>
+    <div id='404' style="font-size:40px" >TAXON NOT FOUND</div>
+<% end %>
 

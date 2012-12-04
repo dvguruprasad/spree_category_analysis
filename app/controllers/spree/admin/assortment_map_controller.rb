@@ -1,14 +1,14 @@
 module Spree
     module Admin
-        class AssortmentMapController < ApplicationController
+        class AssortmentMapController < Spree::Admin::BaseController
             respond_to :json, :html
 
             def index
-                #taxon_id = params[:taxon_id]
-                taxon_id = 558398391
-
+                taxon_id = params[:taxon_id]
                 product_weely_sales_by_taxon_id = Spree::Admin::ProductWeeklySales.by_taxon_id(taxon_id)
-                @data = create_chart_data(product_weely_sales_by_taxon_id).to_json
+                if !product_weely_sales_by_taxon_id.nil? 
+                    @data = create_chart_data(product_weely_sales_by_taxon_id).to_json
+                end
                 respond_with(@data)
             end
 
