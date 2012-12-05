@@ -10,13 +10,9 @@ module Spree
                     sum_target_revenue += sale.target_revenue
                 end
 
-                @inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(sales).map{|p| p.closing_position * product.price}
+                @inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(sales).map{|p| p.closing_position * product.price.to_f}
             end
 
-            private 
-            def inventory_positions(product)
-
-            end
         end
     end
 end
