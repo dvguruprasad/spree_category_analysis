@@ -1,7 +1,8 @@
+
+<% content_for :head do %>
+    <%= javascript_tag "var cumulative_targets = #{@cumulative_targets}" %>;
+<% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
-
-
-
 <div id="container">
 
 </div>
