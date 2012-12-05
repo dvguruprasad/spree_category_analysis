@@ -46,29 +46,30 @@ $(function () {
             },
             series: [{
                 name: 'Inventory',
-                color: '#4572A7',
+                color: '#E47833',
                 type: 'column',
                 yAxis: 0,
                 data: inventory_positions
 
             }, {
-                name: 'Forecast',
+                name: 'Target Sale',
                 color: '#89A54E',
                 type: 'spline',
                 yAxis: 0,
-                data: cumulative_targets
-            },{
-                name: 'Simulation',
-                color: '#83c8f9',
-                type: 'spline',
-                yAxis: 0,
-                data: [8.0, 10.9, 9.5, 24.5, 28.2, 41.5]
+                data: [sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue]
             },{
                 name: 'SalesLastYear',
-                color: '#83c8f9',
+                color: '#8B2500',
                 type: 'spline',
                 yAxis: 0,
                 data: sales_last_year
+            },{
+                name: 'Forecast',
+                color: '#A54E89',
+                type: 'spline',
+                yAxis: 0,
+                data: cumulative_sale
+
             }]
         });
     });
