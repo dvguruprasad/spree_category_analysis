@@ -111,14 +111,27 @@ class ProductWeeklySalesSpec
                     end
                 end
             end
-
-            def create_weekly_sales(product=@product, data)
-                Factory.create(:product_weekly_sales, :product_id => product.id, :week_start_date => data[:week_start_date], :week_end_date => data[:week_start_date] + 6, :sales_units => data[:sales_units])
-            end
-
-            def create_weekly_sales_forecast(product=@product, data)
-                Factory.create(:product_weekly_sales_forecast, :product_id => product.id, :week_start_date => data[:week_start_date], :week_end_date => data[:week_start_date] + 6, :sales_units => data[:sales_units])
-            end
         end
+
+        describe ".sales_last_year" do
+          context "for a given product" do
+            it "should return sales information for the same weeks last year" do
+              week_start_date = Date.new(2012, 11, 26)
+              create_weekly_sales(:week_start_date => Date.new(2011, 11, 28), :sales_units => 20)
+              sales = Spree::Admin::ProductWeeklySales.sales_last_year(@product,week_start_date,6)
+              sales.should have(1).sales
+
+            end
+          end
+        end
+        
+        def create_weekly_sales(product=@product, data)
+          Factory.create(:product_weekly_sales, :product_id => product.id, :week_start_date => data[:week_start_date], :week_end_date => data[:week_start_date] + 6, :sales_units => data[:sales_units])
+        end
+
+        def create_weekly_sales_forecast(product=@product, data)
+          Factory.create(:product_weekly_sales_forecast, :product_id => product.id, :week_start_date => data[:week_start_date], :week_end_date => data[:week_start_date] + 6, :sales_units => data[:sales_units])
+        end
+        
     end
 end
