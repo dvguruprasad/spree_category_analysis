@@ -35,7 +35,7 @@ module Spree
             end
 
             def self.closing_position(product_id)
-                Spree::Admin::ProductWeeklySales.last(:conditions => ["product_id = ?", product_id], :order => "week_start_date")
+                Spree::Admin::ProductWeeklyInventoryPosition.last(:conditions => ["product_id = ?", product_id], :order => "week_start_date").closing_position
             end
         end
     end
