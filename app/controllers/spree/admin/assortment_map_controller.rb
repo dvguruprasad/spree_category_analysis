@@ -5,7 +5,7 @@ module Spree
 
             def index
                 taxon_id = params[:taxon_id]
-                product_weely_sales_by_taxon_id = Spree::Admin::ProductWeeklySales.by_taxon_id(taxon_id)
+                product_weely_sales_by_taxon_id = Spree::Admin::WeeklySales.by_taxon_id(taxon_id)
                 if !product_weely_sales_by_taxon_id.nil? 
                     @data = create_chart_data(product_weely_sales_by_taxon_id).to_json
                 end
