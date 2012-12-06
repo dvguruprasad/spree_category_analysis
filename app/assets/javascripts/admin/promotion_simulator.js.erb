@@ -27,12 +27,36 @@ $(function () {
                       color: '#89A54E'
                   }
               }
+              },{
+                  labels: {
+                      formatter: function() {
+                          return this.value;
+                      },
+              style: {
+                  color: '#89B64E'
               }
-        ],
-            tooltip: {
+                  },
+              title: {
+                  text: 'Units',
+                  style: {
+                      color: '#89B64E'
+                  }
+              },
+              opposite: true
+              }
+              ],
+              tooltip: {
                 formatter: function() {
+                    var unit = {
+                        'Inventory': 'units',
+                        'Target Sale': '<%= Spree::Config[:currency] %>',
+                        'SalesLastYear': '<%= Spree::Config[:currency] %>',
+                        'Sales': '<%= Spree::Config[:currency] %>',
+                        'Forecast': '<%= Spree::Config[:currency] %>',
+                    }[this.series.name];
+    
                     return ''+
-                        this.x +': '+ this.y + ' <%= Spree::Config[:currency] %>';
+                        this.x +': '+ this.y +' '+ unit;
                 }
             },
             legend: {
@@ -48,25 +72,31 @@ $(function () {
                 name: 'Inventory',
                 color: '#E47833',
                 type: 'column',
-                yAxis: 0,
+                yAxis: 1,
                 data: inventory_positions
 
             }, {
                 name: 'Target Sale',
                 color: '#89A54E',
-                type: 'spline',
+                type: 'line',
                 yAxis: 0,
                 data: [sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue]
             },{
                 name: 'SalesLastYear',
                 color: '#8B2500',
-                type: 'spline',
+                type: 'line',
                 yAxis: 0,
                 data: sales_last_year
             },{
+                name: 'Sales',
+                color: '#8B2500',
+                type: 'line',
+                yAxis: 0,
+                data: sales_revenue
+            },{
                 name: 'Forecast',
                 color: '#A54E89',
-                type: 'spline',
+                type: 'line',
                 yAxis: 0,
                 data: cumulative_sale
 

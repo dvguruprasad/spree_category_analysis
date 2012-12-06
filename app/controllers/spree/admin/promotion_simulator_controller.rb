@@ -9,12 +9,13 @@ module Spree
                 @sum_target_revenue = sales.sum(&:target_revenue)
                 
                 sum_revenue = 0.0
+                @sales_revenue = sales.map{|s| s.revenue}
                 @cumulative_sale = sales.map do |sale|
                     sale.revenue + sum_revenue
                     sum_revenue += sale.revenue
                 end
 
-                @inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(sales).map{|p| p.closing_position * product.price.to_f}
+                @inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(sales).map{|p| p.closing_position}
 
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, number_of_weeks)
                 sum_revenue = 0.0
