@@ -1,8 +1,9 @@
 #treemap-div {
-    float: left;
+    float: center;
     width: 800px;
     height: 600px;
     font-family: Arial;
     font-size: 11px;
+    margin : auto;
 }
 

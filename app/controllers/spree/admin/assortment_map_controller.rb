@@ -4,19 +4,29 @@ module Spree
             respond_to :json, :html
 
             def index
-                taxon_id = params[:taxon_id]
-                product_weely_sales_by_taxon_id = Spree::Admin::WeeklySales.by_taxon_id(taxon_id)
-                if !product_weely_sales_by_taxon_id.nil? 
-                    @data = create_chart_data(product_weely_sales_by_taxon_id).to_json
+                taxon = Spree::Taxon.find(params[:taxon_id]) unless params[:taxon_id].nil?
+                weekly_sales_for_taxon = taxon.weekly_sales
+                weekly_aggregate_for_taxon = WeeklySales.generate_aggregates(weekly_sales_for_taxon)
+                if !weekly_aggregate_for_taxon.nil?
+                    @data = create_chart_data(weekly_aggregate_for_taxon).to_json
                 end
                 respond_with(@data)
             end
 
-            def create_chart_data(products_sales_distribution)
-                products_sales_distribution.map do |product_id, distribution|
+            def create_chart_data(sales_distribution)
+                sales_distribution.map do |child_id, distribution|
                     color_value = ColorGenerator.generate(distribution["total_revenue"],distribution["total_target_revenue"])
-                    label = Spree::Product.select(:name).where("id = #{product_id}").first.name
-                    AssortmentReport.new(product_id,distribution["total_revenue"],label,'#' + color_value)
+                    label = create_label_for_child(child_id)
+                    AssortmentReport.new(child_id,distribution["total_revenue"],label,'#' + color_value)
+                end
+            end
+
+            def create_label_for_child(child_id)
+                product = Spree::Product.find_by_id(child_id)
+                if (!product.nil?)
+                    return product.name
+                else
+                    return Spree::Taxon.find(child_id).name
                 end
             end
 
