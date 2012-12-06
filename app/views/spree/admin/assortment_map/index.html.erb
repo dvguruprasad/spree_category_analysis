@@ -5,8 +5,9 @@
 <% if !@data.nil?%>
 
     <script>
-    var list = <%= raw @data %>;
-    render_tree_map(list);
+var list = <%= raw @data %>;
+    var type = '<%= @type %>';
+    render_tree_map(list, type);
     </script>
 <% else %>
     <div id='404' style="font-size:40px" >TAXON NOT FOUND</div>

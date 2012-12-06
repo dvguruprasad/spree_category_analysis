@@ -89,7 +89,6 @@
             $box.addClass(this.nodeClass(node, $box));
 
             var $content = $("<div>" + node.label + "</div>");
-            console.log($content[0]);
             $content.addClass('treemap-label');
             $content.css({
                 'display': 'inline',
@@ -148,8 +147,8 @@
         var orientation;
 
         var leftSum = this.sumValues(halves.left),
-                rightSum = this.sumValues(halves.right),
-                totalSum = leftSum + rightSum;
+        rightSum = this.sumValues(halves.right),
+        totalSum = leftSum + rightSum;
 
         if (leftSum + rightSum <= 0) {
             midPoint = 0;
@@ -195,7 +194,7 @@
         var result = 0;
         var length = nodeList.length;
         for (var i = 0; i < length; i++)
-            result += nodeList[i].value;
+        result += nodeList[i].value;
         return result;
     };    
 
