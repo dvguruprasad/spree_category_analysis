@@ -2,14 +2,24 @@
 <%= stylesheet_link_tag "admin/assortment_map" %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
 <%= javascript_include_tag "admin/assortment_map" %>
-<% if !@data.nil?%>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<% if !@data.nil? %>
 
     <script>
-var list = <%= raw @data %>;
-    var type = '<%= @type %>';
-    render_tree_map(list, type);
+        var list = <%= raw @data %>;
+        var type = '<%= @type %>';
+        render_tree_map(list, type);
     </script>
-<% else %>
-    <div id='404' style="font-size:40px" >TAXON NOT FOUND</div>
-<% end %>
+    <div id="weekly_range">
+      <a href='<%= @taxon.id %>/1'>Last Week</a>
+      <a href='<%= @taxon.id %>/4'>Last Four Weeks</a>
+      <a href='<%= @taxon.id %>/<%= @year_to_date%>'>Year to Date</a>
+    </div>
 
+<% else %>
+    <div id='404' style="font-size:40px">TAXON NOT FOUND</div>
+<% end %>
+<script>
+    window.onload = $("#weekly_range").buttonset();
+</script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
