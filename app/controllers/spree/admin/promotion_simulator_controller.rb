@@ -8,20 +8,19 @@ module Spree
                 sales = WeeklySales.sales_including_forecasts(product, date_of_forecast,number_of_weeks)
                 @sum_target_revenue = sales.sum(&:target_revenue)
 
-                @weekly_target_revenue = sales.map{|s| s.target_revenue}
+                @weekly_target_revenue = sales.map{|s| s.target_revenue.round(2)}
                 
                 sum_revenue = 0.0
-                @sales_revenue = sales.map{|s| s.revenue}
+                @sales_revenue = sales.map{|s| s.revenue.round(2)}
                 @cumulative_sale = sales.map do |sale|
-                    sale.revenue + sum_revenue
-                    sum_revenue += sale.revenue
+                    sum_revenue += sale.revenue.round(2)
                 end
 
-                @sales_margin = sales.map{|s| s.revenue - s.cost}
+                @sales_margin = sales.map{|s| (s.revenue - s.cost).round(2)}
 
                 sum_margin = 0.0
                 @cumulative_sales_margin = @sales_margin.map do |sale|
-                  sum_margin += sale
+                  sum_margin += sale.round(2)
                 end
 
                 @inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(sales).map{|p| p.closing_position}
@@ -29,8 +28,7 @@ module Spree
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, number_of_weeks)
                 sum_revenue = 0.0
                 @sales_last_year = last_year_sales.map do |sale|
-                  sale.revenue + sum_revenue
-                  sum_revenue += sale.revenue
+                  sum_revenue += sale.revenue.round(2)
                 end
                 
             end
