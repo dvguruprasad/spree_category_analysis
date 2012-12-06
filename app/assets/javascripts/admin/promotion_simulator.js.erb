@@ -49,10 +49,13 @@ $(function () {
                 formatter: function() {
                     var unit = {
                         'Inventory': 'units',
-                        'Target Sale': '<%= Spree::Config[:currency] %>',
-                        'SalesLastYear': '<%= Spree::Config[:currency] %>',
-                        'Sales': '<%= Spree::Config[:currency] %>',
+                        'Target Sale for Period': '<%= Spree::Config[:currency] %>',
+                        'Sales Last Year': '<%= Spree::Config[:currency] %>',
+                        'Weekly Forecast': '<%= Spree::Config[:currency] %>',
                         'Forecast': '<%= Spree::Config[:currency] %>',
+                        'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
+                        'Sales Margin': '<%= Spree::Config[:currency] %>',
+                        'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
                     }[this.series.name];
     
                     return ''+
@@ -70,29 +73,48 @@ $(function () {
             },
             series: [{
                 name: 'Inventory',
-                color: '#E47833',
+                color: '#FF9999',
                 type: 'column',
                 yAxis: 1,
                 data: inventory_positions
 
             }, {
-                name: 'Target Sale',
+                name: 'Target Sale for Period',
                 color: '#89A54E',
                 type: 'line',
                 yAxis: 0,
                 data: [sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue]
             },{
-                name: 'SalesLastYear',
+                name: 'Weekly Target Sale',
+                color: '#003333',
+                type: 'line',
+                yAxis: 0,
+                data: weekly_target_revenue
+              
+            },{
+                name: 'Sales Last Year',
                 color: '#8B2500',
                 type: 'line',
                 yAxis: 0,
                 data: sales_last_year
             },{
-                name: 'Sales',
-                color: '#8B2500',
+                name: 'Weekly Forecast',
+                color: '#FF33CC',
                 type: 'line',
                 yAxis: 0,
                 data: sales_revenue
+            },{
+                name: 'Weekly Sales Margin',
+                color: '#0033CC',
+                type: 'line',
+                yAxis: 0,
+                data: sales_margin
+            },{
+                name: 'Sales Margin',
+                color: '#CC0033',
+                type: 'line',
+                yAxis: 0,
+                data: cumulative_sales_margin
             },{
                 name: 'Forecast',
                 color: '#A54E89',
