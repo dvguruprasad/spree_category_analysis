@@ -6,7 +6,7 @@ function render_tree_map(list, type) {
         },
         click:function (node, event) {
             if (type != "product")
-                window.location.href = "/admin/assortment_map/" + node.id;
+                window.location.href = "/admin/assortment_map/" + node.id + "/" + year_to_date;
         }
     });
 }

@@ -4,13 +4,18 @@ module Spree
             respond_to :json, :html
 
             def index
-                @taxon = Spree::Taxon.find_by_id(params[:taxon_id]) unless params[:taxon_id].nil?
+            end
+
+            def show
+                @taxon = Spree::Taxon.find_by_id(params[:taxon_id])
                 return if @taxon.nil?
-                weekly_sales_for_taxon = @taxon.weekly_sales
+                weekly_sales_for_taxon = @taxon.weekly_sales_by_time_frame(params[:week].to_i)
                 weekly_aggregate_for_taxon = WeeklySales.generate_aggregates(weekly_sales_for_taxon)
+                return if weekly_sales_for_taxon.nil? or weekly_sales_for_taxon.empty?
                 if !weekly_aggregate_for_taxon.nil?
                     @data = create_chart_data(weekly_aggregate_for_taxon).to_json
                 end
+                @year_to_date = Date.today.cweek * -1
                 respond_with(@data)
             end
 
@@ -30,7 +35,6 @@ module Spree
                     return Spree::Taxon.find(child_id).name, "taxon"
                 end
             end
-
 
         end
     end
