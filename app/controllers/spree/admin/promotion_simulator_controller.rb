@@ -5,6 +5,9 @@ module Spree
                 product = Product.find(params[:product_id])
                 date_of_forecast =  Date.new(2013, 1, 14)
                 number_of_weeks = 6
+                @start_of_year = date_of_forecast.beginning_of_year.to_json
+                @start_day = date_of_forecast.yday
+                @end_day = (date_of_forecast+number_of_weeks.weeks).yday
                 sales = WeeklySales.sales_including_forecasts(product, date_of_forecast,number_of_weeks)
                 @sum_target_revenue = sales.sum(&:target_revenue)
 

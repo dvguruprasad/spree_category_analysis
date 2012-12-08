@@ -1,6 +1,34 @@
 $(function () {
     var chart;
     $(document).ready(function() {
+    $(function() {
+        $( "#slider-range" ).slider({
+            range: true,
+            min: start_day,
+            max: end_day,
+            values: [ start_day, end_day ],
+            slide: function( event, ui ) {
+              $( "#date_range" ).val( calculate_range(ui.values[ 0 ] , ui.values[ 1 ]) );
+              $.ajax({
+         url: '1060500711',
+         success: function(response) {
+          chart.series[0].setData([80,80,80,80,80,80] );
+              chart.redraw();
+         }
+     });
+                         }
+        });
+        $( "#date_range" ).val( calculate_range($( "#slider-range" ).slider( "values", 0 ) , $( "#slider-range" ).slider( "values", 1 ) ));
+    },
+    calculate_range = function(a,b){
+      start_date = new Date(start_of_year);
+      end_date = new Date(start_of_year);
+      start_date_epoch = start_date.setDate(start_date.getDate() + a -1);
+      end_date_epoch = end_date.setDate(end_date.getDate() + b - 1);
+      return new Date(start_date_epoch).format("dd mmm") + " to " + new Date(end_date_epoch).format("dd mmm") 
+
+    }),
+      
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',

@@ -8,8 +8,25 @@
     <%= javascript_tag "var sales_margin = #{@sales_margin}" %>;
     <%= javascript_tag "var cumulative_sales_margin = #{@cumulative_sales_margin}" %>;
     <%= javascript_tag "var sales_last_year = #{@sales_last_year}" %>;
+    <%= javascript_tag "var start_day = #{@start_day}" %>;
+    <%= javascript_tag "var end_day = #{@end_day}" %>;
+    <%= javascript_tag "var start_of_year = #{@start_of_year}" %>;
 <% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
+<%= javascript_include_tag "admin/vendor/date_format" %> 
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <div id="container" height=600px>
+</div>
+
+<div id="simulator">
+<meta charset="utf-8" />
+jQuery UI Slider - Range slider
+<p>
+    <label for="date_range">Date range:</label>
+    <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+ 
+<div id="slider-range"></div>
+ 
 </div>
 
