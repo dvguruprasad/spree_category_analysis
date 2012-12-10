@@ -1,0 +1,11 @@
+
+<% content_for :head do %>
+    <%= javascript_tag "var sum_target_revenue = #{@sum_target_revenue}" %>;
+    <%= javascript_tag "var inventory_positions = #{@inventory_positions}" %>;
+    <%= javascript_tag "var cumulative_sale = #{@cumulative_sale}" %>;
+    <%= javascript_tag "var sales_last_year = #{@sales_last_year}" %>;
+<% end %>
+<%= javascript_include_tag "admin/promotion_simulator" %> 
+<div id="container">
+</div>
+

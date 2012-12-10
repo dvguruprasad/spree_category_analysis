@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :product_weekly_sales do |s|
+  factory :product_weekly_sales, :class => Spree::Admin::ProductWeeklySales do |s|
       s.product_id 1111
       s.sales_units 100
       s.target_sales_units 150
@@ -8,6 +8,6 @@ FactoryGirl.define do
       s.cost 8.0
   end
 
-  factory :product_weekly_sales_forecast, :class => ProductWeeklySalesForecast, parent: :product_weekly_sales do |s|
+  factory :product_weekly_sales_forecast, :class => Spree::Admin::ProductWeeklySalesForecast, parent: :product_weekly_sales do |s|
   end
 end
