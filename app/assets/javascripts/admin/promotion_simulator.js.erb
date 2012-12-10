@@ -10,8 +10,14 @@ $(function () {
         chart.series[0].setData(response.simulated_sales);
         chart.redraw();
       },
-      error: function(response,statuss) {
-        alert(statuss);
+      complete: function(response, status) {
+        if (status === 'error' || !response.responseText) {
+          alert(status);
+
+        }
+        else {
+          chart.addSeries({data: response.simulated_sales, name: "Simulated Sales", color: '#003333', type: 'line'});
+        }
       }
 
     });
@@ -141,7 +147,7 @@ $(function () {
 
     }]
   }),
-   convert_day_to_date = function(day){
+  convert_day_to_date = function(day){
     date1 = new Date(response.start_of_year);
     date_epoch = ( date1.setDate(date1.getDate() + day -1));
     return date_epoch
