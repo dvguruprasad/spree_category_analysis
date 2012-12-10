@@ -2,7 +2,8 @@ module Spree
     module Admin
         class PromotionSimulatorController < Spree::Admin::BaseController
             def index
-                product = Product.find(params[:product_id])
+                @product_id = params[:product_id]
+                product = Product.find(@product_id) 
                 date_of_forecast =  Date.new(2013, 1, 14)
                 number_of_weeks = 6
                 @start_of_year = date_of_forecast.beginning_of_year.to_json

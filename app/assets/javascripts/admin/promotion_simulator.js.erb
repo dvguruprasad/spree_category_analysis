@@ -8,9 +8,12 @@ $(function () {
             max: end_day,
             values: [ start_day, end_day ],
             slide: function( event, ui ) {
+              var start_date = convert_day_to_date(ui.values[ 0 ])
+              var end_date = convert_day_to_date(ui.values[ 1 ])
               $( "#date_range" ).val( calculate_range(ui.values[ 0 ] , ui.values[ 1 ]) );
               $.ajax({
-         url: '1060500711',
+                url: product_id + "/" + convert_to_date_format(new Date(start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+
          success: function(response) {
           chart.series[0].setData([80,80,80,80,80,80] );
               chart.redraw();
@@ -20,12 +23,19 @@ $(function () {
         });
         $( "#date_range" ).val( calculate_range($( "#slider-range" ).slider( "values", 0 ) , $( "#slider-range" ).slider( "values", 1 ) ));
     },
+    convert_day_to_date = function(day){
+      date1 = new Date(start_of_year);
+      date_epoch = ( date1.setDate(date1.getDate() + day -1));
+      return date_epoch
+    },
+    convert_to_date_format = function(date_epoch, format){
+      return date_epoch.format(format)
+    },
+
     calculate_range = function(a,b){
-      start_date = new Date(start_of_year);
-      end_date = new Date(start_of_year);
-      start_date_epoch = start_date.setDate(start_date.getDate() + a -1);
-      end_date_epoch = end_date.setDate(end_date.getDate() + b - 1);
-      return new Date(start_date_epoch).format("dd mmm") + " to " + new Date(end_date_epoch).format("dd mmm") 
+      start_date_epoch = convert_day_to_date(a) 
+      end_date_epoch = convert_day_to_date(b) 
+      return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
 
     }),
       
