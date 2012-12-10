@@ -1,30 +1,27 @@
 $(function () {
     var chart;
-    $(document).ready(function() {
-    $(function() {
+      $(function() {
         $( "#slider-range" ).slider({
-            range: true,
-            min: start_day,
-            max: end_day,
-            values: [ start_day, end_day ],
-            slide: function( event, ui ) {
-              var start_date = convert_day_to_date(ui.values[ 0 ])
-              var end_date = convert_day_to_date(ui.values[ 1 ])
-              $( "#date_range" ).val( calculate_range(ui.values[ 0 ] , ui.values[ 1 ]) );
-              $.ajax({
-                url: product_id + "/" + convert_to_date_format(new Date(start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(end_date),"dd-mm-yy"),
-
-         success: function(response) {
-          chart.series[0].setData([80,80,80,80,80,80] );
-              chart.redraw();
-         }
-     });
+          range: true,
+          min: response.start_day,
+          max: response.end_day,
+          values: [ response.start_day, response.end_day ],
+          slide: function( event, ui ) {
+            var start_date = convert_day_to_date(ui.values[ 0 ])
+            var end_date = convert_day_to_date(ui.values[ 1 ])
+            $( "#date_range" ).val( calculate_range(ui.values[ 0 ] , ui.values[ 1 ]) );
+            $.ajax({
+              url: response.product_id + "/" + convert_to_date_format(new Date(response.start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(response.end_date),"dd-mm-yy"),
+              success: function(response) {
+                chart.redraw();
+              }
+            });
                          }
         });
         $( "#date_range" ).val( calculate_range($( "#slider-range" ).slider( "values", 0 ) , $( "#slider-range" ).slider( "values", 1 ) ));
     },
     convert_day_to_date = function(day){
-      date1 = new Date(start_of_year);
+      date1 = new Date(response.start_of_year);
       date_epoch = ( date1.setDate(date1.getDate() + day -1));
       return date_epoch
     },
@@ -114,54 +111,54 @@ $(function () {
                 color: '#FF9999',
                 type: 'column',
                 yAxis: 1,
-                data: inventory_positions
+                data: response.inventory_positions
 
             }, {
                 name: 'Target Sale for Period',
                 color: '#89A54E',
                 type: 'line',
                 yAxis: 0,
-                data: [sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue,sum_target_revenue]
+                data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
             },{
                 name: 'Weekly Target Sale',
                 color: '#003333',
                 type: 'line',
                 yAxis: 0,
-                data: weekly_target_revenue
+                data: response.weekly_target_revenue
               
             },{
                 name: 'Sales Last Year',
                 color: '#8B2500',
                 type: 'line',
                 yAxis: 0,
-                data: sales_last_year
+                data: response.sales_last_year
             },{
                 name: 'Weekly Forecast',
                 color: '#FF33CC',
                 type: 'line',
                 yAxis: 0,
-                data: sales_revenue
+                data: response.sales_revenue
             },{
                 name: 'Weekly Sales Margin',
                 color: '#0033CC',
                 type: 'line',
                 yAxis: 0,
-                data: sales_margin
+                data: response.sales_margin
             },{
                 name: 'Sales Margin',
                 color: '#CC0033',
                 type: 'line',
                 yAxis: 0,
-                data: cumulative_sales_margin
+                data: response.cumulative_sales_margin
             },{
                 name: 'Forecast',
                 color: '#A54E89',
                 type: 'line',
                 yAxis: 0,
-                data: cumulative_sale
+                data: response.cumulative_sale
 
             }]
         });
     });
 
-});
+

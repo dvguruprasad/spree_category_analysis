@@ -1,17 +1,6 @@
 
 <% content_for :head do %>
-    <%= javascript_tag "var sum_target_revenue = #{@sum_target_revenue}" %>;
-    <%= javascript_tag "var weekly_target_revenue = #{@weekly_target_revenue}" %>;
-    <%= javascript_tag "var inventory_positions = #{@inventory_positions}" %>;
-    <%= javascript_tag "var cumulative_sale = #{@cumulative_sale}" %>;
-    <%= javascript_tag "var sales_revenue = #{@sales_revenue}" %>;
-    <%= javascript_tag "var sales_margin = #{@sales_margin}" %>;
-    <%= javascript_tag "var cumulative_sales_margin = #{@cumulative_sales_margin}" %>;
-    <%= javascript_tag "var sales_last_year = #{@sales_last_year}" %>;
-    <%= javascript_tag "var start_day = #{@start_day}" %>;
-    <%= javascript_tag "var end_day = #{@end_day}" %>;
-    <%= javascript_tag "var start_of_year = #{@start_of_year}" %>;
-    <%= javascript_tag "var product_id = #{@product_id}" %>;
+    <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
 <%= javascript_include_tag "admin/vendor/date_format" %> 
