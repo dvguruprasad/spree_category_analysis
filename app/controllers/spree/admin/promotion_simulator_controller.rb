@@ -36,13 +36,10 @@ module Spree
                   sum_revenue += sale.revenue.round(2)
                 end
 
-                xyz = params
-
                 simulated_sales = sales.map{|s| s.target_revenue*5}
-                
-                start_date = params[:start_date]
-                end_date = params[:end_date]
+
                 @report = GraphReport.new(product_id,start_of_year,start_day,end_day,sum_target_revenue,weekly_target_revenue,sales_revenue,cumulative_sale,sales_margin,cumulative_sales_margin,inventory_positions,sales_last_year,simulated_sales)
+
                 @jsonrep = @report.to_json
             end
         end

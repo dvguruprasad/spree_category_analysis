@@ -1,164 +1,160 @@
 $(function () {
-    var chart;
-      $(function() {
-        $( "#slider-range" ).slider({
-          range: true,
-          min: response.start_day,
-          max: response.end_day,
-          values: [ response.start_day, response.end_day ],
-          slide: function( event, ui ) {
-            var start_date = convert_day_to_date(ui.values[ 0 ])
-            var end_date = convert_day_to_date(ui.values[ 1 ])
-            $( "#date_range" ).val( calculate_range(ui.values[ 0 ] , ui.values[ 1 ]) );
-            $.ajax({
-              url: response.product_id + "/" + convert_to_date_format(new Date(response.start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(response.end_date),"dd-mm-yy"),
-              success: function(response) {
-                chart.redraw();
-              }
-            });
-                         }
-        });
-        $( "#date_range" ).val( calculate_range($( "#slider-range" ).slider( "values", 0 ) , $( "#slider-range" ).slider( "values", 1 ) ));
-    },
-    convert_day_to_date = function(day){
-      date1 = new Date(response.start_of_year);
-      date_epoch = ( date1.setDate(date1.getDate() + day -1));
-      return date_epoch
-    },
-    convert_to_date_format = function(date_epoch, format){
-      return date_epoch.format(format)
-    },
+  var chart;
+  $("#booya").click(function(){
+    var start_date = convert_day_to_date(25)
+    var end_date = convert_day_to_date(34)
+    $.ajax({
+      url: response.product_id + "/" + convert_to_date_format(new Date(start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+      dataType: 'json',
+      success: function(response) {
+        chart.series[0].setData(response.simulated_sales);
+        chart.redraw();
+      },
+      error: function(response,statuss) {
+        alert(statuss);
+      }
 
-    calculate_range = function(a,b){
-      start_date_epoch = convert_day_to_date(a) 
-      end_date_epoch = convert_day_to_date(b) 
-      return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
-
-    }),
-      
-        chart = new Highcharts.Chart({
-            chart: {
-                renderTo: 'container',
-              zoomType: 'xy'
-            },
-              title: {
-                  text: 'Promotion Simulator'
-              },
-              xAxis: [{
-                  categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
-              }],
-              yAxis: [{ // Primary yAxis
-                  labels: {
-                      formatter: function() {
-                          return this.value;
-                      },
-              style: {
-                  color: '#89A54E'
-              }
-                  },
-              title: {
-                  text: '<%= Spree::Config[:currency] %>',
-                  style: {
-                      color: '#89A54E'
-                  }
-              }
-              },{
-                  labels: {
-                      formatter: function() {
-                          return this.value;
-                      },
-              style: {
-                  color: '#89B64E'
-              }
-                  },
-              title: {
-                  text: 'Units',
-                  style: {
-                      color: '#89B64E'
-                  }
-              },
-              opposite: true
-              }
-              ],
-              tooltip: {
-                formatter: function() {
-                    var unit = {
-                        'Inventory': 'units',
-                        'Target Sale for Period': '<%= Spree::Config[:currency] %>',
-                        'Sales Last Year': '<%= Spree::Config[:currency] %>',
-                        'Weekly Forecast': '<%= Spree::Config[:currency] %>',
-                        'Forecast': '<%= Spree::Config[:currency] %>',
-                        'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
-                        'Sales Margin': '<%= Spree::Config[:currency] %>',
-                        'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
-                    }[this.series.name];
-    
-                    return ''+
-                        this.x +': '+ this.y +' '+ unit;
-                }
-            },
-            legend: {
-                layout: 'horizontal',
-                align: 'left',
-                x: 120,
-                verticalAlign: 'top',
-                y: 100,
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
-            series: [{
-                name: 'Inventory',
-                color: '#FF9999',
-                type: 'column',
-                yAxis: 1,
-                data: response.inventory_positions
-
-            }, {
-                name: 'Target Sale for Period',
-                color: '#89A54E',
-                type: 'line',
-                yAxis: 0,
-                data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
-            },{
-                name: 'Weekly Target Sale',
-                color: '#003333',
-                type: 'line',
-                yAxis: 0,
-                data: response.weekly_target_revenue
-              
-            },{
-                name: 'Sales Last Year',
-                color: '#8B2500',
-                type: 'line',
-                yAxis: 0,
-                data: response.sales_last_year
-            },{
-                name: 'Weekly Forecast',
-                color: '#FF33CC',
-                type: 'line',
-                yAxis: 0,
-                data: response.sales_revenue
-            },{
-                name: 'Weekly Sales Margin',
-                color: '#0033CC',
-                type: 'line',
-                yAxis: 0,
-                data: response.sales_margin
-            },{
-                name: 'Sales Margin',
-                color: '#CC0033',
-                type: 'line',
-                yAxis: 0,
-                data: response.cumulative_sales_margin
-            },{
-                name: 'Forecast',
-                color: '#A54E89',
-                type: 'line',
-                yAxis: 0,
-                data: response.cumulative_sale
-
-            }]
-        });
     });
+  }),
 
+
+  chart = new Highcharts.Chart({
+    chart: {
+      renderTo: 'container',
+      zoomType: 'xy'
+    },
+    title: {
+      text: 'Promotion Simulator'
+    },
+    xAxis: [{
+      categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
+    }],
+    yAxis: [{ // Primary yAxis
+      labels: {
+        formatter: function() {
+          return this.value;
+        },
+        style: {
+          color: '#89A54E'
+        }
+      },
+      title: {
+        text: '<%= Spree::Config[:currency] %>',
+        style: {
+          color: '#89A54E'
+        }
+      }
+    },{
+      labels: {
+        formatter: function() {
+          return this.value;
+        },
+        style: {
+          color: '#89B64E'
+        }
+      },
+      title: {
+        text: 'Units',
+        style: {
+          color: '#89B64E'
+        }
+      },
+      opposite: true
+    }
+    ],
+    tooltip: {
+      formatter: function() {
+        var unit = {
+          'Inventory': 'units',
+          'Target Sale for Period': '<%= Spree::Config[:currency] %>',
+          'Sales Last Year': '<%= Spree::Config[:currency] %>',
+          'Weekly Forecast': '<%= Spree::Config[:currency] %>',
+          'Forecast': '<%= Spree::Config[:currency] %>',
+          'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
+          'Sales Margin': '<%= Spree::Config[:currency] %>',
+          'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
+        }[this.series.name];
+
+        return ''+
+          this.x +': '+ this.y +' '+ unit;
+      }
+    },
+    legend: {
+      layout: 'horizontal',
+      align: 'left',
+      x: 120,
+      verticalAlign: 'top',
+      y: 100,
+      floating: true,
+      backgroundColor: '#FFFFFF'
+    },
+    series: [{
+      name: 'Inventory',
+      color: '#FF9999',
+      type: 'column',
+      yAxis: 1,
+      data: response.inventory_positions
+
+    }, {
+      name: 'Target Sale for Period',
+      color: '#89A54E',
+      type: 'line',
+      yAxis: 0,
+      data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
+    },{
+      name: 'Weekly Target Sale',
+      color: '#003333',
+      type: 'line',
+      yAxis: 0,
+      data: response.weekly_target_revenue
+
+    },{
+      name: 'Sales Last Year',
+      color: '#8B2500',
+      type: 'line',
+      yAxis: 0,
+      data: response.sales_last_year
+    },{
+      name: 'Weekly Forecast',
+      color: '#FF33CC',
+      type: 'line',
+      yAxis: 0,
+      data: response.sales_revenue
+    },{
+      name: 'Weekly Sales Margin',
+      color: '#0033CC',
+      type: 'line',
+      yAxis: 0,
+      data: response.sales_margin
+    },{
+      name: 'Sales Margin',
+      color: '#CC0033',
+      type: 'line',
+      yAxis: 0,
+      data: response.cumulative_sales_margin
+    },{
+      name: 'Forecast',
+      color: '#A54E89',
+      type: 'line',
+      yAxis: 0,
+      data: response.cumulative_sale
+
+    }]
+  }),
+   convert_day_to_date = function(day){
+    date1 = new Date(response.start_of_year);
+    date_epoch = ( date1.setDate(date1.getDate() + day -1));
+    return date_epoch
+  },
+  convert_to_date_format = function(date_epoch, format){
+    return date_epoch.format(format)
+  },
+
+  calculate_range = function(a,b){
+    start_date_epoch = convert_day_to_date(a) 
+    end_date_epoch = convert_day_to_date(b) 
+    return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
+
+  }
+});
 
