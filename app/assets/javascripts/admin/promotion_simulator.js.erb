@@ -1,15 +1,15 @@
 $(function () {
   var chart;
   $("#booya").click(function(){
-    var start_date = convert_day_to_date(25)
+    var start_date = convert_day_to_date(16)
     var end_date = convert_day_to_date(34)
     var send_data = {
       product_id: response.product_id,
       promotion_data: {
-        start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
-        end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+        start_date: convert_to_date_format(new Date(start_date),"yyyy-mm-dd"),
+        end_date: convert_to_date_format(new Date(end_date),"yyyy-mm-dd"),
         promotion_type: "P",
-        promotion_percentage: "25"
+        promotion_percentage: "10"
       }
     };
     var sample = JSON.stringify(send_data);
@@ -20,6 +20,7 @@ $(function () {
       data: send_data,
       success: function(response) {
         chart.addSeries({data: response.simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+        chart.addSeries({data: response.simulated_margin, name: "Simulated Margin", type: "line", yAxis: 0});
       },
 
     });
