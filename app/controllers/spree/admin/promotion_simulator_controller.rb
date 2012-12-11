@@ -38,7 +38,7 @@ module Spree
                   sum_revenue += sale.revenue.round(2)
                 end
                 #simulated_sales = compute_promotional_sales(sales,date_of_forecast) if(params[:promotion_data])
-                simulated_sales = sale.map{|s|s.total_revenue*1.25}
+                simulated_sales = sales.map{|s|s.revenue*1.25}
                 report = GraphReport.new(product_id,start_of_year,start_day,end_day,sum_target_revenue,weekly_target_revenue,sales_revenue,cumulative_sale,sales_margin,cumulative_sales_margin,inventory_positions,sales_last_year,simulated_sales)
 
                 @jsonrep = report.to_json
