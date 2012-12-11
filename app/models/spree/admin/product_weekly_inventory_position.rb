@@ -34,8 +34,8 @@ module Spree
                 replenishment.nil? ? 0 : replenishment.quantity
             end
 
-            def self.closing_position(child_id)
-                Spree::Admin::ProductWeeklyInventoryPosition.last(:conditions => ["product_id = ?", child_id], :order => "week_start_date").closing_position
+            def self.closing_position(product_id)
+                Spree::Admin::ProductWeeklyInventoryPosition.last(:conditions => ["product_id = ?", product_id], :order => "week_start_date").closing_position
             end
         end
     end
