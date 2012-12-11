@@ -1,11 +1,24 @@
 
 <% content_for :head do %>
-    <%= javascript_tag "var sum_target_revenue = #{@sum_target_revenue}" %>;
-    <%= javascript_tag "var inventory_positions = #{@inventory_positions}" %>;
-    <%= javascript_tag "var cumulative_sale = #{@cumulative_sale}" %>;
-    <%= javascript_tag "var sales_last_year = #{@sales_last_year}" %>;
+    <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
-<div id="container">
+<%= javascript_include_tag "admin/vendor/date_format" %> 
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<div id="container" height=600px>
+</div>
+
+<div id="simulator">
+<meta charset="utf-8" />
+jQuery UI Slider - Range slider
+<p>
+    <label for="date_range">Date range:</label>
+    <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
+</p>
+ 
+<div id="slider-range"></div>
+
+<button id="booya" value="click me"> Click me </button>
+
 </div>
 
