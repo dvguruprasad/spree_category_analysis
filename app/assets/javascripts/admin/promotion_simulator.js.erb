@@ -3,22 +3,24 @@ $(function () {
   $("#booya").click(function(){
     var start_date = convert_day_to_date(25)
     var end_date = convert_day_to_date(34)
-    $.ajax({
-      url: response.product_id + "/" + convert_to_date_format(new Date(start_date),"dd-mm-yy")  + "/" + convert_to_date_format(new Date(end_date),"dd-mm-yy"),
-      dataType: 'json',
-      success: function(response) {
-        chart.series[0].setData(response.simulated_sales);
-        chart.redraw();
-      },
-      complete: function(response, status) {
-        if (status === 'error' || !response.responseText) {
-          alert(status);
-
-        }
-        else {
-          chart.addSeries({data: response.simulated_sales, name: "Simulated Sales", color: '#003333', type: 'line'});
-        }
+    var send_data = {
+      product_id: response.product_id,
+      promotion_data: {
+        start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
+        end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+        promotion_type: "P",
+        promotion_percentage: "25"
       }
+    };
+    var sample = JSON.stringify(send_data);
+    $.ajax({
+      url: "/admin/promotion_simulator/",
+      dataType: 'json',
+      type: 'GET',
+      data: send_data,
+      success: function(response) {
+        chart.addSeries({data: response.simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+      },
 
     });
   }),

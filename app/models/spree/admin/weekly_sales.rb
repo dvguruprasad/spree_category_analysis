@@ -37,7 +37,7 @@ module Spree
                 sales = find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, week_start_date]).take(number_of_weeks)
                 return sales if sales.count == number_of_weeks
                 forecast_start_date = sales.empty? ? week_start_date : sales.last.week_start_date + 7
-                forecasts = ProductWeeklySalesForecast.find(:all, :conditions => ["product_id = ? and week_start_date >= ?", product.id, forecast_start_date]).take(number_of_weeks - sales.count)
+                forecasts = ProductWeeklySalesForecast.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, forecast_start_date]).take(number_of_weeks - sales.count)
                 sales + forecasts
             end
 
