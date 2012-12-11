@@ -4,6 +4,11 @@ module Spree
             respond_to :json, :html
 
             def index
+                weekly_aggregate_for_category = WeeklySales.generate_category_aggregates()
+                return if weekly_aggregate_for_category.nil? or weekly_aggregate_for_category.empty?
+                @data = create_chart_data(weekly_aggregate_for_category).to_json
+                @year_to_date = Date.today.cweek * -1
+                respond_with(@data)
             end
 
             def show
@@ -15,7 +20,7 @@ module Spree
                 if !weekly_aggregate_for_taxon.nil?
                     @data = create_chart_data(weekly_aggregate_for_taxon).to_json
                 end
-                @year_to_date = Date.today.cweek * -1
+                @year_to_date =  Date.today.cweek * -1
                 respond_with(@data)
             end
 

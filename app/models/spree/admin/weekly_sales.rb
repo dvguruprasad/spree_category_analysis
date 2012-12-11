@@ -1,6 +1,7 @@
 module Spree
     module Admin
         class WeeklySales < ActiveRecord::Base
+            CATEGORY_TAXON_ID = 1000
             self.table_name= "spree_weekly_sales"
 
             def self.generate_aggregates(weekly_sales)
@@ -12,6 +13,12 @@ module Spree
                     aggregate_by_child_id[c_id] = self.aggregate_for_child(weekly_sales_for_child)
                 end
                 aggregate_by_child_id
+            end
+
+            def self.generate_category_aggregates
+                week_number = Date.today.cweek * -1
+                taxon = Spree::Taxon.find(CATEGORY_TAXON_ID)
+                self.generate_aggregates(taxon.weekly_sales_by_time_frame(week_number))
             end
 
             def self.aggregate_for_child(weekly_sales_for_child)
@@ -36,7 +43,7 @@ module Spree
                 sales = find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, week_start_date]).take(number_of_weeks)
                 return sales if sales.count == number_of_weeks
                 forecast_start_date = sales.empty? ? week_start_date : sales.last.week_start_date + 7
-                forecasts = ProductWeeklySalesForecast.find(:all, :conditions => ["product_id = ? and week_start_date >= ?", product.id, forecast_start_date]).take(number_of_weeks - sales.count)
+                forecasts = WeeklySalesForecast.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, forecast_start_date]).take(number_of_weeks - sales.count)
                 sales + forecasts
             end
 
@@ -49,7 +56,7 @@ module Spree
                 sales = find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, week_start_date_last_year]).take(number_of_weeks)
                 sales
             end
-            
+
         end
     end
 end
