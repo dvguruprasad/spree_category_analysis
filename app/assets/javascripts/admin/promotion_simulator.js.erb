@@ -1,168 +1,203 @@
 $(function () {
-  var chart;
-  $("#booya").click(function(){
-    var start_date = convert_day_to_date(25)
-    var end_date = convert_day_to_date(34)
-    var send_data = {
-      product_id: response.product_id,
-      promotion_data: {
-        start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
-        end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
-        promotion_type: "P",
-        promotion_percentage: "25"
-      }
-    };
-    var sample = JSON.stringify(send_data);
-    $.ajax({
-      url: "/admin/promotion_simulator/",
-      dataType: 'json',
-      type: 'GET',
-      data: send_data,
-      success: function(response) {
-        chart.addSeries({data: response.simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
-      },
+    var chart;
+    var current_view = "weekly";
+    $('#toggle').buttonset();
+    $("#booya").click(function(){
+        var start_date = convert_day_to_date(25)
+        var end_date = convert_day_to_date(34)
+        var send_data = {
+            product_id: response.product_id,
+            promotion_data: {
+                start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
+                end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+                promotion_type: "P",
+                promotion_percentage: "25"
+            }
+        };
+        var sample = JSON.stringify(send_data);
+        $.ajax({
+            url: "/admin/promotion_simulator/",
+            dataType: 'json',
+            type: 'GET',
+            data: send_data,
+            success: function(response) {
+                if(current_view == "cumulative")
+                    chart.addSeries({data: response.cumulative_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                else if(current_view == "weekly")
+                    chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                else
+                    chart.addSeries({data: response.cumulative_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                    chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
 
+            },
+
+        });
     });
-  }),
+    series = {"weekly":[{
+        name: 'Weekly Forecast',
+        color: '#FF33CC',
+        type: 'line',
+        yAxis: 0,
+        data: response.sales_revenue
+    },{
+        name: 'Weekly Sales Margin',
+        color: '#0033CC',
+        type: 'line',
+        yAxis: 0,
+        data: response.sales_margin
+    },{
+        name: 'Weekly Target Sale',
+        color: '#003333',
+        type: 'line',
+        yAxis: 0,
+        data: response.weekly_target_revenue
 
-
-  chart = new Highcharts.Chart({
-    chart: {
-      renderTo: 'container',
-      zoomType: 'xy'
-    },
-    title: {
-      text: 'Promotion Simulator'
-    },
-    xAxis: [{
-      categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
     }],
-    yAxis: [{ // Primary yAxis
-      labels: {
-        formatter: function() {
-          return this.value;
-        },
-        style: {
-          color: '#89A54E'
-        }
-      },
-      title: {
-        text: '<%= Spree::Config[:currency] %>',
-        style: {
-          color: '#89A54E'
-        }
-      }
+    "cumulative" : [{
+        name: 'Sales Last Year',
+        color: '#8B2500',
+        type: 'line',
+        yAxis: 0,
+        data: response.sales_last_year
     },{
-      labels: {
-        formatter: function() {
-          return this.value;
-        },
-        style: {
-          color: '#89B64E'
-        }
-      },
-      title: {
-        text: 'Units',
-        style: {
-          color: '#89B64E'
-        }
-      },
-      opposite: true
-    }
-    ],
-    tooltip: {
-      formatter: function() {
-        var unit = {
-          'Inventory': 'units',
-          'Target Sale for Period': '<%= Spree::Config[:currency] %>',
-          'Sales Last Year': '<%= Spree::Config[:currency] %>',
-          'Weekly Forecast': '<%= Spree::Config[:currency] %>',
-          'Forecast': '<%= Spree::Config[:currency] %>',
-          'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
-          'Sales Margin': '<%= Spree::Config[:currency] %>',
-          'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
-        }[this.series.name];
-
-        return ''+
-          this.x +': '+ this.y +' '+ unit;
-      }
-    },
-    legend: {
-      layout: 'horizontal',
-      align: 'left',
-      x: 120,
-      verticalAlign: 'top',
-      y: 100,
-      floating: true,
-      backgroundColor: '#FFFFFF'
-    },
-    series: [{
-      name: 'Inventory',
-      color: '#FF9999',
-      type: 'column',
-      yAxis: 1,
-      data: response.inventory_positions
-
-    }, {
-      name: 'Target Sale for Period',
-      color: '#89A54E',
-      type: 'line',
-      yAxis: 0,
-      data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
+        name: 'Sales Margin',
+        color: '#CC0033',
+        type: 'line',
+        yAxis: 0,
+        data: response.cumulative_sales_margin
     },{
-      name: 'Weekly Target Sale',
-      color: '#003333',
-      type: 'line',
-      yAxis: 0,
-      data: response.weekly_target_revenue
-
-    },{
-      name: 'Sales Last Year',
-      color: '#8B2500',
-      type: 'line',
-      yAxis: 0,
-      data: response.sales_last_year
-    },{
-      name: 'Weekly Forecast',
-      color: '#FF33CC',
-      type: 'line',
-      yAxis: 0,
-      data: response.sales_revenue
-    },{
-      name: 'Weekly Sales Margin',
-      color: '#0033CC',
-      type: 'line',
-      yAxis: 0,
-      data: response.sales_margin
-    },{
-      name: 'Sales Margin',
-      color: '#CC0033',
-      type: 'line',
-      yAxis: 0,
-      data: response.cumulative_sales_margin
-    },{
-      name: 'Forecast',
-      color: '#A54E89',
-      type: 'line',
-      yAxis: 0,
-      data: response.cumulative_sale
+        name: 'Forecast',
+        color: '#A54E89',
+        type: 'line',
+        yAxis: 0,
+        data: response.cumulative_sale
 
     }]
-  }),
-  convert_day_to_date = function(day){
-    date1 = new Date(response.start_of_year);
-    date_epoch = ( date1.setDate(date1.getDate() + day -1));
-    return date_epoch
-  },
-  convert_to_date_format = function(date_epoch, format){
-    return date_epoch.format(format)
-  },
+    };
 
-  calculate_range = function(a,b){
-    start_date_epoch = convert_day_to_date(a) 
-    end_date_epoch = convert_day_to_date(b) 
-    return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
+    chart = draw_custom_chart(series[current_view]);
+    convert_day_to_date = function(day){
+        date1 = new Date(response.start_of_year);
+        date_epoch = ( date1.setDate(date1.getDate() + day -1));
+        return date_epoch
+    };
+    convert_to_date_format = function(date_epoch, format){
+        return date_epoch.format(format)
+    };
 
-  }
+    calculate_range = function(a,b){
+        start_date_epoch = convert_day_to_date(a) 
+        end_date_epoch = convert_day_to_date(b) 
+        return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
+
+    };
+    function weekly_view(){
+        current_view = "weekly";
+        draw_custom_chart(series["weekly"]);
+    }
+    function cumulative_view(){
+        current_view = "cumulative";
+        draw_custom_chart(series["cumulative"]);
+
+    }
+    function weekly_cumulative_view(){
+        current_view = "weekly_cumulative";
+        draw_custom_chart(series["cumulative"].concat(series["weekly"]));
+    }
+
+    function draw_custom_chart(additional_series){
+        chart_options = {
+            chart: {
+                renderTo: 'container',
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Promotion Simulator'
+            },
+            xAxis: [{
+                categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    },
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: '<%= Spree::Config[:currency] %>',
+                    style: {
+                        color: '#89A54E'
+                    }
+                }
+            },{
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    },
+                    style: {
+                        color: '#89B64E'
+                    }
+                },
+                title: {
+                    text: 'Units',
+                    style: {
+                        color: '#89B64E'
+                    }
+                },
+                opposite: true
+            }
+            ],
+            tooltip: {
+                formatter: function() {
+                    var unit = {
+                        'Inventory': 'units',
+                        'Target Sale for Period': '<%= Spree::Config[:currency] %>',
+                        'Sales Last Year': '<%= Spree::Config[:currency] %>',
+                        'Weekly Forecast': '<%= Spree::Config[:currency] %>',
+                        'Forecast': '<%= Spree::Config[:currency] %>',
+                        'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
+                        'Sales Margin': '<%= Spree::Config[:currency] %>',
+                        'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
+                    }[this.series.name];
+
+                    return ''+
+                        this.x +': '+ this.y +' '+ unit;
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: '#FFFFFF'
+            },
+            series: [{
+                name: 'Inventory',
+                color: '#FF9999',
+                type: 'column',
+                yAxis: 1,
+                data: response.inventory_positions
+
+            }, {
+                name: 'Target Sale for Period',
+                color: '#89A54E',
+                type: 'line',
+                yAxis: 0,
+                data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
+            }]
+        };
+        chart_options.series = chart_options.series.concat(additional_series)
+        chart = new Highcharts.Chart(chart_options);
+
+    }
+    $('#weekly_view').click(weekly_view);
+    $('#cumulative_view').click(cumulative_view);
+    $('#weekly_cumulative_view').click(weekly_cumulative_view);
+
 });
 
