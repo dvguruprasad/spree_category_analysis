@@ -27,8 +27,13 @@ module Spree
             def create_chart_data(sales_distribution)
                 sales_distribution.map do |child_id, distribution|
                     color_value = ColorGenerator.generate(distribution["total_revenue"],distribution["total_target_revenue"])
+                    profit = distribution["total_revenue"] - distribution["total_cost"]
+                    profit_last_period = distribution["last_period_revenue"] - distribution["last_period_cost"]
                     label, @type = create_label_for_child(child_id)
-                    AssortmentReport.new(child_id,distribution["total_revenue"],label,'#' + color_value)
+                    revenue_change = distribution["total_revenue"] - distribution["last_period_revenue"]
+                    profit_change = ((profit- profit_last_period)/profit_last_period.to_f * 100).round(2)
+                    p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
+                    AssortmentReport.new(child_id,distribution["total_revenue"],label,'#' + color_value, distribution["total_target_revenue"],profit, revenue_change, profit_change, distribution["total_units"])
                 end
             end
 

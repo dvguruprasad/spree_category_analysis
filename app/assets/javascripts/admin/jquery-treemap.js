@@ -35,6 +35,8 @@
         };
         this.mouseenter = function() {
         };
+        this.mouseover = function() {
+        };
         this.mouseleave = function() {
         };
         this.mousemove = function() {
@@ -77,6 +79,9 @@
             });
             $box.bind('mouseenter', node, function(e) {
                 self.mouseenter(e.data, e);
+            });
+            $box.bind('mouseover', node, function(e) {
+                self.mouseover(e.data, e);
             });
             $box.bind('mouseleave', node, function(e) {
                 self.mouseleave(e.data, e);

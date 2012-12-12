@@ -28,14 +28,34 @@ module Spree
                 start_time = weekly_sales_for_child.inject do |min, pws|
                     min.week_start_date < pws.week_start_date ? min : pws
                 end.week_start_date
+                total_cost = weekly_sales_for_child.inject(0) { |sum, pws| sum + pws.cost }
 
                 end_time = weekly_sales_for_child.inject do |max, pws|
                     max.week_end_date > pws.week_end_date ? max : pws
                 end.week_end_date
                 number_of_weeks = weekly_sales_for_child.count
 
-                {"total_revenue" => total_revenue, "total_target_revenue" => total_target_revenue,
-                 "start_time" => start_time, "end_time" => end_time, "number_of_weeks" => number_of_weeks}
+                total_units = weekly_sales_for_child.inject(0){|sum,pws| sum+pws.sales_units}
+                target_units = weekly_sales_for_child.inject(0){|sum,pws| sum+pws.target_sales_units}
+                child_id = weekly_sales_for_child.first.child_id
+                parent_id = weekly_sales_for_child.first.parent_id
+
+                last_period_revenue = revenue_previous_period(start_time.years_ago(1), end_time.years_ago(1) ,parent_id, child_id )
+                last_period_cost = cost_previous_period(start_time.years_ago(1), end_time.years_ago(1) ,parent_id, child_id )
+
+                {"total_revenue" => total_revenue, "total_target_revenue" => total_target_revenue,"start_time" => start_time, "end_time" => end_time, 
+                 "number_of_weeks" => number_of_weeks, "total_cost" => total_cost, "last_period_revenue" => last_period_revenue,
+                 "last_period_cost" => last_period_cost, "total_units" => total_units, "target_units" => target_units}
+            end
+
+            def self.revenue_previous_period(from_week_date,to_week_date, parent_id,child_id)
+                previous_period_weekly_sales = self.where("parent_id = ? and child_id  = ? and week_start_date >= ? and week_start_date < ?",parent_id,child_id,from_week_date,to_week_date)
+                previous_period_weekly_sales.inject(0) { |sum, pws| sum + pws.revenue }
+            end
+
+            def self.cost_previous_period(from_week_date,to_week_date, parent_id,child_id)
+                previous_period_weekly_sales = self.where("parent_id = ? and child_id  = ? and week_start_date >= ? and week_start_date < ?",parent_id,child_id,from_week_date,to_week_date)
+                previous_period_weekly_sales.inject(0) { |sum, pws| sum + pws.cost }
             end
 
             def self.sales_including_forecasts(product, week_start_date, number_of_weeks)

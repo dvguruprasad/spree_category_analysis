@@ -10,3 +10,24 @@ function render_tree_map(list, type) {
         }
     });
 }
+function fill_hover_details(list){
+    //console.log(list)
+    //$("#weekly_range").buttonset();
+    for(child=0;child<list.length;child++){
+        var sales_span = '<span>' +'<h3><label> Total Revenue: </label>' + list[child].value +'</h3>'+'</span>';
+        var total_target_span = '<span>' +'<h3><label> Total Target: </label>' + list[child].total_target +'</h3>'+'</span>';
+        var revenue_diff_span = '<span>' +'<h3><label> Revenue Difference: </label>' + (list[child].total_target - list[child].value) +'</h3>'+'</span>';
+        var profit_span = '<span>' +'<h3><label> Profit: </label>' + list[child].profit +'</h3>'+'</span>';
+        var profit_change_span = '<span>' +'<h3><label> Profit Change: </label>' + list[child].profit_change +'</h3>'+'</span>';
+        var revenue_change_span = '<span>' +'<h3><label> Revenue Change: </label>' + list[child].revenue_change +'</h3>'+'</span>';
+        var hoverDiv = '<div id="'+list[child].id+'hover"  class="tooltip">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</div>';
+        var id =  "#" + list[child].id ;
+        //$(id).append(hoverDiv);
+        $(id).hovercard({
+            detailsHTML: hoverDiv,
+            width: 400,
+        });
+        console.log(id);
+    }
+}
+
