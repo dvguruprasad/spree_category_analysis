@@ -76,7 +76,7 @@ $(function () {
     }]
     };
 
-    chart = draw_custom_chart(series[current_view]);
+    draw_custom_chart(series[current_view]);
     convert_day_to_date = function(day){
         date1 = new Date(response.start_of_year);
         date_epoch = ( date1.setDate(date1.getDate() + day -1));
@@ -133,22 +133,6 @@ $(function () {
                         color: '#89A54E'
                     }
                 }
-            },{
-                labels: {
-                    formatter: function() {
-                        return this.value;
-                    },
-                    style: {
-                        color: '#89B64E'
-                    }
-                },
-                title: {
-                    text: 'Units',
-                    style: {
-                        color: '#89B64E'
-                    }
-                },
-                opposite: true
             }
             ],
             tooltip: {
@@ -201,7 +185,7 @@ $(function () {
         inventory_object = {
             name: 'Inventory',
             type: 'column',
-            yAxis: 1,
+            yAxis: 0,
             data: inventory_data_with_color_code
 
         };
