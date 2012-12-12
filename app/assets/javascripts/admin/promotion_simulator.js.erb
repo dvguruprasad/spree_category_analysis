@@ -2,7 +2,8 @@ $(function () {
     var chart;
     var current_view = "weekly";
     $('#toggle').buttonset();
-    $("#booya").click(function(){
+    $('#simulate-button').buttonset();
+    $("#simulate").click(function(){
         var start_date = convert_day_to_date(25)
         var end_date = convert_day_to_date(34)
         var send_data = {
@@ -27,7 +28,7 @@ $(function () {
                     chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
                 else
                     chart.addSeries({data: response.cumulative_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
-                    chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
 
             },
 
@@ -177,13 +178,6 @@ $(function () {
                 backgroundColor: '#FFFFFF'
             },
             series: [{
-                name: 'Inventory',
-                color: '#FF9999',
-                type: 'column',
-                yAxis: 1,
-                data: response.inventory_positions
-
-            }, {
                 name: 'Target Sale for Period',
                 color: '#89A54E',
                 type: 'line',
@@ -191,6 +185,28 @@ $(function () {
                 data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
             }]
         };
+        inventory_data_with_color_code = [];
+        inventory_positions = response.inventory_positions
+        INVENTORY_THRESHOLD = 50
+        for(i=0;i<inventory_positions.length;i++){
+            data_object = {}
+            data_object["y"] = inventory_positions[i];
+            if(inventory_positions[i] < INVENTORY_THRESHOLD)
+                data_object["color"] = '#FF0000';
+            else
+                data_object["color"] = '#3B5998';
+
+            inventory_data_with_color_code.push(data_object)
+        }
+        inventory_object = {
+            name: 'Inventory',
+            type: 'column',
+            yAxis: 1,
+            data: inventory_data_with_color_code
+
+        };
+
+        chart_options.series.push(inventory_object)
         chart_options.series = chart_options.series.concat(additional_series)
         chart = new Highcharts.Chart(chart_options);
 
