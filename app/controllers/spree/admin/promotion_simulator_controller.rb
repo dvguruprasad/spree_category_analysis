@@ -40,10 +40,12 @@ module Spree
 
         sales_last_year = compute_sales_last_year(last_year_sales)
         if (params[:promotion_data])
-          simulated_sales = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data).map{|s| s.revenue}
-          simulated_margin = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data).map{|s| s.margin}
+          simulated = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data)
+          weekly_simulated_sales = simulated.map{|s| s.revenue}
+          cumulative_simulated_sales = compute_cumulative_sale(simulated) 
+          weekly_simulated_margin = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data).map{|s| s.margin}
         end
-        report = GraphReport.new(product_id, start_of_year, start_day, end_day, sum_target_revenue, weekly_target_revenue, sales_revenue, cumulative_sale, sales_margin, cumulative_sales_margin, inventory_positions, sales_last_year, simulated_sales, simulated_margin)
+        report = GraphReport.new(product_id, start_of_year, start_day, end_day, sum_target_revenue, weekly_target_revenue, sales_revenue, cumulative_sale, sales_margin, cumulative_sales_margin, inventory_positions, sales_last_year, weekly_simulated_sales, cumulative_simulated_sales, weekly_simulated_margin)
 
 
         @jsonrep = report.to_json
