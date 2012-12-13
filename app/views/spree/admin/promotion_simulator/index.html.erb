@@ -1,26 +1,28 @@
 
 <% content_for :head do %>
-    <%= javascript_tag "var response = #{@jsonrep}" %>;
+  <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
 <%= javascript_include_tag "admin/vendor/date_format" %> 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <div id="toggle" style="float:right">
-    <a id="weekly_view">Weekly</a>
-    <a id="cumulative_view">Cumulative</a>
-    <a id="weekly_cumulative_view">Weekly and Cumulative</a>
+  <a id="weekly_view">Weekly</a>
+  <a id="cumulative_view">Cumulative</a>
+  <a id="weekly_cumulative_view">Weekly and Cumulative</a>
 </div>
 <div id="container" height=600px>
 </div>
 
 <div id="simulator">
-    <p>
-    <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
-    </p>
+  <p>
+  <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
+  </p>
 
-    <div id="slider-range"></div>
+  <div id="slider-range"></div>
 
-     <div id="simulate-button">  <a id="simulate" > Simulate </a> </div>
+  <div id="simulate-button">  <a id="simulate" > Simulate </a> </div>
+  <%= render :partial => 'the_most_awesome_slider' %>
+  <button id="booya" value="click me"> Click me </button>
 
 </div>
 

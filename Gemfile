@@ -1,3 +1,3 @@
 source 'http://rubygems.org'
-gem 'psych'
+gem 'psych' , '1.3.4'
 gemspec

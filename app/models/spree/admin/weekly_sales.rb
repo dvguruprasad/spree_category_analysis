@@ -1,6 +1,7 @@
 module Spree
     module Admin
         class WeeklySales < ActiveRecord::Base
+          attr_accessible :child_id, :week_start_date, :week_end_date
             CATEGORY_TAXON_ID = 1000
             self.table_name= "spree_weekly_sales"
 
@@ -58,13 +59,18 @@ module Spree
                 previous_period_weekly_sales.inject(0) { |sum, pws| sum + pws.cost }
             end
 
-            def self.sales_including_forecasts(product, week_start_date, number_of_weeks)
+            def sales_including_forecasts(week_start_date, number_of_weeks)
                 raise "week_start_date should be the beginning of a week(monday)" if week_start_date.beginning_of_week != week_start_date
-                sales = find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, week_start_date]).take(number_of_weeks)
+                sales = WeeklySales.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", child_id, week_start_date]).take(number_of_weeks)
                 return sales if sales.count == number_of_weeks
                 forecast_start_date = sales.empty? ? week_start_date : sales.last.week_start_date + 7
-                forecasts = WeeklySalesForecast.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, forecast_start_date]).take(number_of_weeks - sales.count)
+                forecasts = WeeklySalesForecast.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", child_id, forecast_start_date]).take(number_of_weeks - sales.count)
                 sales + forecasts
+            end
+
+            def sum_target_revenue(week_start_date, number_of_weeks)
+              sales = sales_including_forecasts(week_start_date,number_of_weeks)
+              sales.sum(&:target_revenue)
             end
 
             def self.sales_last_year(product, week_start_date, number_of_weeks)
