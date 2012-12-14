@@ -43,7 +43,7 @@ module Spree
           simulated = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data)
           weekly_simulated_sales = simulated.map{|s| s.revenue}
           cumulative_simulated_sales = compute_cumulative_sale(simulated) 
-          weekly_simulated_margin = simulated.map{|s| s.margin}
+          weekly_simulated_margin = PromotionSimulatorController.compute_promotional_sales(sales, date_of_forecast, start_date, end_date, promotion_data).map{|s| s.margin}
         end
         report = GraphReport.new(product_id, start_of_year, start_day, end_day, sum_target_revenue, weekly_target_revenue, sales_revenue, cumulative_sale, sales_margin, cumulative_sales_margin, inventory_positions, sales_last_year, weekly_simulated_sales, cumulative_simulated_sales, weekly_simulated_margin)
 

@@ -9,22 +9,23 @@ $(function () {
         var send_data = {
             product_id: response.product_id,
             promotion_data: {
-                start_date: convert_to_date_format(new Date(start_date),"yy-mm-dd"),
-                end_date: convert_to_date_format(new Date(end_date),"yy-mm-dd"),
+                start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
+                end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
                 promotion_type: "P",
                 promotion_percentage: "25"
             }
         };
+        var sample = JSON.stringify(send_data);
         $.ajax({
             url: "/admin/promotion_simulator/",
             dataType: 'json',
             type: 'GET',
             data: send_data,
             success: function(response) {
-              if(current_view == "cumulative"){
-                chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});}
-                else if(current_view == "weekly"){
-                chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});}
+              if(current_view == "cumulative")
+                chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
+              else if(current_view == "weekly")
+                chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
               else
                 {
                   chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
@@ -39,13 +40,13 @@ $(function () {
         color: '#FF33CC',
         type: 'line',
         yAxis: 0,
-        data: response.weekly_sales_revenue
+        data: response.sales_revenue
     },{
         name: 'Weekly Sales Margin',
         color: '#0033CC',
         type: 'line',
         yAxis: 0,
-        data: response.weekly_sales_margin
+        data: response.sales_margin
     },{
         name: 'Weekly Target Sale',
         color: '#003333',
@@ -59,7 +60,7 @@ $(function () {
         color: '#8B2500',
         type: 'line',
         yAxis: 0,
-        data: response.cumulative_sales_last_year
+        data: response.sales_last_year
     },{
         name: 'Sales Margin',
         color: '#CC0033',

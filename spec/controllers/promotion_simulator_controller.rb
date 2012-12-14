@@ -48,6 +48,7 @@ class PromotionSimulatorControllerSpec
         simulated_sales[2].revenue.should eql 2624.1
       end
     end
+    
   end
 
    describe ".compute_promotional_margin" do
