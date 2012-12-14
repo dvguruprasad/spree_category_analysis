@@ -113,11 +113,13 @@ module Spree
       end
 
       def compute_cumulative_sale(sales)
+        cum_margin = []
         sum_revenue = 0.0
         cumulative_sale = sales.map do |sale|
           sum_revenue += sale.revenue.round(2)
+          cum_margin << sum_revenue
         end
-        sum_revenue
+        cum_margin
       end
 
       def compute_sales_revenue(sales)

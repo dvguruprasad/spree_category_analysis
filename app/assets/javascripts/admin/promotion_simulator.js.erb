@@ -22,13 +22,15 @@ $(function () {
             type: 'GET',
             data: send_data,
             success: function(response) {
-                if(current_view == "cumulative")
-                    chart.addSeries({data: response.cumulative_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
-                else if(current_view == "weekly")
-                    chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
-                else
-                    chart.addSeries({data: response.cumulative_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+              if(current_view == "cumulative")
+                chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
+              else if(current_view == "weekly")
                 chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+              else
+                {
+                  chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
+                  chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                }
 
             },
         });

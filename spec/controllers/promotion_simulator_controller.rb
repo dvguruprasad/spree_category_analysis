@@ -13,9 +13,9 @@ class PromotionSimulatorControllerSpec
         simulated_sales = Spree::Admin::PromotionSimulatorController.compute_promotional_sales(sales,date_of_forecast,start_date,end_date,promotion_data)
 
         simulated_sales.should_not be_empty
-        simulated_sales[1].should eql 1440.0
-        simulated_sales[2].should eql 1062.86
-        simulated_sales[3].should eql 1000.00
+        simulated_sales[1].revenue.should eql 1440.0
+        simulated_sales[2].revenue.should eql 1062.86
+        simulated_sales[3].revenue.should eql 1000.00
       end
     end
 
@@ -29,8 +29,8 @@ class PromotionSimulatorControllerSpec
         promotion_data = {:promotion_type => "P", :promotion_percentage => 10 }
         simulated_sales = Spree::Admin::PromotionSimulatorController.compute_promotional_sales(sales,date_of_forecast,start_date,end_date,promotion_data)
         simulated_sales.should_not be_empty
-        simulated_sales[1].should eql 1188.57
-        simulated_sales[2].should eql 1377.14
+        simulated_sales[1].revenue.should eql 1188.57
+        simulated_sales[2].revenue.should eql 1377.14
       end
     end
 
@@ -44,8 +44,8 @@ class PromotionSimulatorControllerSpec
         promotion_data = {:promotion_type => "P", :promotion_percentage => 30 }
         simulated_sales = Spree::Admin::PromotionSimulatorController.compute_promotional_sales(sales,date_of_forecast,start_date,end_date,promotion_data)
         simulated_sales.should_not be_empty
-        simulated_sales[1].should eql 1812.05
-        simulated_sales[2].should eql 2624.1
+        simulated_sales[1].revenue.should eql 1812.05
+        simulated_sales[2].revenue.should eql 2624.1
       end
     end
     
