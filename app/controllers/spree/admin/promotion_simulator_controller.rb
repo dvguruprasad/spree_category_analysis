@@ -76,29 +76,21 @@ module Spree
         if((start_week_number .. ending_week_number).include? index )
           daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
           promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage)
-          number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
-          revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
-        else
-          sale.revenue
-        end
-      end
 
-      def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
-        if(index == start_week_number)
-          number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
-        elsif(index == ending_week_number)
-          number_of_promotional_days =((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
-        else
-          number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
-        end
-        number_of_promotional_days
+            if(index == start_week_number)
+              number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
+            elsif(index == ending_week_number)
+              number_of_promotional_days =((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
+            else
+              number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
+            end
+            revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
+          else
+            sale.revenue
+          end
       end
 
       def self.compute_promotional_sales_units
-        if((start_week_number .. ending_week_number).include? index )
-          number_of_promotional_days = compute_promotional_days()
-        end
-
         200
       end
       def self.compute_promotional_margin(revenue, promotional_revenue) 
