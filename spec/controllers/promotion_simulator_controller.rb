@@ -50,6 +50,7 @@ class PromotionSimulatorControllerSpec
     end
   end
 
+
    describe ".compute_promotional_margin" do
     context "for simulated weekly sale" do
       it "should return simulated margin revenue for the given week" do

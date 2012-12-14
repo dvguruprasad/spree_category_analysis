@@ -47,10 +47,8 @@ module Spree
 
         simulated_promotional_sales = []
         sales_forecast.each_with_index do |sale, index|
-          promotional_revenue = compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
-          promotional_sales_units = compute_promotional_sales_units()
-          promotional_margin = compute_promotional_margin(sale.revenue, promotional_revenue)
-          sim_sales = SimulatedSales.new(promotional_revenue,promotional_sales_units, promotional_margin)
+          sim_sales = compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
+
           simulated_promotional_sales << sim_sales
         end
         simulated_promotional_sales
@@ -67,11 +65,13 @@ module Spree
           number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
 
           simulated_promotional_revenue = revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
+          simulated_promotional_sales_units = number_of_promotional_days * daily_promotional_sales + (NUMBER_OF_DAYS_IN_WEEK-number_of_promotional_days) *daily_sales
           #simulated_promotional_margin = margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sale_revenue)
-
         else
-          sale.revenue
+          simulated_promotional_revenue = sale.revenue
+          simulated_promotional_sales_units = sale.sales_units
         end
+        SimulatedSales.new(simulated_promotional_revenue,simulated_promotional_sales_units, 100)
       end
 
       def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
