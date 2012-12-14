@@ -59,7 +59,7 @@ module Spree
                 previous_period_weekly_sales.inject(0) { |sum, pws| sum + pws.cost }
             end
 
-            def sales_including_forecasts(week_start_date, number_of_weeks)
+            def self.sales_including_forecasts(child_id,week_start_date, number_of_weeks)
                 raise "week_start_date should be the beginning of a week(monday)" if week_start_date.beginning_of_week != week_start_date
                 sales = WeeklySales.find(:all, :conditions => ["child_id = ? and week_start_date >= ?", child_id, week_start_date]).take(number_of_weeks)
                 return sales if sales.count == number_of_weeks

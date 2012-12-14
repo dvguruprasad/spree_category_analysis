@@ -1,35 +1,40 @@
 $(function () {
     var chart;
     var current_view = "weekly";
+    //TODO Remove this line when the method is fixed
+    response.start_of_year = '2013-01-01';
+    start_date = '13-01-14';
+    date_date = '17-01-14';
     $('#toggle').buttonset();
     $('#simulate-button').buttonset();
     $("#simulate").click(function(){
         var start_date = convert_day_to_date(16)
         var end_date = convert_day_to_date(34)
         var send_data = {
+            forecast_date: response.date_of_forecast,
             product_id: response.product_id,
             promotion_data: {
-                start_date: convert_to_date_format(new Date(start_date),"dd-mm-yy"),
-                end_date: convert_to_date_format(new Date(end_date),"dd-mm-yy"),
+                start_date: convert_to_date_format(new Date(start_date),"yy-mm-dd"),
+                end_date: convert_to_date_format(new Date(end_date),"yy-mm-dd"),
                 promotion_type: "P",
                 promotion_percentage: "25"
             }
         };
         var sample = JSON.stringify(send_data);
         $.ajax({
-            url: "/admin/promotion_simulator/",
+            url: "/admin/promotion_simulator/simulate/",
             dataType: 'json',
             type: 'GET',
             data: send_data,
             success: function(response) {
               if(current_view == "cumulative")
-                chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
+                chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
               else if(current_view == "weekly")
-                chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});
               else
                 {
-                  chart.addSeries({data: response.cumulative_simulated_sales, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
-                  chart.addSeries({data: response.weekly_simulated_sales, name: "Simulated Sales", type: "line", yAxis: 0});
+                  chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
+                  chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});
                 }
 
             },
@@ -40,15 +45,15 @@ $(function () {
         color: '#FF33CC',
         type: 'line',
         yAxis: 0,
-        data: response.sales_revenue
+        data: response.weekly_revenue
     },{
-        name: 'Weekly Sales Margin',
+        name: 'Weekly Margin',
         color: '#0033CC',
         type: 'line',
         yAxis: 0,
-        data: response.sales_margin
+        data: response.weekly_margin
     },{
-        name: 'Weekly Target Sale',
+        name: 'Weekly Target Revenue',
         color: '#003333',
         type: 'line',
         yAxis: 0,
@@ -60,19 +65,19 @@ $(function () {
         color: '#8B2500',
         type: 'line',
         yAxis: 0,
-        data: response.sales_last_year
+        data: response.cumulative_last_year_weekly_revenue
     },{
-        name: 'Sales Margin',
+        name: 'Margin',
         color: '#CC0033',
         type: 'line',
         yAxis: 0,
-        data: response.cumulative_sales_margin
+        data: response.cumulative_weekly_margin
     },{
         name: 'Forecast',
         color: '#A54E89',
         type: 'line',
         yAxis: 0,
-        data: response.cumulative_sale
+        data: response.cumulative_weekly_revenue
 
     }]
     };
