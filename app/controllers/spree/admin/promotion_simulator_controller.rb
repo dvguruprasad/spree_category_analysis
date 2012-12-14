@@ -45,56 +45,74 @@ module Spree
                 start_week_number = (days_from_forecast_to_start_date/NUMBER_OF_DAYS_IN_WEEK).to_i
                 ending_week_number = (days_from_forecast_to_end_date/NUMBER_OF_DAYS_IN_WEEK).to_i
 
-                simulated_promotional_sales = []
-                sales_forecast.each_with_index do |sale, index|
-                    promotional_revenue = compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
-                    promotional_sales_units = compute_promotional_sales_units()
-                    promotional_margin = compute_promotional_margin(sale.revenue, promotional_revenue)
-                    sim_sales = SimulatedSales.new(promotional_revenue,promotional_sales_units, promotional_margin)
-                    simulated_promotional_sales << sim_sales
-                end
-                simulated_promotional_sales
-            end
+                 simulated_promotional_sales = []
+        sales_forecast.each_with_index do |sale, index|
+          promotional_revenue = compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
+          promotional_sales_units = compute_promotional_sales_units()
+          promotional_margin = compute_promotional_margin(sale.revenue, promotional_revenue)
+          sim_sales = SimulatedSales.new(promotional_revenue,promotional_sales_units, promotional_margin)
+          simulated_promotional_sales << sim_sales
+        end
+        simulated_promotional_sales
+      end
 
-            def self.compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
-                if((start_week_number .. ending_week_number).include? index )
-                    daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
-                    promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage)
+      def self.compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
+        if((start_week_number .. ending_week_number).include? index )
+          daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
+          promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage)
+          number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
+          revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
+        else
+          sale.revenue
+        end
+      end
 
-                    if(index == start_week_number)
-                        number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
-                    elsif(index == ending_week_number)
-                        number_of_promotional_days =((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
-                    else
-                        number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
-                    end
-                    revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
-                else
-                    sale.revenue
-                end
-            end
+      def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
+        if(index == start_week_number)
+          number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
+        elsif(index == ending_week_number)
+          number_of_promotional_days =((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
+        else
+          number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
+        end
+        number_of_promotional_days
+      end
 
-            def self.compute_promotional_sales_units
-                200
-            end
-            def self.compute_promotional_margin(revenue, promotional_revenue) 
-                100
-            end
+      def self.compute_promotional_sales_units
+        if((start_week_number .. ending_week_number).include? index )
+          number_of_promotional_days = compute_promotional_days()
+        end
+
+        200
+      end
+      def self.compute_promotional_margin(revenue, promotional_revenue) 
+         100
+      end
 
 
-            def self.revenue_for_this_week(number_of_promotional_days,promotion_revenue,daily_sale_revenue)
-                weekly_promotion_revenue = number_of_promotional_days * promotion_revenue
-                weekly_revenue = (NUMBER_OF_DAYS_IN_WEEK - number_of_promotional_days) * daily_sale_revenue
-                (weekly_revenue + weekly_promotion_revenue).round(2)
-            end
+      def self.revenue_for_this_week(number_of_promotional_days,promotion_revenue,daily_sale_revenue)
+        weekly_promotion_revenue = number_of_promotional_days * promotion_revenue
+        weekly_revenue = (NUMBER_OF_DAYS_IN_WEEK - number_of_promotional_days) * daily_sale_revenue
+        (weekly_revenue + weekly_promotion_revenue).round(2)
+      end
 
-            def self.daily_revenue_with_promotion(daily_sales_revenue, promotion_percentage)
-                if(promotion_percentage < 20)
-                    1.6**(promotion_percentage/10.to_f) * daily_sales_revenue * (1-(promotion_percentage/100.to_f)) 
-                else
-                    1.6**(2) * ((promotion_percentage-19)**0.2) * daily_sales_revenue * (1-promotion_percentage/100.to_f) 
-                end
-            end
+      def self.daily_revenue_with_promotion(daily_sales_revenue, promotion_percentage)
+        if(promotion_percentage < 20)
+          1.6**(promotion_percentage/10.to_f) * daily_sales_revenue * (1-(promotion_percentage/100.to_f)) 
+        else
+          1.6**(2) * ((promotion_percentage-19)**0.2) * daily_sales_revenue * (1-promotion_percentage/100.to_f) 
+        end
+      end
+
+      def compute_cumulative_sale(sales)
+        cum_margin = []
+        sum_revenue = 0.0
+        cumulative_sale = sales.map do |sale|
+          sum_revenue += sale.revenue.round(2)
+          cum_margin << sum_revenue
+        end
+        cum_margin
+      end
 
             private
 
