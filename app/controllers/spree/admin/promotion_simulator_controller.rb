@@ -59,9 +59,16 @@ module Spree
       def self.compute_promotional_revenue(sale,start_week_number,ending_week_number,index,start_date,date_of_forecast,promotion_percentage,end_date)
         if((start_week_number .. ending_week_number).include? index )
           daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
-          promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage)
+
+          daily_sales = sales_units/NUMBER_OF_DAYS_IN_WEEK.round
+          daily_promotional_sales = daily_sales * (1+ (6.25 ** promotion_percentage))
+
+          promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage,daily_sales, daily_promotional_sales)
           number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
-          revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
+
+          simulated_promotional_revenue = revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
+          simulated_promotional_margin = margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sales_revenue)
+
         else
           sale.revenue
         end
@@ -80,8 +87,6 @@ module Spree
 
       def self.compute_promotional_sales_units
         if((start_week_number .. ending_week_number).include? index )
-          number_of_promotional_days = compute_promotional_days()
-        end
 
         200
       end
@@ -96,12 +101,8 @@ module Spree
         (weekly_revenue + weekly_promotion_revenue).round(2)
       end
 
-      def self.daily_revenue_with_promotion(daily_sales_revenue, promotion_percentage)
-        if(promotion_percentage < 20)
-          1.6**(promotion_percentage/10.to_f) * daily_sales_revenue * (1-(promotion_percentage/100.to_f)) 
-        else
-          1.6**(2) * ((promotion_percentage-19)**0.2) * daily_sales_revenue * (1-promotion_percentage/100.to_f) 
-        end
+      def self.daily_revenue_with_promotion(daily_sales_revenue, promotion_percentage, daily_sales, daily_promotional_sales)
+        daily_sales_revenue*daily_promotional_sales*(1-promotion_percentage/100.to_f)/daily_sales
       end
 
       def compute_cumulative_sale(sales)
