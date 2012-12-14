@@ -1,15 +1,17 @@
+start_date = '13-01-14';
 $(function () {
     var chart;
     var current_view = "weekly";
     //TODO Remove this line when the method is fixed
     response.start_of_year = '2013-01-01';
-    start_date = '13-01-14';
     date_date = '17-01-14';
     $('#toggle').buttonset();
     $('#simulate-button').buttonset();
     $("#simulate").click(function(){
-        var start_date = convert_day_to_date(16)
-        var end_date = convert_day_to_date(34)
+        var start_date = $("#alternate_from").val() 
+        var end_date = $("#alternate_to").val()
+        var percentage = $("#percentage").val()
+
         var send_data = {
             forecast_date: response.date_of_forecast,
             product_id: response.product_id,
@@ -17,7 +19,7 @@ $(function () {
                 start_date: convert_to_date_format(new Date(start_date),"yy-mm-dd"),
                 end_date: convert_to_date_format(new Date(end_date),"yy-mm-dd"),
                 promotion_type: "P",
-                promotion_percentage: "25"
+                promotion_percentage:percentage 
             }
         };
         $.ajax({
@@ -28,8 +30,8 @@ $(function () {
             success: function(response) {
               if(current_view == "cumulative")
                 chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
-              else if(current_view == "weekly")
-                chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});
+              else if(current_view == "weekly"){
+                  chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});}
               else
                 {
                   chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
@@ -205,4 +207,27 @@ $(function () {
     $('#weekly_cumulative_view').click(weekly_cumulative_view);
 
 });
-
+$(function() {
+        $( "#from" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            minDate: start_date,
+            altField: "#alternate_from",
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                $( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#to" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            minDate: start_date,
+            altField: "#alternate_to",
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+    });
