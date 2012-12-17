@@ -23,7 +23,7 @@ module Spree
           daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
 
           daily_sales = sale.sales_units/NUMBER_OF_DAYS_IN_WEEK.round
-          daily_promotional_sales = daily_sales * (1+ (6.25 * ((promotion_percentage/100) ** 2)))
+          daily_promotional_sales = daily_sales * (1+ (0.25 * promotion_percentage/2))
 
           promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage,daily_sales, daily_promotional_sales)
           number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
