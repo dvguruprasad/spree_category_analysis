@@ -1,21 +1,18 @@
-<div id='treemap-div'></div>
+<% content_for :head do %>
+    <%= javascript_tag "var list = #{@data}" %>;
+    <%= javascript_tag "var type = '#{@type}'" %>;
+    <%= javascript_tag "var year_to_date = #{@year_to_date}" %>;
+<% end %>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <%= stylesheet_link_tag "admin/assortment_map" %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
+<%= javascript_include_tag 'admin/jquery.hovercard' %>
 <%= javascript_include_tag "admin/assortment_map" %>
-<%= javascript_include_tag "admin/jquery.hovercard" %>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<div id='treemap-div'></div>
 <% if !@data.nil? %>
 
-    <script>
-var list = <%= raw @data %>;
-var type = '<%= @type %>';
-var year_to_date = <%= @year_to_date%>;
-
-render_tree_map(list, type);
-
-
-</script>
-<div id="weekly_range">
+    <div id="weekly_range">
     <a href='-1'>Last Week</a>
     <a href='-4'>Last Four Weeks</a>
     <a href='<%= @year_to_date%>'>Year to Date</a>
@@ -27,6 +24,5 @@ render_tree_map(list, type);
     <div id='404' style="font-size:40px">TAXON NOT FOUND</div>
 <% end %>
 <script>
-window.onload = fill_hover_details(list);
+<%#window.onload = fill_hover_details(list);%>
 </script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>

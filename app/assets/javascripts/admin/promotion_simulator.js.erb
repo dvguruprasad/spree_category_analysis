@@ -6,6 +6,7 @@ $(function () {
     response.start_of_year = '2013-01-01';
     date_date = '17-01-14';
     $('#toggle').buttonset();
+    $('#back-forward').buttonset();
     $('#simulate-button').buttonset();
     $("#simulate").click(function(){
         var start_date = $("#alternate_from").val() 
@@ -43,19 +44,19 @@ $(function () {
     });
     series = {"weekly":[{
         name: 'Weekly Forecast',
-        color: '#FF33CC',
+        <%#color: '#FF33CC',%>
         type: 'line',
         yAxis: 0,
         data: response.weekly_revenue
     },{
         name: 'Weekly Margin',
-        color: '#0033CC',
+        <%#color: '#0033CC',%>
         type: 'line',
         yAxis: 0,
         data: response.weekly_margin
     },{
         name: 'Weekly Target Revenue',
-        color: '#003333',
+        <%#color: '#003333',%>
         type: 'line',
         yAxis: 0,
         data: response.weekly_target_revenue

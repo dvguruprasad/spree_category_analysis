@@ -7,6 +7,7 @@ module Spree
 
             def self.inventory_positions(sales)
                 dates = sales.map{|sale| "'#{sale.week_start_date}'" }.join(",")
+                return [] if dates.empty?
                 inventory_positions = ProductWeeklyInventoryPosition.find(:all, :conditions => ["week_start_date in (#{dates})"])
                 return inventory_positions if inventory_positions.count == sales.count
                 number_of_sales_left = sales.count - inventory_positions.count

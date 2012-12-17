@@ -7,10 +7,17 @@
 <%= javascript_include_tag "admin/stats_display" %>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="/assets/admin/promotion_simulator.css"/>
-<div id="toggle" style="float:right">
-  <a id="weekly_view">Weekly</a>
-  <a id="cumulative_view">Cumulative</a>
-  <a id="weekly_cumulative_view">Weekly and Cumulative</a>
+
+<div id="button-container">
+    <div id="back-forward" style="float:left">
+        <a id="past-report" href="/admin/promotion_simulator/product/<%= @back%>">&lt</a>
+        <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward%>">&gt</a>
+    </div>
+    <div id="toggle" style="float:right">
+        <a id="weekly_view">Weekly</a>
+        <a id="cumulative_view">Cumulative</a>
+        <a id="weekly_cumulative_view">Weekly and Cumulative</a>
+    </div>
 </div>
 
 
@@ -47,22 +54,23 @@
 <div id="container" height=600px>
 </div>
 
-<div id="simulator">
-  <p>
-  <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
-  </p>
-  <p>
-  <label for="from">From</label>
-  <input type="text" id="from" name="from" />
-  <input type="text" id="alternate_from" size="30" style="display:none" />
-  <label for="to">to</label>
-  <input type="text" id="to" name="to" />
-  <input type="text" id="alternate_to" size="30" style="display:none" />
-  </p>
-  <p>
-  <label for="percentage">Promotion Percentage</label>
-  <input type="text" id="percentage" name="percentage" />
-  </p>
-  <div id="simulate-button">    <a id="simulate" > Simulate </a> </div>
+<% if @mode == "simulation" %>
+    <div id="simulator">
+    <p>
+    <input type="text" id="date_range" style="border: 0; color: #f6931f; font-weight: bold;" />
+    </p>
+    <p>
+    <label for="from">From</label>
+    <input type="text" id="from" name="from" />
+    <input type="text" id="alternate_from" size="30" style="display:none" />
+    <label for="to">to</label>
+    <input type="text" id="to" name="to" />
+    <input type="text" id="alternate_to" size="30" style="display:none" />
+    </p>
+    <p>
+    <label for="percentage">Promotion Percentage</label>
+    <input type="text" id="percentage" name="percentage" />
+    </p>
+    <div id="simulate-button">    <a id="simulate" > Simulate </a> </div>
 </div>
-
+<% end %>
