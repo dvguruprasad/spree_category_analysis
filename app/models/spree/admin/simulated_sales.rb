@@ -24,7 +24,7 @@ module Spree
             cost_per_unit = sale.cost/sale.sales_units
 
             daily_sale_units = sale.sales_units/NUMBER_OF_DAYS_IN_WEEK.round
-            daily_promotional_sale_units = daily_sale_units * (1+ (0.25 * promotion_percentage/2))
+            daily_promotional_sale_units = daily_sale_units * (1+ (6.25 * (promotion_percentage/100.to_f)))
 
             promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage,daily_sale_units, daily_promotional_sale_units)
             number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
@@ -65,7 +65,7 @@ module Spree
         (weekly_revenue + weekly_promotion_revenue).round(2)
       end
 
-      def margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sale_revenue,cost_per_unit,daily_promotional_sale_units,daily_sale_units)
+      def self.margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sale_revenue,cost_per_unit,daily_promotional_sale_units,daily_sale_units)
         promotional_margin = (promotion_revenue - (cost_per_unit * daily_promotional_sale_units))*number_of_promotional_days
         normal_margin = (daily_sale_revenue - (cost_per_unit*daily_sale_units)) * (NUMBER_OF_DAYS_IN_WEEK - number_of_promotional_days)
 

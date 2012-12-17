@@ -95,7 +95,7 @@ module Spree
                 PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_weekly_revenue,from_date,stats_report)
             end
 
-            def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, number_of_weeks,promotion_data)
+            def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
                 simulated_sales= SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
                 weekly_simulated_revenue = simulated_sales.map{|s| s.revenue}
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
