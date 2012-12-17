@@ -1,10 +1,9 @@
-
 <% content_for :head do %>
   <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
 <%= javascript_include_tag "admin/promotion_simulator" %> 
 <%= javascript_include_tag "admin/vendor/date_format" %> 
-<%= javascript_include_tag "admin/stats_display" %>
+<%= javascript_include_tag "admin/promotion_periodic_stats" %>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="/assets/admin/promotion_simulator.css"/>
 
@@ -31,7 +30,7 @@
       <strong>Target Sales</strong><em id="target_sales"></em>
     </li>
     <li>
-      <strong>Gap</strong><em id="gap"></em>
+      <strong>Revenue Variation</strong><em id="revenue_variation"></em>
       <br/>
       <strong>Gross Profit</strong><em id="gross_profit"></em>
     </li>
@@ -41,9 +40,9 @@
       <strong>Stock Out Date</strong><em id="stock_out_of_date"></em>
     </li>
     <li>
-      <strong>Revenue Increase</strong><em id="revenue_increase"></em>
+      <strong>Revenue Change</strong><em id="revenue_change"></em>
       <br/>
-      <strong>Profit Increase</strong><em id="profit_increase"></em>
+      <strong>Profit Change</strong><em id="profit_change"></em>
     </li>
   </ul>
 </div>
@@ -74,3 +73,6 @@
     <div id="simulate-button">    <a id="simulate" > Simulate </a> </div>
 </div>
 <% end %>
+<script>
+window.onload = show_sales_statistics(response.stats_report);
+</script>

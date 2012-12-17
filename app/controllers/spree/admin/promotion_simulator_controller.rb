@@ -75,7 +75,7 @@ module Spree
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
                 cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
-                stats_report = PeriodicStats.generate()
+                stats_report = PeriodicStats.generate(weekly_sales)
                 ForecastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue,
                                    cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions,
                                    cumulative_last_year_weekly_revenue,date_of_forecast,stats_report)
@@ -91,7 +91,7 @@ module Spree
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
                 cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
-                stats_report = PeriodicStats.generate()
+                stats_report = PeriodicStats.generate(weekly_sales)
                 PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_weekly_revenue,from_date,stats_report)
             end
 
@@ -104,7 +104,7 @@ module Spree
                 weekly_simulated_margin = simulated_sales.map{|s| s.margin}
                 cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
                 simulated_inventory_positions= simulated_sales.map{|s| s.inventory_position}
-                stats_report = PeriodicStats.generate_with_promotion()
+                stats_report = PeriodicStats.generate_with_promotion(weekly_sales,simulated_sales)
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue,weekly_simulated_revenue,weekly_simulated_margin, cumulative_simulated_margin,stats_report,simulated_inventory_positions)
             end
 
