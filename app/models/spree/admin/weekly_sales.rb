@@ -1,7 +1,7 @@
 module Spree
     module Admin
         class WeeklySales < ActiveRecord::Base
-          attr_accessible :child_id, :week_start_date, :week_end_date
+            attr_accessible :child_id, :week_start_date, :week_end_date
             CATEGORY_TAXON_ID = 1000
             self.table_name= "spree_weekly_sales"
 
@@ -24,20 +24,17 @@ module Spree
 
             def self.aggregate_for_child(weekly_sales_for_child)
                 return {} if weekly_sales_for_child.empty?
-                total_revenue = weekly_sales_for_child.inject(0) { |sum, pws| sum + pws.revenue }
-                total_target_revenue = weekly_sales_for_child.inject(0) { |sum, pws| sum + pws.target_revenue }
-                start_time = weekly_sales_for_child.inject do |min, pws|
-                    min.week_start_date < pws.week_start_date ? min : pws
-                end.week_start_date
-                total_cost = weekly_sales_for_child.inject(0) { |sum, pws| sum + pws.cost }
+                total_revenue = total_revenue(weekly_sales_for_child)
+                total_target_revenue =total_target_revenue(weekly_sales_for_child)
+                total_cost = total_cost(weekly_sales_for_child)
 
-                end_time = weekly_sales_for_child.inject do |max, pws|
-                    max.week_end_date > pws.week_end_date ? max : pws
-                end.week_end_date
+                start_time = start_time(weekly_sales_for_child)
+                end_time = end_time(weekly_sales_for_child)
                 number_of_weeks = weekly_sales_for_child.count
 
-                total_units = weekly_sales_for_child.inject(0){|sum,pws| sum+pws.sales_units}
-                target_units = weekly_sales_for_child.inject(0){|sum,pws| sum+pws.target_sales_units}
+                total_units = total_units(weekly_sales_for_child)
+                target_units = target_units(weekly_sales_for_child)
+
                 child_id = weekly_sales_for_child.first.child_id
                 parent_id = weekly_sales_for_child.first.parent_id
 
@@ -48,6 +45,43 @@ module Spree
                  "number_of_weeks" => number_of_weeks, "total_cost" => total_cost, "last_period_revenue" => last_period_revenue,
                  "last_period_cost" => last_period_cost, "total_units" => total_units, "target_units" => target_units}
             end
+
+            def self.total_revenue(weekly_sales)
+                weekly_sales.inject(0) { |sum, pws| sum + pws.revenue }
+            end
+
+            def self.total_target_revenue(weekly_sales)
+                weekly_sales.inject(0) { |sum, pws| sum + pws.target_revenue}
+            end
+
+            def self.total_cost(weekly_sales)
+                weekly_sales.inject(0) { |sum, pws| sum + pws.cost}
+            end
+
+
+            def self.start_time(weekly_sales)
+                weekly_sales.inject do |min, pws|
+                    min.week_start_date < pws.week_start_date ? min : pws
+                end.week_start_date
+
+            end 
+            def self.end_time(weekly_sales)
+                weekly_sales.inject do |max, pws|
+                    max.week_end_date > pws.week_end_date ? max : pws
+
+                end.week_end_date
+            end
+
+
+            def self.total_units(weekly_sales)
+                weekly_sales.inject(0){|sum,pws| sum+pws.sales_units}
+            end
+
+            def self.target_units(weekly_sales)
+                weekly_sales.inject(0){|sum,pws| sum+pws.target_sales_units}
+            end
+
+
 
             def self.revenue_previous_period(from_week_date,to_week_date, parent_id,child_id)
                 previous_period_weekly_sales = self.where("parent_id = ? and child_id  = ? and week_start_date >= ? and week_start_date < ?",parent_id,child_id,from_week_date,to_week_date)
@@ -69,8 +103,8 @@ module Spree
             end
 
             def sum_target_revenue(week_start_date, number_of_weeks)
-              sales = sales_including_forecasts(week_start_date,number_of_weeks)
-              sales.sum(&:target_revenue)
+                sales = sales_including_forecasts(week_start_date,number_of_weeks)
+                sales.sum(&:target_revenue)
             end
 
             def self.sales_last_year(product, week_start_date, number_of_weeks)

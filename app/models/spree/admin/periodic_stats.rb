@@ -1,6 +1,6 @@
 module Spree
   module Admin
-   class StatsToDisplay
+   class PeriodicStats
 
      def self.generate()
       total_sales = 10

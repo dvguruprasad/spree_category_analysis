@@ -75,7 +75,7 @@ module Spree
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
                 cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
-                stats_report = StatsToDisplay.generate()
+                stats_report = PeriodicStats.generate()
                 ForecastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue,
                                    cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions,
                                    cumulative_last_year_weekly_revenue,date_of_forecast,stats_report)
@@ -91,16 +91,16 @@ module Spree
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
                 cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
-                stats_report = StatsToDisplay.generate()
+                stats_report = PeriodicStats.generate()
                 PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_weekly_revenue,from_date,stats_report)
             end
 
-            def create_simulate_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, number_of_weeks,promotion_data)
+            def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
                 simulated_sales= SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
                 weekly_simulated_revenue = simulated_sales.map{|s| s.revenue}
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
                 weekly_simulated_margin = SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data).map{|s| s.margin}
-                stats_report = StatsToDisplay.generate_with_promotion()
+                stats_report = PeriodicStats.generate_with_promotion()
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue,weekly_simulated_revenue,stats_report)
             end
 
