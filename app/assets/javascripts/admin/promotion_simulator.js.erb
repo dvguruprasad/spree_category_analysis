@@ -164,19 +164,8 @@ $(function () {
             ],
             tooltip: {
                 formatter: function() {
-                    var unit = {
-                        'Inventory': 'units',
-                        'Target Sale for Period': '<%= Spree::Config[:currency] %>',
-                        'Sales Last Year': '<%= Spree::Config[:currency] %>',
-                        'Weekly Forecast': '<%= Spree::Config[:currency] %>',
-                        'Forecast': '<%= Spree::Config[:currency] %>',
-                        'Weekly Target Sale': '<%= Spree::Config[:currency] %>',
-                        'Sales Margin': '<%= Spree::Config[:currency] %>',
-                        'Weekly Sales Margin': '<%= Spree::Config[:currency] %>',
-                    }[this.series.name];
-
                     return ''+
-                        this.x +': '+ this.y +' '+ unit;
+                        this.x +': '+ this.y +' '+ '<%= Spree::Config[:currency] %>';
                 }
             },
             legend: {
