@@ -96,13 +96,16 @@ module Spree
             end
 
             def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
-                simulated_sales= SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
+                inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
+                simulated_sales= SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
+                
                 weekly_simulated_revenue = simulated_sales.map{|s| s.revenue}
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
                 weekly_simulated_margin = simulated_sales.map{|s| s.margin}
                 cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
+                simulated_inventory_positions= simulated_sales.map{|s| s.inventory_position}
                 stats_report = PeriodicStats.generate_with_promotion()
-                SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue,weekly_simulated_revenue,weekly_simulated_margin, cumulative_simulated_margin,stats_report)
+                SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue,weekly_simulated_revenue,weekly_simulated_margin, cumulative_simulated_margin,stats_report,simulated_inventory_positions)
             end
 
 

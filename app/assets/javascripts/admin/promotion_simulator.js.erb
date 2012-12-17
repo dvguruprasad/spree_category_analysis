@@ -30,19 +30,21 @@ $(function () {
             data: send_data,
             success: function(response) {
               if(current_view == "cumulative"){
-                chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
-                chart.addSeries({data: response.cumulative_simulated_margin, name: "Cumulative Simulated Margin", type: "line", yAxis: 0});}
+                create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+              }
               else if(current_view == "weekly"){
-                  chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});
-                  chart.addSeries({data: response.weekly_simulated_margin, name: "Simulated Margin", type: "line", yAxis: 0});}
+                create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+              }
               else
                 {
-                  chart.addSeries({data: response.cumulative_simulated_revenue, name: "Cumulative Simulated Sales", type: "line", yAxis: 0});
-                  chart.addSeries({data: response.weekly_simulated_revenue, name: "Simulated Sales", type: "line", yAxis: 0});
-                  chart.addSeries({data: response.cumulative_simulated_margin, name: "Cumulative Simulated Margin", type: "line", yAxis: 0});
-                  chart.addSeries({data: response.weekly_simulated_margin, name: "Simulated Margin", type: "line", yAxis: 0});
+                create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                create_or_replace("Simulated Margin", response.weekly_simulated_margin);
                 }
-
+               set_inventory_data(response.simulated_inventory_positions); 
             },
         });
     });
@@ -89,21 +91,34 @@ $(function () {
     };
 
     draw_custom_chart(series[current_view]);
-    convert_day_to_date = function(day){
-        date1 = new Date(response.start_of_year);
-        date_epoch = ( date1.setDate(date1.getDate() + day -1));
-        return date_epoch
-    };
+
     convert_to_date_format = function(date_epoch, format){
-        return date_epoch.format(format)
+        return date_epoch.format(format);
     };
 
-    calculate_range = function(a,b){
-        start_date_epoch = convert_day_to_date(a) 
-        end_date_epoch = convert_day_to_date(b) 
-        return convert_to_date_format(new Date(start_date_epoch),"dd mmm") + " to " + convert_to_date_format(new Date(end_date_epoch),"dd mmm") 
 
-    };
+    set_inventory_data = function(positions){
+      create_or_replace("Inventory",positions);
+    }
+
+    create_or_replace = function(name,value){
+      value_chart = find_chart(name);
+      if(value_chart) {
+        value_chart.setData(value);
+        chart.redraw();
+      }
+      else{
+        chart.addSeries({data: value, name: name, type: "line", yAxis: 0});
+      }
+    }
+
+    find_chart = function(name){
+      for (index in chart.series) {
+        if(chart.series[index].name == name) 
+          return chart.series[index]
+      }
+    }
+
     function weekly_view(){
         current_view = "weekly";
         draw_custom_chart(series["weekly"]);

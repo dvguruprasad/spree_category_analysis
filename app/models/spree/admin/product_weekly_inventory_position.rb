@@ -20,7 +20,12 @@ module Spree
                     remaining_inventory_positions << inventory_position_forecast
 
                 end
-                inventory_positions + remaining_inventory_positions
+                complete_list_of_inventory_positions = inventory_positions + remaining_inventory_positions
+                complete_list_of_inventory_positions.each_with_index do |item, index|
+                  sale = sales[index]
+                  item.closing_position = item.closing_position * sale.revenue/sale.sales_units 
+                end
+                complete_list_of_inventory_positions
             end
 
             private
