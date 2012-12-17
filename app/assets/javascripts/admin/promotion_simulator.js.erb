@@ -62,6 +62,13 @@ $(function () {
         yAxis: 0,
         data: response.weekly_margin
     },{
+        name: 'Sales Last Year',
+        color: '#8B2500',
+        type: 'line',
+        yAxis: 0,
+        data: response.weekly_last_year_revenue
+    },
+    {
         name: 'Weekly Target Revenue',
         <%#color: '#003333',%>
         type: 'line',
@@ -80,7 +87,7 @@ $(function () {
         color: '#8B2500',
         type: 'line',
         yAxis: 0,
-        data: response.cumulative_last_year_weekly_revenue
+        data: response.cumulative_last_year_revenue
     },{
         name: 'Margin',
         color: '#CC0033',
@@ -182,7 +189,7 @@ $(function () {
                 align: 'left',
                 x: 120,
                 verticalAlign: 'top',
-                y: 100,
+                y: 25,
                 floating: true,
                 backgroundColor: '#FFFFFF'
             },

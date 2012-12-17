@@ -8,6 +8,8 @@ var show_sales_statistics = function(report){
     var stock_out_of_date = document.getElementById('stock_out_of_date');
     var revenue_change = document.getElementById('revenue_change');
     var profit_change = document.getElementById('profit_change');
+    var simulated_revenue = document.getElementById('simulated_revenue');
+    var simulated_profit = document.getElementById('simulated_profit');
 
     total_sales.innerHTML = report.total_sales
     target_sales.innerHTML = report.target_sales
@@ -17,5 +19,7 @@ var show_sales_statistics = function(report){
     stock_out_of_date.innerHTML = report.stock_out_date
     revenue_change.innerHTML = report.promotional_revenue_change    
     profit_change.innerHTML = report.promotional_profit_change
+    simulated_revenue.innerHTML = report.simulated_revenue
+    simulated_profit.innerHTML = report.simulated_profit
 };
 

@@ -74,11 +74,12 @@ module Spree
                 cumulative_weekly_margin = cumulative_margin(weekly_margin)
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
-                cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
+                weekly_last_year_revenue = revenue_numbers(last_year_sales)
+                cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
                 stats_report = PeriodicStats.generate(weekly_sales)
                 ForecastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue,
                                    cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions,
-                                   cumulative_last_year_weekly_revenue,date_of_forecast,stats_report)
+                                   cumulative_last_year_revenue,weekly_last_year_revenue,date_of_forecast,stats_report)
             end
 
             def create_reporting_chart_data(product,weekly_sales, from_date)
@@ -90,9 +91,10 @@ module Spree
                 cumulative_weekly_margin = cumulative_margin(weekly_margin)
                 inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
                 last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
-                cumulative_last_year_weekly_revenue = cumulative_revenue(last_year_sales)
+                cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
+                weekly_last_year_revenue = revenue_numbers(last_year_sales)
                 stats_report = PeriodicStats.generate(weekly_sales)
-                PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_weekly_revenue,from_date,stats_report)
+                PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_revenue,weekly_last_year_revenue,from_date,stats_report)
             end
 
             def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data)
