@@ -4,10 +4,9 @@
     <%= javascript_tag "var year_to_date = #{@year_to_date}" %>;
 <% end %>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <%= stylesheet_link_tag "admin/assortment_map" %>
+<%= javascript_include_tag 'admin/tooltip' %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
-<%= javascript_include_tag 'admin/jquery.hovercard' %>
 <%= javascript_include_tag "admin/assortment_map" %>
 <div id='treemap-div'></div>
 <% if !@data.nil? %>
@@ -23,6 +22,4 @@
 <% else %>
     <div id='404' style="font-size:40px">TAXON NOT FOUND</div>
 <% end %>
-<script>
-<%#window.onload = fill_hover_details(list);%>
-</script>
+
