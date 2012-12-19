@@ -9,25 +9,45 @@ $(function () {
     $('#back-forward').buttonset();
     $('#simulate-button').buttonset();
     $("#simulate").click(function(){
-        var start_date = $("#alternate_from").val() 
-        var end_date = $("#alternate_to").val()
+
+        var start_date_for_percentage = $("#alternate_from").val()
+        var end_date_for_percentage = $("#alternate_to").val()
         var percentage = $("#percentage").val()
 
-        var send_data = {
-            forecast_date: response.date_of_forecast,
+        var start_date_for_quantity = $("#alternate_from").val()
+        var end_date_for_quantity = $("#alternate_to").val()
+        var buy_quantity = $("#buy_quantity").val()
+        var get_quantity = $("#get_quantity").val()
+        var quantity_promotion_percentage = get_quantity/(buy_quantity + get_quantity)
+
+        var send_percentage_promotion_data = {
+            forecast_date_for_percentage: response.date_of_forecast,
             product_id: response.product_id,
-            promotion_data: {
-                start_date: convert_to_date_format(new Date(start_date),"yy-mm-dd"),
-                end_date: convert_to_date_format(new Date(end_date),"yy-mm-dd"),
+            promotion_data_for_percentage: {
+                start_date_for_percentage: convert_to_date_format(new Date(start_date_for_percentage),"yy-mm-dd"),
+                end_date_for_percentage: convert_to_date_format(new Date(end_date_for_percentage),"yy-mm-dd"),
                 promotion_type: "P",
-                promotion_percentage:percentage 
+                promotion_percentage:percentage
             }
         };
+
+        var send_quantity_promotion_data = {
+            forecast_date_for_quantity: response.date_of_forecast,
+            product_id: response.product_id,
+            promotion_data_for_quantity: {
+                start_date_for_quantity: convert_to_date_format(new Date(start_date_for_percentage),"yy-mm-dd"),
+                end_date_for_quantity: convert_to_date_format(new Date(end_date_for_quantity),"yy-mm-dd"),
+                promotion_type: "Q",
+                quantity_promotion_percentage:quantity_promotion_percentage
+            }
+        };
+        var data = {promo_data :[send_percentage_promotion_data, send_quantity_promotion_data]};
+        console.log(data);
         $.ajax({
             url: "/admin/promotion_simulator/simulate/",
             dataType: 'json',
             type: 'GET',
-            data: send_data,
+            data: data,
             success: function(response) {
                 show_sales_statistics(response.stats_report);
                 if(current_view == "cumulative"){
@@ -45,7 +65,7 @@ $(function () {
                 create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
                 create_or_replace("Simulated Margin", response.weekly_simulated_margin);
                 }
-               set_inventory_data(response.simulated_inventory_positions); 
+               set_inventory_data(response.simulated_inventory_positions);
             },
         });
     });
@@ -130,7 +150,7 @@ $(function () {
 
     find_chart = function(name){
       for (index in chart.series) {
-        if(chart.series[index].name == name) 
+        if(chart.series[index].name == name)
           return chart.series[index]
       }
     }
