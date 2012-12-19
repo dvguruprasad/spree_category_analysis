@@ -98,14 +98,14 @@ $(function () {
                     weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
                     cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
                     cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                    <%#set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart); %>
+                    set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart);
                 }
                 else if(current_view == "weekly"){
                     cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
                     cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
                     weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
                     weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-                    <%#set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);%>
+                    set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);
                 }
                 else
                     {

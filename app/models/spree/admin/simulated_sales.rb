@@ -39,13 +39,7 @@ module Spree
             simulated_promotional_sales_units = sale.sales_units
             simulated_promotional_margin = sale.revenue - sale.cost
           end
-          inventory_position = inventory_positions[index] + simulated_promotional_revenue - sale.revenue
-          p "********"
-          p inventory_position
-          p simulated_promotional_revenue
-          p sale.revenue
-          p inventory_positions[index]
-          p "_________________"
+          inventory_position = inventory_positions[index] - simulated_promotional_revenue + sale.revenue
           sim_sales = SimulatedSales.new(simulated_promotional_revenue,simulated_promotional_sales_units, simulated_promotional_margin,inventory_position)
 
           simulated_promotional_sales << sim_sales
