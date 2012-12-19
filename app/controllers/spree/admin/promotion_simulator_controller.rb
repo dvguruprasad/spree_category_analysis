@@ -32,44 +32,41 @@ module Spree
       end
 
       def simulate
-        return "{}" if (params[:promo_data]["0"][:promotion_data_for_percentage].nil? and params[:promo_data]["1"][:promotion_data_for_quantity].nil?) or params[:promo_data]["0"][:product_id].nil?
-        product_id = params[:promo_data]["0"][:product_id]
+        return "{}" if params[:promo_data].nil?
+        product_id = params[:product_id]
         product = Product.find_by_id(product_id)
+        date_of_forecast = Date.parse(params[:forecast_date])
         return "{}" if product.nil?
 
-        p "params###########"
-        p params
 
-        if (params[:promo_data]["0"][:promotion_data_for_percentage][:promotion_percentage]).nil?
-          @jsonrep = quantity_promotion(params, product, product_id).to_json
-        elsif (params[:promo_data]["1"][:promotion_data_for_quantity][:quantity_percentage]).nil?
-          @jsonrep = percentage_promotion(params, product, product_id).to_json
-        else
-          quantity_promotion_chart = quantity_promotion(params, product, product_id)
-          percentage_promotion_chart = percentage_promotion(params, product, product_id)
-          @jsonrep = new_simulated_chart_data(quantity_promotion_chart, percentage_promotion_chart).to_json
+        params[:promo_data].each do|promo_data|
+          p "##############"
+          p params[:promo_data]["0"]
+
+          p "*******"
+          p promo_data
+
+          p "*******"
+          p promo_data[1]
+
+
+        @jsonrep = percentage_promotion(product, product_id, promo_data[1], date_of_forecast).to_json
         end
+
 
         respond_with(@jsonrep)
       end
 
-      def percentage_promotion(params, product, product_id)
-        start_date_for_percentage_promotion = Date.parse(params[:promo_data]["0"][:promotion_data_for_percentage][:start_date_for_percentage])
-        end_date_for_percentage_promotion = Date.parse(params[:promo_data]["0"][:promotion_data_for_percentage][:end_date_for_percentage])
-        date_of_forecast_for_percentage = Date.parse(params[:promo_data]["0"][:forecast_date_for_percentage])
-        promotion_data_for_percentage = params[:promo_data]["0"][:promotion_data_for_percentage]
-        weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast_for_percentage, REPORTING_WINDOW)
-        create_simulation_chart_data(product, weekly_sales, date_of_forecast_for_percentage, start_date_for_percentage_promotion, end_date_for_percentage_promotion, promotion_data_for_percentage)
+      def percentage_promotion(product, product_id, promo_data, date_of_forecast)
+
+        start_date = Date.parse(promo_data[:start_date])
+        end_date = Date.parse(promo_data[:end_date])
+
+
+        weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
+        create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promo_data)
       end
 
-      def quantity_promotion(params, product, product_id)
-        start_date_for_quantity_promotion = Date.parse(params[:promo_data]["1"][:promotion_data_for_quantity][:start_date_for_quantity])
-        end_date_for_quantity_promotion = Date.parse(params[:promo_data]["1"][:promotion_data_for_quantity][:end_date_for_quantity])
-        date_of_forecast_for_quantity = Date.parse(params[:promo_data]["1"][:forecast_date_for_quantity])
-        promotion_data_for_quantity = params[:promo_data]["1"][:promotion_data_for_quantity]
-        weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast_for_quantity, REPORTING_WINDOW)
-        create_simulation_chart_data(product, weekly_sales, date_of_forecast_for_quantity, start_date_for_quantity_promotion, end_date_for_quantity_promotion, promotion_data_for_quantity)
-      end
 
 
       private
@@ -135,6 +132,10 @@ module Spree
 
         stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales)
         SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions)
+      end
+
+      def new_simulated_chart_data(quantity_chart, percentage_chart)
+
       end
 
 

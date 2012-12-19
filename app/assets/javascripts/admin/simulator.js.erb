@@ -1,0 +1,120 @@
+var ReportChart = function(view) {
+    var chart;
+    this.current_view = view;
+    this.series = {};
+    this.series[this.current_view] = [];
+    this.chart_options = {
+        chart: {
+            renderTo: 'container',
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Promotion Simulator'
+        },
+        xAxis: [{
+            categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']}],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value;
+                    },
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: '<%= Spree::Config[:currency] %>',
+                    style: {
+                        color: '#89A54E'
+                    }
+                }}
+            ],
+            tooltip: {
+                formatter: function() {
+                    return '' + this.x + ': ' + this.y + ' ' + '<%= Spree::Config[:currency] %>';
+                }
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                x: 120,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: '#FFFFFF'
+            },
+            series: this.series[this.current_view]
+    };
+
+    this.add_series = function(series_object){
+        this.series[this.current_view].push(series_object);
+    };
+    this.setDataFor = function(index, data){
+        this.series[this.current_view][index].data = data;
+    };
+
+    this.find_chart = function(name) {
+        var index;
+        for (index in this.series[this.current_view]) {
+            if (this.series[this.current_view][index].name == name){
+                return index;
+            }
+        }
+    };
+    this.redraw = function(){
+        this.draw();
+    };
+
+    this.create_or_replace = function(name, value) {
+        console.log(name + value);
+        index = this.find_chart(name);
+        value_chart = this.series[this.current_view][index]
+        console.log(value_chart);
+        if (value_chart) {
+            if(value_chart.name = "Inventory"){
+                this.setDataFor(index, this.inventory_chart_object(value));
+            }
+            else{
+                this.setDataFor(index, value);
+            }
+            this.redraw();
+        }
+        else {
+            this.add_series({
+                data: value,
+                name: name,
+                type: "line",
+                yAxis: 0,
+                dashStyle: 'Dash'
+            });
+            this.redraw();
+        }
+    };
+    this.inventory_chart_object = function(inventory_positions){
+        inventory_data_with_color_code = [];
+        INVENTORY_THRESHOLD = 50 * 8.1;
+        for(i=0;i<inventory_positions.length;i++){
+            data_object = {}
+            data_object["y"] = inventory_positions[i];
+            if(inventory_positions[i] < INVENTORY_THRESHOLD)
+                data_object["color"] = '#FF0000';
+            else
+                data_object["color"] = '#3B5998';
+
+            inventory_data_with_color_code.push(data_object)
+        }
+        return inventory_data_with_color_code ;
+
+    };
+
+    this.draw = function(){
+        this.chart_options.series = this.series[this.current_view];
+        console.log(this.chart_options);
+        this.chart = new Highcharts.Chart(this.chart_options);
+    };
+    <%#this.draw_chart = function(additional_series, chart_options) {%>
+        <%#chart_options = (typeof chart_options === "undefined") ? this.chart_options : chart_options;%>
+        <%#this.series = chart_options.series = additional_series;%>
+        <%#this.chart = new Highcharts.Chart(chart_options);%>
+    <%#};%>
+};

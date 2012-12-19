@@ -64,6 +64,17 @@
             var node = nodeList[i];
             var nodeBounds = node.bounds;
 
+
+
+            var sales_span = '<li><span>' +'<label> Total Revenue: </label>' +node.value +''+'</span></li>';
+            var total_target_span = '<li><span>' +'<label> Total Target: </label>' + node.total_target +''+'</span></li>';
+            var revenue_diff_span = '<li><span>' +'<label> Revenue Difference: </label>' + Math.round((node.total_target - node.value)*100)/100 +''+'</span></li>';
+            var profit_span = '<li><span>' +'<label> Profit: </label>' + node.profit +''+'</span></li>';
+            var profit_change_span = '<li><span>' +'<label> Profit Change: </label>' + node.profit_change +''+'</span></li>';
+            var revenue_change_span = '<li><span>' +'<label> Revenue Change: </label>' + node.revenue_change +''+'</span></li>';
+            var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</div>';
+
+
             var $box = $('<div id=' + node.id + '></div>');
             $box.css($.extend(nodeBounds.style(), {
                 'position' : 'absolute'
@@ -93,17 +104,19 @@
             $box.appendTo(this.$div);
             $box.addClass(this.nodeClass(node, $box));
 
-            var $content = $("<div>" + node.label + "</div>");
+            var $content = $("<div><p class='node-label'>" + node.label + "</p></div>");
             $content.addClass('treemap-label');
             $content.css({
-                'display': 'inline',
+                'display': 'block',
                 'position': 'relative',
                 'text-align': 'center',
-                'font-size': '20px'
+                'font-size': '15px',
+                'word-wrap':'break-word'
             });
             $box.append($content);
+            $box.append(hoverDiv);
 
-            this.fitLabelFontSize($content, node);
+            //this.fitLabelFontSize($content, node);
 
             $content.css('margin-top', (parseInt($box.height()) / 2) - (parseInt($content.height()) / 2) + 'px');
 
@@ -201,15 +214,45 @@
         for (var i = 0; i < length; i++)
         result += nodeList[i].value;
         return result;
-    };    
+    };
 
     $.fn.treemap = function(json, options) {
         var self = this;
         return this.fadeOut('fast', function() {
             self.empty().fadeIn('fast', function() {
                 new TreeMap(self, options).paint(json);
+                children = $('#treemap-div').children()
+                for(i=0;i<children.length;i++)
+                {
+                    id = "#" + children[i].id;
+                    $(id).qtip({
+                        content:$(id+"hover").html(),
+                        style: {
+                            width: 250,
+                            border: {
+                                width: 5,
+                                radius: 10,
+                                color: '#262626'
+                            },
+                            padding: 10,
+                            textAlign: 'center',
+                            // Give it a speech bubble tip with automatic corner detection
+                            background: children[i].style.backgroundColor,// Style it according to the preset 'cream' style
+                            color: '#000000'
+                        },
+                        position: {
+                            corner: {
+                                target: 'center',
+                                tooltip: 'bottomLeft'
+                            }
+                        }
+                    });
+                }
+
             });
+
         });
+
     };
 
 })(jQuery);

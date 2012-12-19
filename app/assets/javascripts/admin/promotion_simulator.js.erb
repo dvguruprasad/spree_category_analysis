@@ -4,11 +4,83 @@ $(function () {
     var current_view = "weekly";
     //TODO Remove this line when the method is fixed
     response.start_of_year = '2013-01-01';
+
+    weekly_view_chart = new ReportChart(current_view);
+    cumulative_view_chart = new ReportChart("cumulative");
+    inventory_positions = response.inventory_positions;
+    default_series = [inventory_chart_object(inventory_positions)];
     date_date = '17-01-14';
+    series = {"weekly":[
+        {
+            name:'Weekly Forecast',
+            <%#color: '#FF33CC',%>
+            type:'line',
+            yAxis:0,
+            data:response.weekly_revenue
+        },
+        {
+            name:'Weekly Margin',
+            <%#color: '#0033CC',%>
+            type:'line',
+            yAxis:0,
+            data:response.weekly_margin
+        },
+        {
+            name:'Sales Last Year',
+            color:'#8B2500',
+            type:'line',
+            yAxis:0,
+            data:response.weekly_last_year_revenue
+        },
+        {
+            name:'Weekly Target Revenue',
+            <%#color: '#003333',%>
+            type:'line',
+            yAxis:0,
+            data:response.weekly_target_revenue
+
+        }
+    ],
+        "cumulative":[
+            {
+                name:'Target Sale for Period',
+                color:'#89A54E',
+                type:'line',
+                yAxis:0,
+                data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
+            },
+            {
+                name:'Sales Last Year',
+                color:'#8B2500',
+                type:'line',
+                yAxis:0,
+                data:response.cumulative_last_year_revenue
+            },
+            {
+                name:'Margin',
+                color:'#CC0033',
+                type:'line',
+                yAxis:0,
+                data:response.cumulative_weekly_margin
+            },
+            {
+                name:'Forecast',
+                color:'#A54E89',
+                type:'line',
+                yAxis:0,
+                data:response.cumulative_weekly_revenue
+
+            }
+        ]
+    };
+
     $('#toggle').buttonset();
     $('#back-forward').buttonset();
     $('#simulate-button').buttonset();
-    $("#simulate").click(function(){
+
+    $('#weekly_view').click(weekly_view);
+    $('#cumulative_view').click(cumulative_view);
+    $("#simulate").click(function () {
 
         var start_date_for_percentage = $("#alternate_from").val()
         var end_date_for_percentage = $("#alternate_to").val()
@@ -18,255 +90,120 @@ $(function () {
         var end_date_for_quantity = $("#alternate_to").val()
         var buy_quantity = $("#buy_quantity").val()
         var get_quantity = $("#get_quantity").val()
-        var quantity_promotion_percentage = get_quantity/(buy_quantity + get_quantity)
+        var quantity_promotion_percentage = get_quantity / (buy_quantity + get_quantity)
 
-        var send_percentage_promotion_data = {
-            forecast_date_for_percentage: response.date_of_forecast,
-            product_id: response.product_id,
-            promotion_data_for_percentage: {
-                start_date_for_percentage: convert_to_date_format(new Date(start_date_for_percentage),"yy-mm-dd"),
-                end_date_for_percentage: convert_to_date_format(new Date(end_date_for_percentage),"yy-mm-dd"),
-                promotion_type: "P",
+        var send_percentage_promotion_data ={
+                start_date:convert_to_date_format(new Date(start_date_for_percentage), "yy-mm-dd"),
+                end_date:convert_to_date_format(new Date(end_date_for_percentage), "yy-mm-dd"),
+                promotion_type:"P",
                 promotion_percentage:percentage
-            }
+        };
+        var send_quantity_promotion_data = {
+                start_date:convert_to_date_format(new Date(start_date_for_percentage), "yy-mm-dd"),
+                end_date:convert_to_date_format(new Date(end_date_for_quantity), "yy-mm-dd"),
+                promotion_type:"Q",
+                promotion_percentage:quantity_promotion_percentage
         };
 
-        var send_quantity_promotion_data = {
-            forecast_date_for_quantity: response.date_of_forecast,
-            product_id: response.product_id,
-            promotion_data_for_quantity: {
-                start_date_for_quantity: convert_to_date_format(new Date(start_date_for_percentage),"yy-mm-dd"),
-                end_date_for_quantity: convert_to_date_format(new Date(end_date_for_quantity),"yy-mm-dd"),
-                promotion_type: "Q",
-                quantity_promotion_percentage:quantity_promotion_percentage
-            }
+        var data  = {
+            forecast_date:response.date_of_forecast,
+            product_id:response.product_id,
+            promo_data:[send_percentage_promotion_data, send_quantity_promotion_data]
         };
-        var data = {promo_data :[send_percentage_promotion_data, send_quantity_promotion_data]};
-        console.log(data);
+
+        console.log(data)
         $.ajax({
-            url: "/admin/promotion_simulator/simulate/",
-            dataType: 'json',
-            type: 'GET',
+            url:"/admin/promotion_simulator/simulate/",
+            dataType:'json',
+            type:'GET',
             data: data,
-            success: function(response) {
+            success:function (response) {
                 show_sales_statistics(response.stats_report);
-                if(current_view == "cumulative"){
-                create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
-                create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-              }
-              else if(current_view == "weekly"){
-                create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
-                create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-              }
-              else
-                {
-                create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
-                create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
-                create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                if (current_view == "cumulative") {
+                    weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                    weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                    cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                    cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                <%#set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart); %>
                 }
-               set_inventory_data(response.simulated_inventory_positions);
+                else if (current_view == "weekly") {
+                    cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                    cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                    weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                    weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                <%#set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);%>
+                }
+                else {
+                    console.log("Invalid View!!");
+                }
             },
         });
     });
-    series = {"weekly":[{
-        name: 'Weekly Forecast',
-        <%#color: '#FF33CC',%>
-        type: 'line',
-        yAxis: 0,
-        data: response.weekly_revenue
-    },{
-        name: 'Weekly Margin',
-        <%#color: '#0033CC',%>
-        type: 'line',
-        yAxis: 0,
-        data: response.weekly_margin
-    },{
-        name: 'Sales Last Year',
-        color: '#8B2500',
-        type: 'line',
-        yAxis: 0,
-        data: response.weekly_last_year_revenue
-    },
-    {
-        name: 'Weekly Target Revenue',
-        <%#color: '#003333',%>
-        type: 'line',
-        yAxis: 0,
-        data: response.weekly_target_revenue
 
-    }],
-    "cumulative" : [{
-        name: 'Target Sale for Period',
-        color: '#89A54E',
-        type: 'line',
-        yAxis: 0,
-        data: [response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue,response.sum_target_revenue]
-    },{
-        name: 'Sales Last Year',
-        color: '#8B2500',
-        type: 'line',
-        yAxis: 0,
-        data: response.cumulative_last_year_revenue
-    },{
-        name: 'Margin',
-        color: '#CC0033',
-        type: 'line',
-        yAxis: 0,
-        data: response.cumulative_weekly_margin
-    },{
-        name: 'Forecast',
-        color: '#A54E89',
-        type: 'line',
-        yAxis: 0,
-        data: response.cumulative_weekly_revenue
 
-    }]
-    };
+    set_inventory_data = function (positions, chart_type) {
+        chart_type.create_or_replace("Inventory", positions);
+    }
+    function inventory_chart_object(inventory_positions) {
+        return { name:'Inventory', type:'column', yAxis:0, data:weekly_view_chart.inventory_chart_object(inventory_positions)};
+    }
 
-    draw_custom_chart(series[current_view]);
-    convert_day_to_date = function(day){
+
+    convert_day_to_date = function (day) {
         date1 = new Date(response.start_of_year);
-        date_epoch = ( date1.setDate(date1.getDate() + day -1));
+        date_epoch = ( date1.setDate(date1.getDate() + day - 1));
         return date_epoch
     };
-    convert_to_date_format = function(date_epoch, format){
+    convert_to_date_format = function (date_epoch, format) {
         return date_epoch.format(format);
     };
-    set_inventory_data = function(positions){
-      create_or_replace("Inventory",positions);
-    }
 
-    create_or_replace = function(name,value){
-      value_chart = find_chart(name);
-      if(value_chart) {
-        value_chart.setData(value);
-        chart.redraw();
-      }
-      else{
-        chart.addSeries({data: value, name: name, type: "line", yAxis: 0, dashStyle: 'Dash',});
-      }
-    }
-
-    find_chart = function(name){
-      for (index in chart.series) {
-        if(chart.series[index].name == name)
-          return chart.series[index]
-      }
-    }
-
-    function weekly_view(){
+    function weekly_view() {
         current_view = "weekly";
-        draw_custom_chart(series["weekly"]);
+        weekly_view_chart.draw();
+
     }
-    function cumulative_view(){
+
+    function cumulative_view() {
         current_view = "cumulative";
-        draw_custom_chart(series["cumulative"]);
+        cumulative_view_chart.draw();
 
     }
-    function weekly_cumulative_view(){
-        current_view = "weekly_cumulative";
-        draw_custom_chart(series["cumulative"].concat(series["weekly"]));
+
+    complete_series = default_series.concat(series["weekly"]);
+    for (index in complete_series) {
+        weekly_view_chart.add_series(complete_series[index]);
+    }
+    complete_series = default_series.concat(series["cumulative"]);
+    for (index in complete_series) {
+        cumulative_view_chart.add_series(complete_series[index]);
     }
 
-    function draw_custom_chart(additional_series){
-        chart_options = {
-            chart: {
-                renderTo: 'container',
-                zoomType: 'xy'
-            },
-            title: {
-                text: 'Promotion Simulator'
-            },
-            xAxis: [{
-                categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value;
-                    },
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: '<%= Spree::Config[:currency] %>',
-                    style: {
-                        color: '#89A54E'
-                    }
-                }
-            }
-            ],
-            tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.x +': '+ this.y +' '+ '<%= Spree::Config[:currency] %>';
-                }
-            },
-            legend: {
-                layout: 'horizontal',
-                align: 'left',
-                x: 120,
-                verticalAlign: 'top',
-                y: 25,
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
-            series: []
-        };
-        inventory_data_with_color_code = [];
-        inventory_positions = response.inventory_positions
-        INVENTORY_THRESHOLD = 50 * 8.1;
-        for(i=0;i<inventory_positions.length;i++){
-            data_object = {}
-            data_object["y"] = inventory_positions[i];
-            if(inventory_positions[i] < INVENTORY_THRESHOLD)
-                data_object["color"] = '#FF0000';
-            else
-                data_object["color"] = '#3B5998';
-
-            inventory_data_with_color_code.push(data_object)
-        }
-        inventory_object = {
-            name: 'Inventory',
-            type: 'column',
-            yAxis: 0,
-            data: inventory_data_with_color_code
-
-        };
-
-        chart_options.series.push(inventory_object)
-        chart_options.series = chart_options.series.concat(additional_series)
-        chart = new Highcharts.Chart(chart_options);
-
-    }
-    $('#weekly_view').click(weekly_view);
-    $('#cumulative_view').click(cumulative_view);
-    $('#weekly_cumulative_view').click(weekly_cumulative_view);
+    weekly_view();
 
 });
-$(function() {
-    $( "#from" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        minDate: start_date,
-        altField: "#alternate_from",
-        dateFormat: "yy-mm-dd",
-        onClose: function( selectedDate ) {
-            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+
+$(function () {
+    $("#from").datepicker({
+        defaultDate:"+1w",
+        changeMonth:true,
+        numberOfMonths:1,
+        minDate:start_date,
+        altField:"#alternate_from",
+        dateFormat:"yy-mm-dd",
+        onClose:function (selectedDate) {
+            $("#to").datepicker("option", "minDate", selectedDate);
         }
     });
-    $( "#to" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        minDate: start_date,
-        altField: "#alternate_to",
-        dateFormat: "yy-mm-dd",
-        onClose: function( selectedDate ) {
-            $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+    $("#to").datepicker({
+        defaultDate:"+1w",
+        changeMonth:true,
+        numberOfMonths:1,
+        minDate:start_date,
+        altField:"#alternate_to",
+        dateFormat:"yy-mm-dd",
+        onClose:function (selectedDate) {
+            $("#from").datepicker("option", "maxDate", selectedDate);
         }
     });
 });

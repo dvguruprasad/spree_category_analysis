@@ -33,7 +33,7 @@ module Spree
                     revenue_change = distribution["total_revenue"] - distribution["last_period_revenue"]
                     profit_change = ((profit- profit_last_period)/profit_last_period.to_f * 100).round(2)
                     p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
-                    AssortmentReport.new(child_id,distribution["total_revenue"],label,'#' + color_value, distribution["total_target_revenue"],profit, revenue_change, profit_change, distribution["total_units"])
+                    AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), profit_change.round(2), distribution["total_units"])
                 end
             end
 
