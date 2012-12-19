@@ -9,10 +9,26 @@ $(document).ready(function() {
 				startFlag = 1;
 			} else {				
 				parent.addClass("date-end");
+        index = parent.text();
 				parent.prevUntil(".date-start").addClass("date-sel");
-				startFlag = 0;
+        promotion_input = document.createElement('div')
+
+        promotion_percentage_label = document.createElement('label');
+        promotion_percentage = document.createElement('input');
+        promotion_percentage.id = "promotion_percentage"+index;
+
+        promotion_type_label = document.createElement('label');
+        promotion_type = document.createElement('input');
+        promotion_type.id = "promotion_type"+index;
+
+        promotion_input.appendChild(promotion_percentage_label);
+        promotion_input.appendChild(promotion_percentage);
+        promotion_input.appendChild(promotion_type_label);
+        promotion_input.appendChild(promotion_type);
+
+        $(this).append(promotion_input);
+        startFlag = 0;
 			}
 		}
-      		
     });
 });

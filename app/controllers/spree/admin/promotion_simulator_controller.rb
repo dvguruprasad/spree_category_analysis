@@ -40,14 +40,6 @@ module Spree
 
 
         params[:promo_data].each do|promo_data|
-          p "##############"
-          p params[:promo_data]["0"]
-
-          p "*******"
-          p promo_data
-
-          p "*******"
-          p promo_data[1]
 
 
         @jsonrep = percentage_promotion(product, product_id, promo_data[1], date_of_forecast).to_json
