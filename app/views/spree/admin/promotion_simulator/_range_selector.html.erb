@@ -1,0 +1,12 @@
+<%= javascript_include_tag 'admin/script' %>
+<link rel="stylesheet" href="/assets/admin/style.css"/>
+<link rel="stylesheet" href="/assets/admin/css3mixin.css"/>
+<div class="range-sel-box">
+  <ul>
+    <% for i in 0..41 %>
+    <li><a href="javascript:void(0);"  class="date" "></a><div class="slider_date"><%=i%></div></li>
+        <% end %>
+</ul>
+</div>
+
+
