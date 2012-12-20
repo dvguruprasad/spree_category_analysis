@@ -11,15 +11,18 @@ $(document).ready(function() {
 				parent.addClass("date-end");
         index = parent.text();
 				parent.prevUntil(".date-start").addClass("date-sel");
+               
         promotion_input = document.createElement('div')
 
         promotion_percentage_label = document.createElement('label');
         promotion_percentage = document.createElement('input');
         promotion_percentage.id = "promotion_percentage"+index;
+        promotion_percentage.class = "promotion_percentage";
 
         promotion_type_label = document.createElement('label');
         promotion_type = document.createElement('input');
         promotion_type.id = "promotion_type"+index;
+        promotion_type.class = "promotion_type";
 
         promotion_input.appendChild(promotion_percentage_label);
         promotion_input.appendChild(promotion_percentage);
