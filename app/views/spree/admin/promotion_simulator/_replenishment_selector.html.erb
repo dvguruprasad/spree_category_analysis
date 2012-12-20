@@ -1,0 +1,8 @@
+<link rel="stylesheet" href="/assets/admin/style.css"/>
+<link rel="stylesheet" href="/assets/admin/css3mixin.css"/>
+<div class="replenishment-select-box">
+        <% for i in 0..5 %>
+            <input class="spinner" type="number" min="0" max="1000" step="50" data-week='<%= i %>' name="<%= "replenishment_week_" + i.to_s %>" value=0 />
+    <% end %>
+</div>
+<%= javascript_include_tag 'admin/replenishments' %>
