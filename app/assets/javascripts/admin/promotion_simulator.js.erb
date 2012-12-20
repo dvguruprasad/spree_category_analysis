@@ -12,63 +12,63 @@ $(function () {
     date_date = '17-01-14';
     series = {"weekly":[
         {
-            name:'Weekly Forecast',
-            <%#color: '#FF33CC',%>
-            type:'line',
-            yAxis:0,
-            data:response.weekly_revenue
-        },
-        {
-            name:'Weekly Margin',
-            <%#color: '#0033CC',%>
-            type:'line',
-            yAxis:0,
-            data:response.weekly_margin
-        },
-        {
-            name:'Sales Last Year',
-            color:'#8B2500',
-            type:'line',
-            yAxis:0,
-            data:response.weekly_last_year_revenue
-        },
-        {
-            name:'Weekly Target Revenue',
-            <%#color: '#003333',%>
-            type:'line',
-            yAxis:0,
-            data:response.weekly_target_revenue
+        name:'Weekly Forecast',
+        <%#color: '#FF33CC',%>
+        type:'line',
+        yAxis:0,
+        data:response.weekly_revenue
+    },
+    {
+        name:'Weekly Margin',
+        <%#color: '#0033CC',%>
+        type:'line',
+        yAxis:0,
+        data:response.weekly_margin
+    },
+    {
+        name:'Sales Last Year',
+        color:'#8B2500',
+        type:'line',
+        yAxis:0,
+        data:response.weekly_last_year_revenue
+    },
+    {
+        name:'Weekly Target Revenue',
+        <%#color: '#003333',%>
+        type:'line',
+        yAxis:0,
+        data:response.weekly_target_revenue
 
-        }
+    }
     ],
-        "cumulative":[
-            {
-                name:'Target Sale for Period',
-                color:'#89A54E',
-                type:'line',
-                yAxis:0,
-                data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
-            },
-            {
-                name:'Sales Last Year',
-                color:'#8B2500',
-                type:'line',
-                yAxis:0,
-                data:response.cumulative_last_year_revenue
-            },
-            {
-                name:'Margin',
-                color:'#CC0033',
-                type:'line',
-                yAxis:0,
-                data:response.cumulative_weekly_margin
-            },
-            {
-                name:'Forecast',
-                color:'#A54E89',
-                type:'line',
-                yAxis:0,
-                data:response.cumulative_weekly_revenue
+    "cumulative":[
+        {
+        name:'Target Sale for Period',
+        color:'#89A54E',
+        type:'line',
+        yAxis:0,
+        data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
+    },
+    {
+        name:'Sales Last Year',
+        color:'#8B2500',
+        type:'line',
+        yAxis:0,
+        data:response.cumulative_last_year_revenue
+    },
+    {
+        name:'Margin',
+        color:'#CC0033',
+        type:'line',
+        yAxis:0,
+        data:response.cumulative_weekly_margin
+    },
+    {
+        name:'Forecast',
+        color:'#A54E89',
+        type:'line',
+        yAxis:0,
+        data:response.cumulative_weekly_revenue
 
     }]
     };
@@ -81,37 +81,42 @@ $(function () {
     $('#cumulative_view').click(cumulative_view);
     $("#simulate").click(function(){
 
-      var promotion_data=[];
-      var h = $("#slider").children();
-      h.each(function(index, value) {
-        start_class = h[index].className=="date-start";
-        end_class = h[index].className=="date-end";
-        if(start_class)
-          {
-           date_data = {};
-           start_date = h[index].textContent;
-           date_data.start_date = get_date(start_date);
-          }
-        else if(end_class)
-          {
-            end_date= h[index].textContent;
-            console.log("end_date" + end_date);
-            date_data.end_date = get_date(end_date);
-            promotion_type = $("#promotion_type"+end_date).val();
-            date_data.promotion_type = promotion_type ;
-            promotion_percentage =  $("#promotion_percentage"+end_date).val();
-            date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage);
-            promotion_data.push(date_data);
-          }
-      });
-            console.log(promotion_data);
-
-            var send_data = {
+        var promotion_data=[];
+        var h = $("#slider").children();
+        h.each(function(index, value) {
+            start_class = h[index].className=="date-start";
+            end_class = h[index].className=="date-end";
+            if(start_class)
+                {
+                    date_data = {};
+                    start_date = h[index].textContent;
+                    date_data.start_date = get_date(start_date);
+                }
+                else if(end_class)
+                    {
+                        end_date= h[index].textContent;
+                        console.log("end_date" + end_date);
+                        date_data.end_date = get_date(end_date);
+                        promotion_type = $("#promotion_type"+end_date).val();
+                        date_data.promotion_type = promotion_type ;
+                        promotion_percentage =  $("#promotion_percentage"+end_date).val();
+                        date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage);
+                        promotion_data.push(date_data);
+                    }
+        });
+        var replenishment = [];
+        slider_replenishments = $('.replenishment-select-box').children();
+        for(i in slider_replenishments){
+            replenishment.push(slider_replenishments[i].value);
+        }
+        console.log(promotion_data);
+        var send_data = {
             forecast_date: response.date_of_forecast,
             product_id: response.product_id,
-            promotion_data: promotion_data
+            promotion_data: promotion_data,
+            replenishment: replenishment
         };
-console.log(send_data);
+        console.log(send_data);
 
         $.ajax({
             url: "/admin/promotion_simulator/simulate/",
@@ -150,26 +155,26 @@ console.log(send_data);
     }
 
     get_date = function(day){
-      var a = convert_day_to_date(day, response.date_of_forecast);
-      b = new Date(a);
-      c = b.format("yy-mm-dd");
-      return c;
+        var a = convert_day_to_date(day, response.date_of_forecast);
+        b = new Date(a);
+        c = b.format("yy-mm-dd");
+        return c;
     }
 
     convert_day_to_date = function(day, start_date){
-      date1 = new Date(start_date);
-      e = date1.getDate();
-      y = parseInt(e) + parseInt(day);
-      g = date1.setDate(y);
-      return g;
+        date1 = new Date(start_date);
+        e = date1.getDate();
+        y = parseInt(e) + parseInt(day);
+        g = date1.setDate(y);
+        return g;
     };
 
     get_promotion_percentage = function(type,value){
-      if(type=="P")
-        return value;
-      else if(type=="Q"){
-        return 50;
-      }
+        if(type=="P")
+            return value;
+        else if(type=="Q"){
+            return 50;
+        }
     };
 
     function weekly_view(){
