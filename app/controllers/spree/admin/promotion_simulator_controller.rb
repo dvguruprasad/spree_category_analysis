@@ -33,8 +33,6 @@ module Spree
 
       def simulate
         return "{}" if params[:promotion_data].nil?
-        p "promotion_data"
-        p params[:promotion_data]
         product_id = params[:product_id]
         product = Product.find_by_id(product_id)
         date_of_forecast = Date.parse(params[:forecast_date])
@@ -45,7 +43,6 @@ module Spree
         params[:promotion_data].each do|promotion_data|
           @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
           simulated_inventory_positions = @simulation_response.simulated_inventory_positions
-
           inventory_positions.each_with_index do |pos,index|
             pos = simulated_inventory_positions[index]
           end
