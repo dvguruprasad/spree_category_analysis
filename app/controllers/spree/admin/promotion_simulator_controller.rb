@@ -32,31 +32,41 @@ module Spree
       end
 
       def simulate
-        return "{}" if params[:promo_data].nil?
+        return "{}" if params[:promotion_data].nil?
+        p "promotion_data"
+        p params[:promotion_data]
         product_id = params[:product_id]
         product = Product.find_by_id(product_id)
         date_of_forecast = Date.parse(params[:forecast_date])
         return "{}" if product.nil?
+        weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
+        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
 
+        params[:promotion_data].each do|promotion_data|
+          @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
+          simulated_inventory_positions = @simulation_response.simulated_inventory_positions
 
-        params[:promo_data].each do|promo_data|
+          inventory_positions.each_with_index do |pos,index|
+            pos = simulated_inventory_positions[index]
+          end
 
+          simulated_sales = @simulation_response.weekly_simulated_revenue
+          simulated_units = @simulation_response.sales_units
 
-        @jsonrep = percentage_promotion(product, product_id, promo_data[1], date_of_forecast).to_json
+          weekly_sales.each_with_index do |sale,index|
+            sale.revenue = simulated_sales[index]
+            sale.sales_units = simulated_units[index]
+          end
         end
 
-
-        respond_with(@jsonrep)
+        @jsonres = @simulation_response.to_json
+        respond_with(@jsonres)
       end
 
-      def percentage_promotion(product, product_id, promo_data, date_of_forecast)
-
-        start_date = Date.parse(promo_data[:start_date])
-        end_date = Date.parse(promo_data[:end_date])
-
-
-        weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
-        create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promo_data)
+      def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
+        start_date = Date.parse(promotion_data[1][:start_date])
+        end_date = Date.parse(promotion_data[1][:end_date])
+        create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
       end
 
 
@@ -112,10 +122,10 @@ module Spree
         PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_revenue, weekly_last_year_revenue, from_date, stats_report)
       end
 
-      def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data_for_percentage)
-        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
+      def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions)
         simulated_sales= SimulatedSales.simulated_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_data_for_percentage, inventory_positions)
 
+        weekly_simulated_sales_units = simulated_sales.map { |s| s.sales_units }
         weekly_simulated_revenue = simulated_sales.map { |s| s.revenue }
         cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
         weekly_simulated_margin = simulated_sales.map { |s| s.margin }
@@ -123,7 +133,7 @@ module Spree
         simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
 
         stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales)
-        SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions)
+        SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
       end
 
       def new_simulated_chart_data(quantity_chart, percentage_chart)

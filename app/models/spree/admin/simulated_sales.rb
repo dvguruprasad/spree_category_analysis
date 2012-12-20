@@ -10,8 +10,8 @@ module Spree
       end
 
       def self.simulated_sales(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
-        promotion_type = promotion_data[:promotion_type]
-        promotion_percentage = promotion_data[:promotion_percentage].to_f
+        promotion_type = promotion_data[1][:promotion_type]
+        promotion_percentage = promotion_data[1][:promotion_percentage].to_f
         days_from_forecast_to_start_date = (start_date - date_of_forecast)
         days_from_forecast_to_end_date = (end_date - date_of_forecast )
 

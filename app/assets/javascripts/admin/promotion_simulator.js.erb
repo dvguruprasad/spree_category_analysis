@@ -81,7 +81,7 @@ $(function () {
     $('#cumulative_view').click(cumulative_view);
     $("#simulate").click(function(){
 
-      var date_ranges=[];
+      var promotion_data=[];
       var h = $("#slider").children();
       h.each(function(index, value) {
         start_class = h[index].className=="date-start";
@@ -90,36 +90,28 @@ $(function () {
           {
            date_data = {};
            start_date = h[index].textContent;
-           n = get_date(start_date);
-           alert(n);
-           date_data.start_date = n;
+           date_data.start_date = get_date(start_date);
           }
         else if(end_class)
           {
             end_date= h[index].textContent;
-            d = get_date(end_date);
-            date_data.end_date = d;
-            alert(d);
+            console.log("end_date" + end_date);
+            date_data.end_date = get_date(end_date);
             promotion_type = $("#promotion_type"+end_date).val();
             date_data.promotion_type = promotion_type ;
             promotion_percentage =  $("#promotion_percentage"+end_date).val();
             date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage);
-            date_ranges.push(date_data);
-            console.log(date_data);
+            promotion_data.push(date_data);
           }
       });
+            console.log(promotion_data);
 
             var send_data = {
             forecast_date: response.date_of_forecast,
             product_id: response.product_id,
-            promotion_data: {
-                start_date:start_date,
-                end_date: end_date,
-                promotion_type: "P",
-                promotion_percentage:10
-            }
+            promotion_data: promotion_data
         };
-
+console.log(send_data);
 
         $.ajax({
             url: "/admin/promotion_simulator/simulate/",
@@ -158,25 +150,26 @@ $(function () {
     }
 
     get_date = function(day){
-       var a = convert_day_to_date(day, response.date_of_forecast);
-       convert_to_date_format(a,"yy-mm-dd");
-
+      var a = convert_day_to_date(day, response.date_of_forecast);
+      b = new Date(a);
+      c = b.format("yy-mm-dd");
+      return c;
     }
 
     convert_day_to_date = function(day, start_date){
-        date1 = new Date(response.date_of_forecast);
-        date_epoch = ( date1.setDate(date1.getDate() + day -1));
-        return date_epoch
+      date1 = new Date(start_date);
+      e = date1.getDate();
+      y = parseInt(e) + parseInt(day);
+      g = date1.setDate(y);
+      return g;
     };
+
     get_promotion_percentage = function(type,value){
       if(type=="P")
         return value;
       else if(type=="Q"){
         return 50;
       }
-    };
-    convert_to_date_format = function(date_epoch, format){
-        new Date(date_epoch).format(format);
     };
 
     function weekly_view(){
