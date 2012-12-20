@@ -38,7 +38,8 @@ module Spree
         date_of_forecast = Date.parse(params[:forecast_date])
         return "{}" if product.nil?
         weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
-        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
+        replenishments = params[:replenishment].collect{|x| x.to_i}
+        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales,replenishments).map { |p| p.closing_position }
 
         params[:promotion_data].each do|promotion_data|
           @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)

@@ -112,9 +112,10 @@ var ReportChart = function(view) {
         console.log(this.chart_options);
         this.chart = new Highcharts.Chart(this.chart_options);
     };
+
     <%#this.draw_chart = function(additional_series, chart_options) {%>
-        <%#chart_options = (typeof chart_options === "undefined") ? this.chart_options : chart_options;%>
-        <%#this.series = chart_options.series = additional_series;%>
-        <%#this.chart = new Highcharts.Chart(chart_options);%>
-    <%#};%>
+            <%#chart_options = (typeof chart_options === "undefined") ? this.chart_options : chart_options;%>
+            <%#this.series = chart_options.series = additional_series;%>
+            <%#this.chart = new Highcharts.Chart(chart_options);%>
+            <%#};%>
 };
