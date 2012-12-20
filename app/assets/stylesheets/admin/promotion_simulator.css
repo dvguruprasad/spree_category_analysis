@@ -34,11 +34,3 @@ ul#cumulative-graph-stats li em {
     padding: 4px 12px;
 }
 
-#range_selector{
-    float: right;
-    padding-right: 10%;
-}
-
-.slider_date {
-    display: none;
-}

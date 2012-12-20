@@ -1,0 +1,33 @@
+#range_selector{
+    float: right;
+    padding-right: 10%;
+}
+
+.slider_date {
+    display: none;
+}
+#week1{
+   float: left;
+   margin-left: 67px
+}
+
+#week2{
+   float: left;
+   margin-left: 67px
+}
+#week3{
+   float: left;
+   margin-left: 67px
+}
+#week4{
+   float: left;
+   margin-left: 67px
+}
+#week5{
+   float: left;
+   margin-left: 67px
+}
+#week6{
+   float: left;
+   margin-left: 67px
+}

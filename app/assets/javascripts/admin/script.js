@@ -9,28 +9,14 @@ $(document).ready(function() {
 				startFlag = 1;
 			} else {				
 				parent.addClass("date-end");
-        index = parent.text();
-				parent.prevUntil(".date-start").addClass("date-sel");
-               
-        promotion_input = document.createElement('div')
+                startFlag = 0;
+                index = parent.text();
 
-        promotion_percentage_label = document.createElement('label');
-        promotion_percentage = document.createElement('input');
-        promotion_percentage.id = "promotion_percentage"+index;
-        promotion_percentage.class = "promotion_percentage";
-
-        promotion_type_label = document.createElement('label');
-        promotion_type = document.createElement('input');
-        promotion_type.id = "promotion_type"+index;
-        promotion_type.class = "promotion_type";
-
-        promotion_input.appendChild(promotion_percentage_label);
-        promotion_input.appendChild(promotion_percentage);
-        promotion_input.appendChild(promotion_type_label);
-        promotion_input.appendChild(promotion_type);
-
-        $(this).append(promotion_input);
-        startFlag = 0;
+      				parent.prevUntil(".date-start").addClass("date-sel");
+               html = $("#promotion-type").html();
+                $('.promo-bubble').wrap('<div class=bubble_' +index+' />');
+                console.log(parent);
+                parent.append(html);
 			}
 		}
     });

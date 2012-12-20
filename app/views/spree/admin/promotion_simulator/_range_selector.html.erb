@@ -1,12 +1,37 @@
 <%= javascript_include_tag 'admin/script' %>
+<link rel="stylesheet" href="/assets/admin/week_slider"/>
+
 <link rel="stylesheet" href="/assets/admin/style.css"/>
 <link rel="stylesheet" href="/assets/admin/css3mixin.css"/>
 <div class="range-sel-box">
+  <%  counter= 0 %>
   <ul id="slider">
-    <% for i in 0..41 %>
-    <li><a href="javascript:void(0);"  class="date" "></a><div class="slider_date"><%=i%></div></li>
-        <% end %>
-</ul>
-</div>
+    <% (0..42).each_slice(7).with_index do |slice,index|%>
+          <% slice.each do |i| %>
 
+           <% if(counter%7==0)  %>
+            <li class="week-start wk_<%=counter/7%>">
+              <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+            </li>
+           <%  else  %>
+            <li>
+              <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+            </li>
+           <% end %>
+            <% counter = counter+1 %>
+      <% end %>
+    <% end%>
+    </ul>
+</div>
+<div id="promotion-type" style="display:none">
+  <div class="promo-bubble">
+      <form class="promo-form" >
+<p class="prom-p">
+         <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
+         <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
+       </p>
+        <input type="text" id="PromotionPercentage" class="txt-box"/>
+      </form>
+    </div>
+</div>
 
