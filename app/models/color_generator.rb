@@ -1,12 +1,36 @@
 class ColorGenerator
     WHITE = 'ffffff'
+    #def self.generate(actual, target)
+    #delta = actual - target
+    #percent_delta = delta/target.to_f
+    #if delta > 0
+    #return green_shade(percent_delta)
+    #else
+    #return red_shade(percent_delta.abs)
+    #end
+    #end
+    COLORS = ['FF0303', 'A35200', 'FF8080','FFFFFF', '80FF80', '5E8C00','058633']
     def self.generate(actual, target)
         delta = actual - target
-        percent_delta = delta/target.to_f
+        percent_delta = (delta/target.to_f).abs
         if delta > 0
-            return green_shade(percent_delta)
+            if percent_delta.in? 0..0.33
+                return COLORS[4]
+            elsif percent_delta.in? 0.33..0.66
+                return COLORS[5]
+            else
+                return COLORS[6]
+            end
+        elsif delta == 0
+            return COLORS[2]
         else
-            return red_shade(percent_delta.abs)
+            if percent_delta.in? 0..0.33
+                return COLORS[2]
+            elsif percent_delta.in? 0.33..0.66
+                return COLORS[1]
+            else
+                return COLORS[0]
+            end
         end
     end
 
@@ -26,6 +50,12 @@ class ColorGenerator
 
     def self.to_hex(int_list)
         int_list.map { |b| sprintf("%02X",b) }.join
+    end
+    def self.legend
+        descrption = ["Critical", "Requires More Attention", "Below Target", "Meets Targets", "Above Target", "Doing Good", "Most Profitable"]
+        legend = {}
+        COLORS.each_with_index{|color,index| legend[descrption[index]] = '#' + color}
+        legend
     end
 
 end
