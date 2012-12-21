@@ -68,10 +68,10 @@
 
             var sales_span = '<li><span>' +'<label> Total Revenue: </label>' +node.value +''+'</span></li>';
             var total_target_span = '<li><span>' +'<label> Total Target: </label>' + node.total_target +''+'</span></li>';
-            var revenue_diff_span = '<li><span>' +'<label> Revenue Difference: </label>' + Math.round((node.total_target - node.value)*100)/100 +''+'</span></li>';
+            var revenue_diff_span = '<li><span>' +'<label> Target Variation: </label>' + Math.round((node.total_target - node.value)*100)/100 +''+'</span></li>';
             var profit_span = '<li><span>' +'<label> Profit: </label>' + node.profit +''+'</span></li>';
-            var profit_change_span = '<li><span>' +'<label> Profit Change: </label>' + node.profit_change +''+'</span></li>';
-            var revenue_change_span = '<li><span>' +'<label> Revenue Change: </label>' + node.revenue_change +''+'</span></li>';
+            var profit_change_span = '<li><span>' +'<label> Profit Last Year: </label>' + node.profit_change +''+'</span></li>';
+            var revenue_change_span = '<li><span>' +'<label> Revenue Last Year: </label>' + node.revenue_change +''+'</span></li>';
             var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</div>';
 
 

@@ -30,8 +30,8 @@ module Spree
                     profit = distribution["total_revenue"] - distribution["total_cost"]
                     profit_last_period = distribution["last_period_revenue"] - distribution["last_period_cost"]
                     label, @type = create_label_for_child(child_id)
-                    revenue_change = distribution["total_revenue"] - distribution["last_period_revenue"]
-                    profit_change = ((profit- profit_last_period)/profit_last_period.to_f * 100).round(2)
+                    revenue_change = distribution["last_period_revenue"]
+                    profit_change = distribution["previous_period_profit"]
                     @legend = ColorGenerator.legend
                     p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
                     AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), profit_change.round(2), distribution["total_units"])
