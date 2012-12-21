@@ -6,32 +6,42 @@
 <div class="range-sel-box">
   <%  counter= 0 %>
   <ul id="slider">
-    <% (0..42).each_slice(7).with_index do |slice,index|%>
-          <% slice.each do |i| %>
+    <% (0..41).each_slice(7).with_index do |slice,index|%>
+      <% slice.each do |i| %>
 
-           <% if(counter%7==0)  %>
-            <li class="week-start wk_<%=counter/7%>">
-              <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-            </li>
-           <%  else  %>
-            <li>
-              <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-            </li>
-           <% end %>
-            <% counter = counter+1 %>
-      <% end %>
-    <% end%>
-    </ul>
-</div>
-<div id="promotion-type" style="display:none">
-  <div class="promo-bubble">
+      <% if(counter%7==0)  %>
+      <li class="week-start wk_<%=counter/7%>">
+    <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+      <div class="promo-bubble" id="bubble<%=i%>" style="display:none">
       <form class="promo-form" >
-<p class="prom-p">
-         <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
-         <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
-       </p>
+        <p class="prom-p">
+        <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
+        <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
+        </p>
         <input type="text" id="PromotionPercentage" class="txt-box"/>
       </form>
     </div>
+
+    </li>
+  <%  else  %>
+      <li>
+    <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+  <div class="promo-bubble" id="bubble<%=i%>" style="display:none">
+      <form class="promo-form" >
+        <p class="prom-p">
+        <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
+        <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
+        </p>
+        <input type="text" id="promotion_percentage<%=i%>" class="txt-box"/>
+      </form>
+    </div>
+
+    </li>
+    <% end %>
+    <% counter = counter+1 %>
+  <% end %>
+  <% end%>
+  </ul>
 </div>
+
 
