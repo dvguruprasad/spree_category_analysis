@@ -230,12 +230,13 @@
                         style: {
                             width: 250,
                             border: {
-                                width: 5,
-                                radius: 10,
+                                width: 3,
+                                radius: 5,
                                 color: '#262626'
                             },
                             padding: 10,
-                            textAlign: 'center',
+                            textAlign: 'left',
+                            //tip: 'auto',
                             // Give it a speech bubble tip with automatic corner detection
                             background: children[i].style.backgroundColor,// Style it according to the preset 'cream' style
                             color: '#000000'

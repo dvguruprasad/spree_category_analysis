@@ -1,22 +1,23 @@
-<div id='treemap-div'></div>
-<%= stylesheet_link_tag "admin/assortment_map" %>
-<%= javascript_include_tag 'admin/tooltip' %>
-<%= javascript_include_tag 'admin/jquery-treemap' %>
-<%= javascript_include_tag "admin/assortment_map" %>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
-<% if !@data.nil? %>
+<div class="assortment_map_container">
+    <%= render 'legend'%>
+    <div id='treemap-div'></div>
+    <%= stylesheet_link_tag "admin/assortment_map" %>
+    <%= javascript_include_tag 'admin/tooltip' %>
+    <%= javascript_include_tag 'admin/jquery-treemap' %>
+    <%= javascript_include_tag "admin/assortment_map" %>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+    <% if !@data.nil? %>
 
-    <script>
+        <script>
 var list = <%= raw @data %>;
 var type = '<%= @type %>';
 var year_to_date = <%= @year_to_date%>;
-render_tree_map(list, type);
-</script>
+    </script>
 <% else %>
-    <div id='404' style="font-size:40px">TAXON NOT FOUND</div>
+    <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
 <% end %>
-<script>
+    <script>
 window.onload = $("#weekly_range").buttonset();
-</script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-
+    </script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+</div>
