@@ -25,7 +25,7 @@ module Spree
             cost_per_unit = sale.cost/sale.sales_units
 
             daily_sale_units = sale.sales_units/NUMBER_OF_DAYS_IN_WEEK.round
-            daily_promotional_sale_units = daily_sale_units * (1+ (0.0015625 * ((promotion_percentage) ** 2)))
+            daily_promotional_sale_units = daily_sale_units * (1+ (0.003125 * ((promotion_percentage) ** 2)))
 
             promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage,daily_sale_units, daily_promotional_sale_units)
             number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)

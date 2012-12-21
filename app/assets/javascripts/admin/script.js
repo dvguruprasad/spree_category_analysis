@@ -14,7 +14,6 @@ $(document).ready(function() {
         index = text.substring(0,2).trim();
 
         parent.prevUntil(".date-start").addClass("date-sel");
-        alert("#bubble"+index);
         $(".promo-bubble").toggle(false);
         $("#bubble"+index).toggle();
         prev_id = index;
