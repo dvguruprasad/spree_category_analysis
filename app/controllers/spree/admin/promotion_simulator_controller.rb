@@ -56,7 +56,6 @@ module Spree
             sale.sales_units = simulated_units[index]
           end
         end
-
         @jsonres = @simulation_response.to_json
         respond_with(@jsonres)
       end

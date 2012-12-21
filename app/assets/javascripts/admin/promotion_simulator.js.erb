@@ -85,8 +85,9 @@ $(function () {
         var date_data = {};
         var h = $("#slider").children();
         h.each(function(index, value) {
-            start_class = h[index].className=="date-start";
-            end_class = h[index].className=="date-end";
+            elmt = h[index];
+            start_class = elmt.classList.contains("date-start");
+            end_class = elmt.classList.contains("date-end");
             if(start_class)
                 {
                     date_data = {};
