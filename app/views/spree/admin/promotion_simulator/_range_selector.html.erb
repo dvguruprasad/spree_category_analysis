@@ -15,10 +15,10 @@
       <div class="promo-bubble" id="bubble<%=i%>" style="display:none">
       <form class="promo-form" >
         <p class="prom-p">
-        <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
-        <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
+        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" > Quantity</label>
+        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" > Percentage</label>
         </p>
-        <input type="text" id="PromotionPercentage" class="txt-box"/>
+        <input type="text" id="promotion_percentage<%=i%>" class="txt-box"/>
       </form>
     </div>
 
@@ -29,10 +29,10 @@
   <div class="promo-bubble" id="bubble<%=i%>" style="display:none">
       <form class="promo-form" >
         <p class="prom-p">
-        <label><input id="quantity" class="promo-radio" type="radio" name="group1" value="Quantity"  onclick="alert('hello');" > Quantity</label>
-        <label><input id="percentage" class="promo-radio" type="radio" name="group1" value="Percentage"  onclick="alert('hi');"> Percentage</label>
+        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" > Quantity</label>
+        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage"> Percentage</label>
         </p>
-        <input type="text" id="promotion_percentage<%=i%>" class="txt-box"/>
+        <input type="text" id="promotion_percentage<%=i%>" class="txt-box"></input>
       </form>
     </div>
 

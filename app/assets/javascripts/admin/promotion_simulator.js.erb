@@ -82,6 +82,7 @@ $(function () {
     $("#simulate").click(function(){
 
         var promotion_data=[];
+        var date_data = {};
         var h = $("#slider").children();
         h.each(function(index, value) {
             start_class = h[index].className=="date-start";
@@ -94,12 +95,11 @@ $(function () {
                 }
                 else if(end_class)
                     {
-                        end_date= h[index].textContent;
-                        console.log("end_date" + end_date);
+                        end_date= h[index].textContent.trim().substring(0,2).trim();
                         date_data.end_date = get_date(end_date);
-                        promotion_type = $("#promotion_type"+end_date).val();
+                        promotion_type = $("#percentage"+end_date)[0].checked ? "P" : "Q";
                         date_data.promotion_type = promotion_type ;
-                        promotion_percentage =  $("#promotion_percentage"+end_date).val();
+                        promotion_percentage =  $("#promotion_percentage"+end_date)[0].value;
                         date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage);
                         promotion_data.push(date_data);
                     }
