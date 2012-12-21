@@ -60,14 +60,16 @@
 
 
 <% if @mode == "simulation" %>
-    <div id="simulator">
-
+    <div id="simulator" class="simulator-container">
+         <h2>Promotion date range :</h2>
         <%= render :partial => 'range_selector' %>
-        Replenishments
+        <h2>Replenishments :</h2>
         <%= render :partial => 'replenishment_selector' %>
 
-    <div id="simulate-button">    <a id="simulate" > Simulate </a> </div>
-</div>
+        <div id="simulate-button">
+          <a id="simulate"> Simulate </a>
+       </div>
+    </div>
 <% end %>
 <script>
 window.onload = show_sales_statistics(response.stats_report);

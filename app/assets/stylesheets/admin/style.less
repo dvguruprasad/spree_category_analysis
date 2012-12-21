@@ -5,25 +5,43 @@
 @date-sel: 	red;
 @week-start:#02A202;
 
+.center() {
+  width: 1200px;
+  margin: 0 auto;
+}
+.chart-container, .simulator-container  {
+  .center();
+}
+.replenishment-select-box {
+  margin-bottom: 10px;
+  .spinner {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+}
 .range-sel-box {
-	margin: 50px auto;
-    width: 1200px;
-	padding: 0 0 100px 0;
+	margin: 0 0 15px 0;
+	padding: 15px;
+    height: 80px;
+    background: #eee;
+   .rounded(5px);
+
 	ul {
 		list-style: none;
-		margin: 0 0 0 30px;
+		margin: 0 0 0 25px;
 		padding: 0;
 
 	}
 	li{
-		display: inline-block;	
-		padding: 4px;
+		display: inline-block;
         position: relative;
 	}
 	.date {
 		display: inline-block;			
 		width: 8px;
 		height: 8px;
+        margin: 3px;
+        border: 2px solid #fff;
 		background-color: @date;
 		.box-sizing('content-box');
 		.rounded(100%);
@@ -33,21 +51,22 @@
 	}
     .week-start {
       .date {
-        margin-left: 60px;
+        margin-left: 45px;
       }
     }
 
 	.date-sel {
-        .opacity(0.8);
+
         .w0 {background-color: @date-sel;}
-        .w1 {background-color: spin(@date-sel,10);}
-        .w2 {background-color: spin(@date-sel,20);}
-        .w3 {background-color: spin(@date-sel,30);}
-        .w4 {background-color: spin(@date-sel,40);}
-        .w5 {background-color: spin(@date-sel,50);}
+        .w1 {background-color: spin(@date-sel,20);}
+        .w2 {background-color: spin(@date-sel,40);}
+        .w3 {background-color: spin(@date-sel,60);}
+        .w4 {background-color: spin(@date-sel,80);}
+        .w5 {background-color: spin(@date-sel,100);}
 		.date {
+            .opacity(0.8);
 			&:hover {
-				.opacity(1);
+			   .opacity(1);
 				cursor: default;
 			}
 		}
@@ -55,15 +74,23 @@
 	.date-start, .date-end {
 		.date-sel;
 		.date {
-			.scale(1.6);
+			border-color: #111;
 		}
 	}
 
 }
-
+.btn {
+  background: #89DCFC;
+  border-radius: 3px;
+  padding: 5px 10px;
+  display: inline-block;
+}
+.pull-right {
+  float: right;
+}
 .promo-bubble {
   position: absolute;
-  bottom: -90px;
+  bottom: -63px;
   left: -90px;
   padding: 10px;
   width: 180px;
@@ -98,8 +125,3 @@
   }
 }
 
-.chart-container {
-  width: 1200px;
-  height: 500px;
-  margin: 0 auto;
-}
