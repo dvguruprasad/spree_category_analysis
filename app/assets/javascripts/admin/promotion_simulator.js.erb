@@ -80,7 +80,7 @@ $(function () {
     $('#weekly_view').click(weekly_view);
     $('#cumulative_view').click(cumulative_view);
     $("#simulate").click(function(){
-
+        $(".promo-bubble").toggle(false);
         var promotion_data=[];
         var date_data = {};
         var h = $("#slider").children();
