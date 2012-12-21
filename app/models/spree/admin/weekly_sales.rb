@@ -41,13 +41,22 @@ module Spree
                 last_period_revenue = revenue_previous_period(start_time, end_time ,parent_id, child_id )
                 last_period_cost = cost_previous_period(start_time, end_time ,parent_id, child_id )
 
+                last_period_profit = profit_for_last_year(weekly_sales_for_child)
                 {"total_revenue" => total_revenue, "total_target_revenue" => total_target_revenue,"start_time" => start_time, "end_time" => end_time, 
                  "number_of_weeks" => number_of_weeks, "total_cost" => total_cost, "last_period_revenue" => last_period_revenue,
-                 "last_period_cost" => last_period_cost, "total_units" => total_units, "target_units" => target_units}
+                 "last_period_cost" => last_period_cost, "total_units" => total_units, "target_units" => target_units, "previous_period_profit" => last_period_profit }
             end
 
             def self.total_revenue(weekly_sales)
                 weekly_sales.inject(0) { |sum, pws| sum + pws.revenue }
+            end
+
+            def self.profit_for_last_year(weekly_sales)
+                revenue = revenue_previous_period(start_time(weekly_sales), end_time(weekly_sales), weekly_sales.first.parent_id, weekly_sales.first.child_id)
+                cost = cost_previous_period(start_time(weekly_sales), end_time(weekly_sales), weekly_sales.first.parent_id, weekly_sales.first.child_id)
+
+                previous_period_profit = revenue - cost
+                previous_period_profit
             end
 
             def self.total_target_revenue(weekly_sales)
@@ -82,10 +91,8 @@ module Spree
             end
 
             def self.growth_over_previous_period(weekly_sales, current_period_profit)
-                revenue = revenue_previous_period(start_time(weekly_sales), end_time(weekly_sales), weekly_sales.first.parent_id, weekly_sales.first.child_id)
-                cost = cost_previous_period(start_time(weekly_sales), end_time(weekly_sales), weekly_sales.first.parent_id, weekly_sales.first.child_id)
+              previous_period_profit = profit_for_last_year(weekly_sales)
 
-                previous_period_profit = revenue - cost
                 growth = (previous_period_profit - current_period_profit)/previous_period_profit.to_f * 100
             end
 

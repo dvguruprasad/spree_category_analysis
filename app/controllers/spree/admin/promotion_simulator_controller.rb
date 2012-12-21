@@ -32,16 +32,19 @@ module Spree
       end
 
       def simulate
-        return "{}" if params[:promotion_data].nil?
+        prom_data = params[:promotion_data]
+        prom_data = [{}] if params[:promotion_data].nil?
         product_id = params[:product_id]
         product = Product.find_by_id(product_id)
         date_of_forecast = Date.parse(params[:forecast_date])
         return "{}" if product.nil?
         weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
         replenishments = params[:replenishment].collect{|x| x.to_i}
+        
         inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales,replenishments).map { |p| p.closing_position }
 
-        params[:promotion_data].each do|promotion_data|
+
+        prom_data.each do|promotion_data|
           @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
           simulated_inventory_positions = @simulation_response.simulated_inventory_positions
           inventory_positions.each_with_index do |pos,index|
@@ -61,8 +64,16 @@ module Spree
       end
 
       def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
-        start_date = Date.parse(promotion_data[1][:start_date])
-        end_date = Date.parse(promotion_data[1][:end_date])
+        if(promotion_data[1].nil? || promotion_data[1][:start_date].nil?)
+          start_date =   Date.today
+        else
+          start_date =   Date.parse(promotion_data[1][:start_date])
+        end
+        if(promotion_data[1].nil? || promotion_data[1][:end_date].nil?)
+          end_date =   Date.today
+        else
+          end_date =   Date.parse(promotion_data[1][:end_date])
+        end
         create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
       end
 
