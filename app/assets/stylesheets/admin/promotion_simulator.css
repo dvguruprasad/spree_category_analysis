@@ -34,3 +34,8 @@ ul#cumulative-graph-stats li em {
     padding: 4px 12px;
 }
 
+#back-forward a:hover{
+    color: #ff0000;
+}
+
+

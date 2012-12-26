@@ -32,3 +32,19 @@ $(document).ready(function() {
   });
 });
 
+$('.clear-btn').click(function(){
+  $('.spinner').each(function(){
+      $(this).html("");
+  });
+    clear_promotion_data();
+});
+
+var clear_promotion_data = function(){
+    for(i=0;i<6;i++){
+        $('#p_percentage'+i).innerHTML("");
+        $('#p_quantity'+i).innerHTML("");
+    }
+}
+
+
+

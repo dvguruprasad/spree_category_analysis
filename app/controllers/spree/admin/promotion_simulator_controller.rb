@@ -47,8 +47,8 @@ module Spree
         prom_data.each do|promotion_data|
           @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
           simulated_inventory_positions = @simulation_response.simulated_inventory_positions
-          inventory_positions.each_with_index do |pos,index|
-            pos = simulated_inventory_positions[index]
+          inventory_positions.each_with_index do |inventory_position,index|
+          inventory_position = simulated_inventory_positions[index]
           end
 
           simulated_sales = @simulation_response.weekly_simulated_revenue

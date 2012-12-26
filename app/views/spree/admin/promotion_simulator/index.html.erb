@@ -2,58 +2,58 @@
     <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
 <%= javascript_include_tag 'admin/simulator' %>
-<%= javascript_include_tag "admin/promotion_simulator" %> 
-<%= javascript_include_tag "admin/vendor/date_format" %> 
+<%= javascript_include_tag "admin/promotion_simulator" %>
+<%= javascript_include_tag "admin/vendor/date_format" %>
 <%= javascript_include_tag "admin/promotion_periodic_stats" %>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 <link rel="stylesheet" href="/assets/admin/promotion_simulator.css"/>
 
 <div id="button-container">
-    <div id="back-forward" style="float:left">
-        <a id="past-report" href="/admin/promotion_simulator/product/<%= @back%>">&lt</a>
-        <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward%>">&gt</a>
-    </div>
-    <div id="toggle" style="float:right">
-        <a id="weekly_view">Weekly</a>
-        <a id="cumulative_view">Cumulative</a>
-    </div>
+  <div id="back-forward" style="float:left">
+    <a id="past-report" href="/admin/promotion_simulator/product/<%= @back %>">&lt</a>
+    <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
+  </div>
+  <div id="toggle" style="float:right">
+    <a id="weekly_view">Weekly</a>
+    <a id="cumulative_view">Cumulative</a>
+  </div>
 </div>
 
 
 <div class="cumulative-graph-stats-wrapper">
-    <ul id="cumulative-graph-stats">
+  <ul id="cumulative-graph-stats">
 
-        <li>
-        <strong>Total revenue</strong>
-        <em id="total_sales" value = "total_sales"></em>
-        <br/>
-        <strong>Target revenue</strong><em id="target_sales"></em>
-        </li>
-        <li>
-        <strong>Target Variation</strong><em id="revenue_variation"></em>
-        <br/>
-        <strong>Gross Profit</strong><em id="gross_profit"></em>
-        </li>
-        <li>
-        <strong>Growth(in %)</strong><em id="growth"></em>
-        <br/>
-          <strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>
-        </li>
-        <li>
-        <strong>Simulated Revenue</strong><em id="simulated_revenue"></em>
-        <br/>
-        <strong>Simulated Profit</strong><em id="simulated_profit"></em>
-        </li>
-        <li>
-        <strong>Revenue Change</strong><em id="revenue_change"></em>
-        <br/>
-        <strong>Profit Change</strong><em id="profit_change"></em>
-        </li>
-        <!--<li>-->
-          <!--<strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>-->
-        <!--</li>-->
+    <li>
+      <strong>Total revenue</strong>
+      <em id="total_sales" value="total_sales"></em>
+      <br/>
+      <strong>Target revenue</strong><em id="target_sales"></em>
+    </li>
+    <li>
+      <strong>Target Variation</strong><em id="revenue_variation"></em>
+      <br/>
+      <strong>Gross Profit</strong><em id="gross_profit"></em>
+    </li>
+    <li>
+      <strong>Growth(in %)</strong><em id="growth"></em>
+      <br/>
+      <strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>
+    </li>
+    <li>
+      <strong>Simulated Revenue</strong><em id="simulated_revenue"></em>
+      <br/>
+      <strong>Simulated Profit</strong><em id="simulated_profit"></em>
+    </li>
+    <li>
+      <strong>Revenue Change</strong><em id="revenue_change"></em>
+      <br/>
+      <strong>Profit Change</strong><em id="profit_change"></em>
+    </li>
+    <!--<li>-->
+    <!--<strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>-->
+    <!--</li>-->
 
-    </ul>
+  </ul>
 </div>
 
 
@@ -64,16 +64,16 @@
 
 <% if @mode == "simulation" %>
     <div id="simulator" class="simulator-container">
-         <h2>Promotion date range :</h2>
-        <%= render :partial => 'range_selector' %>
-        <h2>Replenishments :</h2>
-        <%= render :partial => 'replenishment_selector' %>
+      <h2>Replenishments :</h2>
+      <%= render :partial => 'replenishment_selector' %>
+      <h2>Promotion date range :</h2>
+      <%= render :partial => 'range_selector' %>
 
-        <div id="simulate-button">
-          <a id="simulate"> Simulate </a>
-       </div>
+      <div id="simulate-button">
+        <a id="simulate"> Simulate </a>
+      </div>
     </div>
 <% end %>
 <script>
-window.onload = show_sales_statistics(response.stats_report);
+    window.onload = show_sales_statistics(response.stats_report);
 </script>

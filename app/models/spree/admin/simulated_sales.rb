@@ -1,12 +1,13 @@
 module Spree
   module Admin
     class SimulatedSales
-      attr_accessor :revenue, :sales_units, :margin, :inventory_position 
-      def initialize(revenue,sales_units,margin,inventory_position)
+      attr_accessor :revenue, :sales_units, :margin, :inventory_position, :cost_of_simulated_sale_units
+      def initialize(revenue,sales_units,margin,inventory_position, cost_of_simulated_sale_units)
         @revenue = revenue
         @sales_units = sales_units 
         @margin = margin
         @inventory_position = inventory_position
+        @cost_of_simulated_sale_units = cost_of_simulated_sale_units
       end
 
       def self.simulated_sales(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
@@ -38,14 +39,16 @@ module Spree
             simulated_promotional_revenue = revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
             simulated_promotional_sales_units = number_of_promotional_days * daily_promotional_sale_units + (NUMBER_OF_DAYS_IN_WEEK-number_of_promotional_days) *daily_sale_units
             simulated_promotional_margin = margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sale_revenue,cost_per_unit,daily_promotional_sale_units,daily_sale_units)
-
+            cost_of_simulated_sales_units = daily_promotional_sale_units * cost_per_unit
           else
             simulated_promotional_revenue = sale.revenue
             simulated_promotional_sales_units = sale.sales_units
             simulated_promotional_margin = sale.revenue - sale.cost
+            cost_of_simulated_sales_units  = sale.cost
           end
           inventory_position = inventory_positions[index] - simulated_promotional_revenue + sale.revenue
-          sim_sales = SimulatedSales.new(simulated_promotional_revenue,simulated_promotional_sales_units, simulated_promotional_margin,inventory_position)
+          sim_sales = SimulatedSales.new(simulated_promotional_revenue,simulated_promotional_sales_units,
+                                         simulated_promotional_margin,inventory_position, cost_of_simulated_sales_units)
 
           simulated_promotional_sales << sim_sales
         end
