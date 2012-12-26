@@ -35,8 +35,6 @@
       <strong>Gross Profit</strong><em id="gross_profit"></em>
     </li>
     <li>
-      <strong>Growth(in %)</strong><em id="growth"></em>
-      <br/>
       <strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>
     </li>
     <li>
@@ -49,9 +47,7 @@
       <br/>
       <strong>Profit Change</strong><em id="profit_change"></em>
     </li>
-    <!--<li>-->
-    <!--<strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>-->
-    <!--</li>-->
+
 
   </ul>
 </div>
@@ -64,7 +60,7 @@
 
 <% if @mode == "simulation" %>
     <div id="simulator" class="simulator-container">
-      <h2>Replenishments :</h2>
+      <h3>Replenishments :</h3>
       <%= render :partial => 'replenishment_selector' %>
       <h2>Promotion date range :</h2>
       <%= render :partial => 'range_selector' %>

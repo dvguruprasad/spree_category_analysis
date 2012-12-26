@@ -12,11 +12,11 @@ var show_sales_statistics = function(report){
     var simulated_profit = document.getElementById('simulated_profit');
     var simulated_revenue_variation = document.getElementById('simulated_revenue_variation');
 
-    total_sales.innerHTML = report.total_sales+"$"
+    total_sales.innerHTML = report.total_sales+"$"+" "+"("+report.growth_over_previous_period +"%"+")"
     target_sales.innerHTML = report.target_sales+"$"
     reveneue_variation.innerHTML = report.revenue_variation+"$"
     gross_profit.innerHTML = report.gross_profit
-    growth.innerHTML = report.growth_over_previous_period
+//    growth.innerHTML = report.growth_over_previous_period
 //    stock_out_of_date.innerHTML = "25/01/2013"
     revenue_change.innerHTML = report.promotional_revenue_change+"$"
     profit_change.innerHTML = report.promotional_profit_change+"$"
