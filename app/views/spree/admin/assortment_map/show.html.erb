@@ -8,18 +8,22 @@
 <%= javascript_include_tag 'admin/tooltip' %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
 <%= javascript_include_tag "admin/assortment_map" %>
-<div class="assortment_map_container">
-    <%= render 'legend'%>
-    <div id='treemap-div'></div>
-    <% if !@data.nil? %>
-
-        <div id="weekly_range">
+<% if !@data.nil? %>
+    <div class="assortment_map_container">
+        <div style="float:left">
+            <h1 style="color:#262626"><%= @taxon.name %></h1>
+            <h2 style="color:#262626"> <label>In the period:</label> <%= @time_start%> to <%= @time_end%></h2>
+    </div>
+    <div class="link-container weekly_range" >
         <a href='-1'>Last Week</a>
         <a href='-4'>Last Four Weeks</a>
         <a href='<%= @year_to_date%>'>Year to Date</a>
         <a href='1'>Next Week</a>
         <a href='4'>Next Four Weeks</a>
     </div>
+
+    <%= render 'legend'%>
+    <div id='treemap-div'></div>
 </div>
 
 <% else %>

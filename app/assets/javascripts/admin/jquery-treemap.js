@@ -66,13 +66,13 @@
 
 
 
-            var sales_span = '<li><span>' +'<label> Total Revenue: </label>' +node.value +''+'</span></li>';
-            var total_target_span = '<li><span>' +'<label> Total Target: </label>' + node.total_target +''+'</span></li>';
-            var revenue_diff_span = '<li><span>' +'<label> Target Variation: </label>' + Math.round((node.total_target - node.value)*100)/100 +''+'</span></li>';
-            var profit_span = '<li><span>' +'<label> Profit: </label>' + node.profit +''+'</span></li>';
-            var profit_change_span = '<li><span>' +'<label> Profit Last Year: </label>' + node.profit_change +''+'</span></li>';
-            var revenue_change_span = '<li><span>' +'<label> Revenue Last Year: </label>' + node.revenue_change +''+'</span></li>';
-            var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</div>';
+            var sales_span = '<li><span>' +'<label> Total Revenue: </label>' +node.value +' <b>USD</b>'+'</span></li>';
+            var total_target_span = '<li><span>' +'<label> Total Target: </label>' + node.total_target +' <b>USD</b>'+'</span></li>';
+            var revenue_diff_span = '<li><span>' +'<label> Target Variation: </label>' + Math.round((node.total_target - node.value)*100)/100 +' <b>USD</b>'+'</span></li>';
+            var profit_span = '<li><span>' +'<label> Profit: </label>' + node.profit +' <b>USD</b>'+'</span></li>';
+            var profit_change_span = '<li><span>' +'<label> Profit Last Year: </label>' + node.profit_change +' <b>%</b>'+'</span></li>';
+            var revenue_change_span = '<li><span>' +'<label> Revenue Last Year: </label>' + node.revenue_change +' <b>USD</b>'+'</span></li>';
+            var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none"><ul style="padding:0px;list-style-type:none">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</ul></div>';
 
 
             var $box = $('<div id=' + node.id + '></div>');
@@ -230,16 +230,19 @@
                         style: {
                             width: 250,
                             border: {
-                                width: 3,
-                                radius: 5,
+                                width: 2,
+                                radius: 3,
                                 color: '#262626'
                             },
-                            padding: 10,
+                            tip: { // Now an object instead of a string
+                                corner: 'bottomLeft', // We declare our corner within the object using the corner sub-option
+                            },
+                            padding: 5,
                             textAlign: 'left',
                             //tip: 'auto',
                             // Give it a speech bubble tip with automatic corner detection
-                            background: children[i].style.backgroundColor,// Style it according to the preset 'cream' style
-                            color: '#000000'
+                            background: '#262626',//children[i].style.backgroundColor,// Style it according to the preset 'cream' style
+                            color: '#E5E2CF'
                         },
                         position: {
                             corner: {

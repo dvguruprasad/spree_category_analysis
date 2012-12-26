@@ -33,6 +33,9 @@ module Spree
                     revenue_change = distribution["last_period_revenue"]
                     profit_change = distribution["previous_period_profit"]
                     @legend = ColorGenerator.legend
+                    week = params[:week].to_i
+                    @time_start = @taxon.from_date(week)
+                    @time_end = @taxon.to_date(week)
                     p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
                     AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), profit_change.round(2), distribution["total_units"])
                 end

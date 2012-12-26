@@ -1,37 +1,11 @@
-<style type='text/css'>
-  .legend-title {
-    text-align: left;
-    margin-bottom: 5px;
-    font-weight: bold;
-    }
-  .legend-scale ul {
-    margin: 0;
-    margin-bottom: 5px;
-    padding: 0;
-    float: left;
-    list-style: none;
-    }
-  .legend-scale ul li {
-    list-style: none;
-    margin-left: 0;
-    line-height: 18px;
-    margin-bottom: 2px;
-    }
-   ul.legend-labels li span {
-    display: block;
-    margin-right: 5px;
-    margin-left: 0;
-    border: 3px solid #999;
-    border-radius: 3px;
-    }
-   </style>
-   <div class='legend-scale' style="float:left">
-       <label class="legend-title">Legend<label>
-    <ul class='legend-labels'>
-        <%if !@legend.nil?%>
-            <% @legend.each do |description,color|%>
-            <li ><span style="background:<%= color %>;"><%= description %></span></li>
-    <% end %>
-    <% end %>
-    </ul>
-</div>
+<div class='legend-scale' >
+    <label class="legend-title">Legend<label>
+            <p style="width:300px">The color scheme is based on the percentage difference in the total revenue with respect to target revenue for the given period</p>
+            <ul class='legend-labels'>
+                <%if !@legend.nil?%>
+                    <% @legend.each do |description,color|%>
+                    <li ><span style="background:<%= color %>;"><%= description %></span></li>
+            <% end %>
+            <% end %>
+            </ul>
+        </div>

@@ -52,7 +52,7 @@ class ColorGenerator
         int_list.map { |b| sprintf("%02X",b) }.join
     end
     def self.legend
-        descrption = ["Critical", "Requires More Attention", "Below Target", "Meets Targets", "Above Target", "Doing Good", "Most Profitable"]
+        descrption = ["< -66%", "-66% to -33%", "-33% to 0%", "0%", "0% to 33%", "33% to 66%", "66% >"]
         legend = {}
         COLORS.each_with_index{|color,index| legend[descrption[index]] = '#' + color}
         legend

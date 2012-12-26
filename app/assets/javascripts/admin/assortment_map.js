@@ -15,5 +15,4 @@ $(function(){
         });
     }
     render_tree_map(list,type);
-    $('#weekly_range').buttonset();
 });
