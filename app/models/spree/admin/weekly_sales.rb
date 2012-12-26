@@ -134,7 +134,9 @@ module Spree
                 sales = find(:all, :conditions => ["child_id = ? and week_start_date >= ?", product.id, week_start_date_last_year]).take(number_of_weeks)
                 sales
             end
-
+            def self.category_taxon_id
+                CATEGORY_TAXON_ID
+            end
         end
     end
 end
