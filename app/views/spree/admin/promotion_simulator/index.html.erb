@@ -1,7 +1,7 @@
 <% content_for :head do %>
     <%= javascript_tag "var response = #{@jsonrep}" %>;
 <% end %>
-<%= javascript_include_tag 'admin/simulator' %>
+<%= javascript_include_tag "admin/simulator" %>
 <%= javascript_include_tag "admin/promotion_simulator" %>
 <%= javascript_include_tag "admin/vendor/date_format" %>
 <%= javascript_include_tag "admin/promotion_periodic_stats" %>
