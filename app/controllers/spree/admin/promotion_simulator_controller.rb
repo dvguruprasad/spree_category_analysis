@@ -18,6 +18,7 @@ module Spree
         @mode = "simulation"
         if params.has_key?(:year)
           param_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+          date_of_forecast = param_date
           if param_date.past?
             @jsonrep = report_past_sales(product, param_date)
             @mode = "report"

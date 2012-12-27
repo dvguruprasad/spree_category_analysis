@@ -12,7 +12,14 @@ var ReportChart = function(view) {
             text: 'Promotion Simulator'
         },
         xAxis: [{
-            categories: ['Current Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']}],
+            labels: {
+              formatter:  function(){
+                boo = response.date_of_forecast ? get_legend_date(response.date_of_forecast, this.value) : get_legend_date(response.from_date, this.value);
+                return boo;
+              }
+
+            },
+            categories: ['0', '1', '2', '3', '4', '5']}],
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
@@ -49,6 +56,14 @@ var ReportChart = function(view) {
     this.add_series = function(series_object){
         this.series[this.current_view].push(series_object);
     };
+    var get_legend_date = function(week_start_date,week){
+      var from_date = new Date(week_start_date);
+      var to_date = new Date(week_start_date);
+      var legend_start_date = from_date.setDate(from_date.getDate()+(week*7));
+      var legend_end_date = to_date.setDate(new Date(legend_start_date).getDate()+6);
+      return new Date(legend_start_date).format("dd-mmm-yyyy")+ " to " + new Date(legend_end_date).format("dd-mmm-yyyy");
+
+            };
     this.setDataFor = function(index, data){
         this.series[this.current_view][index].data = data;
     };
@@ -113,9 +128,4 @@ var ReportChart = function(view) {
         this.chart = new Highcharts.Chart(this.chart_options);
     };
 
-    <%#this.draw_chart = function(additional_series, chart_options) {%>
-            <%#chart_options = (typeof chart_options === "undefined") ? this.chart_options : chart_options;%>
-            <%#this.series = chart_options.series = additional_series;%>
-            <%#this.chart = new Highcharts.Chart(chart_options);%>
-            <%#};%>
 };

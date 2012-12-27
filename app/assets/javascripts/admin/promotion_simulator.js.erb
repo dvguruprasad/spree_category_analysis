@@ -91,7 +91,7 @@ $(function () {
             if(start_class)
                 {
                     date_data = {};
-                    start_date = h[index].textContent;
+                    var start_date = h[index].textContent;
                     date_data.start_date = get_date(start_date);
                 }
                 else if(end_class)
@@ -206,27 +206,4 @@ $(function () {
 
 });
 
-$(function() {
-    $( "#from" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        minDate: start_date,
-        altField: "#alternate_from",
-        dateFormat: "yy-mm-dd",
-        onClose: function( selectedDate ) {
-            $( "#to" ).datepicker( "option", "minDate", selectedDate );
-        }
-    });
-    $( "#to" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        minDate: start_date,
-        altField: "#alternate_to",
-        dateFormat: "yy-mm-dd",
-        onClose: function( selectedDate ) {
-            $( "#from" ).datepicker( "option", "maxDate", selectedDate );
-        }
-    });
-});
+
