@@ -1,8 +1,8 @@
 module Spree
   module Admin
     NUMBER_OF_DAYS_IN_WEEK = 7
-    class PromotionSimulatorController < Spree::Admin::BaseController
       REPORTING_WINDOW = 6 #TODO USEFUL if there is flexibility in choosing the reporting window
+    class PromotionSimulatorController < Spree::Admin::BaseController
       respond_to :json, :html
       before_filter :validate_get, :only => [:index, :simulate]
 
@@ -87,6 +87,7 @@ module Spree
         @back = "#{product.id}/#{back_date.day}/#{back_date.month}/#{back_date.year}"
         @forward = "#{product.id}/#{forward_date.day}/#{forward_date.month}/#{forward_date.year}"
         weekly_sales = WeeklySales.sales_including_forecasts(product.id, date_of_forecast, REPORTING_WINDOW)
+        @replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast,REPORTING_WINDOW)
         create_forecast_chart_data(product, weekly_sales, date_of_forecast).to_json
       end
 
