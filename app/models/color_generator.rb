@@ -9,7 +9,7 @@ class ColorGenerator
     #return red_shade(percent_delta.abs)
     #end
     #end
-    COLORS = ['FF0303', 'A35200', 'FF8080','FFFFFF', '80FF80', '5E8C00','058633']
+    COLORS = ['E6550D', 'FDAE6B', 'FDD0A2','FFFFFF', 'A1D99B', '74C476','31A354']
     def self.generate(actual, target)
         delta = actual - target
         percent_delta = (delta/target.to_f).abs

@@ -10,16 +10,25 @@
 <%= javascript_include_tag "admin/assortment_map" %>
 <% if !@data.nil? %>
     <div class="assortment_map_container">
-        <div style="float:left">
-            <h1 style="color:#262626"><%= @taxon.name %></h1>
-            <h2 style="color:#262626"> <label>In the period:</label> <%= @time_start%> to <%= @time_end%></h2>
+    <div style="float:left">
+        <h1 style="color:#262626;line-height:0.5em"><%= @taxon.name %></h1>
+        <h3 style="color:#262626"> <label>In the period:</label> <%= @time_start%> to <%= @time_end%></h3>
+        <div class="link-container" >
+            <a href='/admin/assortment_map'> ^^ Home</a>
+            <% if @taxon.parent.id != Spree::Admin::WeeklySales.category_taxon_id %>
+                <a href='/admin/assortment_map/<%= @taxon.parent.id%>/<%= @year_to_date%>'> ^ <%= @taxon.parent.name%></a>
+        <% end %>
+        </div>
+
     </div>
-    <div class="link-container weekly_range" >
-        <a href='-1'>Last Week</a>
-        <a href='-4'>Last Four Weeks</a>
-        <a href='<%= @year_to_date%>'>Year to Date</a>
-        <a href='1'>Next Week</a>
-        <a href='4'>Next Four Weeks</a>
+    <div class="weekly_range">
+        <div class="link-container" >
+            <a href='-1'>Last Week</a>
+            <a href='-4'>Last Four Weeks</a>
+            <a href='<%= @year_to_date%>'>Year to Date</a>
+            <a href='1'>Next Week</a>
+            <a href='4'>Next Four Weeks</a>
+        </div>
     </div>
 
     <%= render 'legend'%>

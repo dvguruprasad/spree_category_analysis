@@ -66,13 +66,13 @@
 
 
 
-            var sales_span = '<li><span>' +'<label> Total Revenue: </label>' +node.value +' <b>USD</b>'+'</span></li>';
-            var total_target_span = '<li><span>' +'<label> Total Target: </label>' + node.total_target +' <b>USD</b>'+'</span></li>';
-            var revenue_diff_span = '<li><span>' +'<label> Target Variation: </label>' + Math.round((node.total_target - node.value)*100)/100 +' <b>USD</b>'+'</span></li>';
-            var profit_span = '<li><span>' +'<label> Profit: </label>' + node.profit +' <b>USD</b>'+'</span></li>';
-            var profit_change_span = '<li><span>' +'<label> Profit Last Year: </label>' + node.profit_change +' <b>%</b>'+'</span></li>';
-            var revenue_change_span = '<li><span>' +'<label> Revenue Last Year: </label>' + node.revenue_change +' <b>USD</b>'+'</span></li>';
-            var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none"><ul style="padding:0px;list-style-type:none">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</ul></div>';
+            var sales_span = '<li>' +'<p class="left-label"> Total Revenue: </p><p class="right-label">' +node.value +' USD'+'</p></li>';
+            var total_target_span = '<li>' +'<p class="left-label"> Total Target: </p><p class="right-label">' + node.total_target +' USD'+'</p></li>';
+            var revenue_diff_span = '<li>' +'<p class="left-label"> Target Variation: </p><p class="right-label">' + Math.round((node.total_target - node.value)*100)/100 +' USD'+'</p></li>';
+            var profit_span = '<li>' +'<p class="left-label"> Profit: </p><p class="right-label">' + node.profit +' USD'+'</p></li>';
+            var profit_change_span = '<li>' +'<p class="left-label"> Profit Last Year: </p><p class="right-label">' + node.profit_change +' %'+'</p></li>';
+            var revenue_change_span = '<li>' +'<p class="left-label"> Revenue Last Year: </p><p class="right-label">' + node.revenue_change +' USD'+'</p></li>';
+            var hoverDiv = '<div id="'+node.id+'hover"  class="tooltip" style="display:none"><ul class="tooltip-ul">' + sales_span + total_target_span + revenue_diff_span + revenue_change_span + profit_span + profit_change_span +'</ul></div>';
 
 
             var $box = $('<div id=' + node.id + '></div>');
@@ -228,7 +228,7 @@
                     $(id).qtip({
                         content:$(id+"hover").html(),
                         style: {
-                            width: 250,
+                            width: 270,
                             border: {
                                 width: 2,
                                 radius: 3,

@@ -1,6 +1,10 @@
 <div class="assortment_map_container">
-    <%= render 'legend'%>
+    <div style="float:left">
+        <h1 style="color:#262626;line-height:0.5em"><%= @taxon.name %></h1>
+        <h3 style="color:#262626"> <label>In the period:</label> <%= @time_start%> to <%= @time_end%></h3>
+    </div>
     <div id='treemap-div'></div>
+    <%= render 'legend'%>
     <%= stylesheet_link_tag "admin/assortment_map" %>
     <%= javascript_include_tag 'admin/tooltip' %>
     <%= javascript_include_tag 'admin/jquery-treemap' %>
@@ -14,10 +18,7 @@ var type = '<%= @type %>';
 var year_to_date = <%= @year_to_date%>;
     </script>
 <% else %>
-    <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
+        <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
 <% end %>
-    <script>
-window.onload = $("#weekly_range").buttonset();
-    </script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 </div>
