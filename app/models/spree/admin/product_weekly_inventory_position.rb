@@ -5,11 +5,11 @@ module Spree
 
             attr_accessible :product_id, :closing_position, :week_start_date
 
-            def self.inventory_positions(sales, replenishments=[])
-                replenishments = sales.length.times.collect{0} if replenishments.empty?
+            def self.inventory_positions(sales, replenishments)
+                product_id = sales.first.child_id
                 dates = sales.map{|sale| "'#{sale.week_start_date}'" }.join(",")
                 return [] if dates.empty?
-                inventory_positions = ProductWeeklyInventoryPosition.find(:all, :conditions => ["week_start_date in (#{dates})"])
+                inventory_positions = ProductWeeklyInventoryPosition.find(:all, :conditions => [" product_id = #{product_id} and week_start_date in (#{dates})"])
                 return inventory_positions if inventory_positions.count == sales.count
                 number_of_sales_left = sales.count - inventory_positions.count
 
@@ -23,8 +23,8 @@ module Spree
                 end
                 complete_list_of_inventory_positions = inventory_positions + remaining_inventory_positions
                 complete_list_of_inventory_positions.each_with_index do |item, index|
-                  sale = sales[index]
-                  item.closing_position = (item.closing_position + replenishments[index]) * sale.revenue/sale.sales_units
+                    sale = sales[index]
+                    item.closing_position = (item.closing_position + replenishments[index]) * sale.revenue/sale.sales_units
                 end
                 inventory_positions = inventory_positions.zip(replenishments).map {|zipped| zipped.inject(:+)} unless inventory_positions.length != replenishments
 

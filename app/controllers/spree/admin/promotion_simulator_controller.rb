@@ -107,7 +107,9 @@ module Spree
         cumulative_weekly_revenue = cumulative_revenue(weekly_sales)
         weekly_margin = weekly_margins(weekly_sales)
         cumulative_weekly_margin = cumulative_margin(weekly_margin)
-        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
+        replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast, REPORTING_WINDOW)
+        replenishments = weekly_sales.count.times.collect{0} if replenishments.empty?
+        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales, replenishments).map { |p| p.closing_position }
         last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
         weekly_last_year_revenue = revenue_numbers(last_year_sales)
         cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
@@ -124,7 +126,9 @@ module Spree
         cumulative_weekly_revenue = cumulative_revenue(weekly_sales)
         weekly_margin = weekly_margins(weekly_sales)
         cumulative_weekly_margin = cumulative_margin(weekly_margin)
-        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales).map { |p| p.closing_position }
+        replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast, REPORTING_WINDOW)
+        replenishments = weekly_sales.count.times.collect{0}
+        inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales, replenishments).map { |p| p.closing_position }
         last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
         cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
         weekly_last_year_revenue = revenue_numbers(last_year_sales)

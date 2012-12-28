@@ -37,5 +37,8 @@ ul#cumulative-graph-stats li em {
 #back-forward a:hover{
     color: #003DFF;
 }
+.clear-btn{
+    float:right;
+}
 
 
