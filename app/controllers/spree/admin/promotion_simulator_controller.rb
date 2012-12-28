@@ -145,9 +145,22 @@ module Spree
         weekly_simulated_margin = simulated_sales.map { |s| s.margin }
         cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
         simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
-
-        stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales)
+        stock_out_date = stock_out_date(simulated_inventory_positions, date_of_forecast)
+        stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date)
         SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
+      end
+
+      def stock_out_date(simulated_inventory_positions, date_of_forecast)
+        simulated_inventory_positions.each_with_index do |simulated_inventory_position, index|
+          if simulated_inventory_position < 0
+            for i in 1..7
+            incremental_inventories =  simulated_inventory_positions[index - 1] - ((simulated_inventory_positions[index - 1]-simulated_inventory_position)/7)*i
+              if incremental_inventories < 0
+                return date_of_forecast+index*7+i
+              end
+            end
+          end
+        end
       end
 
       def new_simulated_chart_data(quantity_chart, percentage_chart)
