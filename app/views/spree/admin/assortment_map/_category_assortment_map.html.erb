@@ -1,0 +1,21 @@
+<section>
+    <div id="categories">
+        <ul class="group">
+            <% for box in @data%>
+                <li style="background-color: <%= box.color%>">
+                <a href="assortment_map/<%=box.id %>/<%= @year_to_date %>">
+                <h2><%= box.label %></h2>
+                <ul class="util-bar group">
+                </ul>
+                <div class="pro-meter-wrapper">
+                    <div class="pro-meter group">
+                        <span class="down"></span>
+                        <em><%= box.profit_change %></em>
+                    </div>
+                </div>
+            </a>
+            </li>
+        <% end %>
+        </ul>
+    </div>
+</section>

@@ -1,0 +1,13 @@
+/*
+ *= require_self
+*/
+@import "admin/all/reset";
+@import "admin/all/base";
+@import "admin/all/layout";
+
+html {
+  body {
+    @import "admin/pages/categories";
+  }
+}
+
