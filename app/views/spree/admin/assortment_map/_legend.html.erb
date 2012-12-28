@@ -1,11 +1,12 @@
-<div class='legend-scale' >
-    <label class="legend-title">Legend<label>
-            <p style="width:200px;text-align:justify">The color scheme is based on the percentage difference in the total revenue with respect to target revenue for the given period</p>
-            <ul class='legend-labels'>
-                <%if !@legend.nil?%>
-                    <% @legend.each do |description,color|%>
-                    <li ><span style="background:<%= color %>;"><%= description %></span></li>
-            <% end %>
-            <% end %>
-            </ul>
-        </div>
+<div class='legend-scale'>
+  <label class="legend-title">Legend</label>
+    <p style="width:200px;text-align:justify">The color scheme is based on the percentage difference in the total
+      revenue with respect to target revenue for the given period</p>
+    <ul class='legend-labels'>
+      <% if !@legend.nil? %>
+          <% @legend.each do |description, color| %>
+              <li><span style="background:<%= color %>;"><%= description %></span></li>
+          <% end %>
+      <% end %>
+    </ul>
+</div>
