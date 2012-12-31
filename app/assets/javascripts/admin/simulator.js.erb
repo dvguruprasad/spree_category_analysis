@@ -86,7 +86,7 @@ var ReportChart = function(view) {
         value_chart = this.series[this.current_view][index]
         console.log(value_chart);
         if (value_chart) {
-            if(value_chart.name = "Inventory"){
+            if(value_chart.name == "Inventory"){
                 this.setDataFor(index, this.inventory_chart_object(value));
             }
             else{
