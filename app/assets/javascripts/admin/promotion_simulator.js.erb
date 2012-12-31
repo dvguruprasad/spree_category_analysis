@@ -77,74 +77,79 @@ $(function () {
     $('#weekly_view').click(weekly_view);
     $('#cumulative_view').click(cumulative_view);
     $("#simulate").click(function(){
-        $(".promo-bubble").toggle(false);
-        var promotion_data=[];
-        var date_data = {};
-        var h = $("#slider").children();
-        h.each(function(index, value) {
-            elmt = h[index];
-            start_class = elmt.classList.contains("date-start");
-            end_class = elmt.classList.contains("date-end");
-            if(start_class)
-                {
-                    date_data = {};
-                    var start_date = h[index].textContent;
-                    date_data.start_date = get_date(start_date);
-                }
-                else if(end_class)
+        if(startFlag == 0){
+            $(".promo-bubble").toggle(false);
+            var promotion_data=[];
+            var date_data = {};
+            var h = $("#slider").children();
+            h.each(function(index, value) {
+                elmt = h[index];
+                start_class = elmt.classList.contains("date-start");
+                end_class = elmt.classList.contains("date-end");
+                if(start_class)
                     {
-                        end_date= h[index].textContent.trim().substring(0,2).trim();
-                        date_data.end_date = get_date(end_date);
-                        promotion_type = $("#percentage"+end_date)[0].checked ? "P" : "Q";
-                        date_data.promotion_type = promotion_type ;
-                        promotion_percentage =  $("#promotion_percentage"+end_date)[0].value;
-                        promotion_buy =  $("#promotion_buy"+end_date)[0].value;
-                        promotion_get =  $("#promotion_get"+end_date)[0].value;
-                        date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage,promotion_buy,promotion_get);
-                        promotion_data.push(date_data);
+                        date_data = {};
+                        var start_date = h[index].textContent;
+                        date_data.start_date = get_date(start_date);
                     }
-        });
-        var replenishment = [];
-        slider_replenishments = $('.replenishment-select-box').children();
-        for(i in slider_replenishments){
-            replenishment.push(slider_replenishments[i].value);
-        }
-        console.log(promotion_data);
-        var send_data = {
-            forecast_date: response.date_of_forecast,
-            product_id: response.product_id,
-            promotion_data: promotion_data,
-            replenishment: replenishment
-        };
-        console.log(send_data);
-
-        $.ajax({
-            url: "/admin/promotion_simulator/simulate/",
-            dataType: 'json',
-            type: 'GET',
-            data: send_data,
-            success: function(response) {
-                show_sales_statistics(response.stats_report);
-                if(current_view == "cumulative"){
-                    weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
-                    weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-                    cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
-                    cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                    set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart);
-                }
-                else if(current_view == "weekly"){
-                    cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
-                    cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                    weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
-                    weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-                    set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);
-                }
-                else
-                    {
-                        console.log("Invalid View!!");
-                    }
+                    else if(end_class)
+                        {
+                            end_date= h[index].textContent.trim().substring(0,2).trim();
+                            date_data.end_date = get_date(end_date);
+                            promotion_type = $("#percentage"+end_date)[0].checked ? "P" : "Q";
+                            date_data.promotion_type = promotion_type ;
+                            promotion_percentage =  $("#promotion_percentage"+end_date)[0].value;
+                            promotion_buy =  $("#promotion_buy"+end_date)[0].value;
+                            promotion_get =  $("#promotion_get"+end_date)[0].value;
+                            date_data.promotion_percentage = get_promotion_percentage(promotion_type,promotion_percentage,promotion_buy,promotion_get);
+                            promotion_data.push(date_data);
+                        }
+            });
+            var replenishment = [];
+            slider_replenishments = $('.replenishment-select-box').children();
+            for(i in slider_replenishments){
+                replenishment.push(slider_replenishments[i].value);
             }
-        });
+            console.log(promotion_data);
+            var send_data = {
+                forecast_date: response.date_of_forecast,
+                product_id: response.product_id,
+                promotion_data: promotion_data,
+                replenishment: replenishment
+            };
+            console.log(send_data);
+
+            $.ajax({
+                url: "/admin/promotion_simulator/simulate/",
+                dataType: 'json',
+                type: 'GET',
+                data: send_data,
+                success: function(response) {
+                    show_sales_statistics(response.stats_report);
+                    if(current_view == "cumulative"){
+                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                        weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                        set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart);
+                    }
+                    else if(current_view == "weekly"){
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                        weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                        set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);
+                    }
+                    else
+                        {
+                            console.log("Invalid View!!");
+                        }
+                }
+            });
+        }
+        else{
+            alert("Incomplete simulation parameters: Select appropriate end date");
+        }
     });
 
     set_inventory_data = function(positions,chart_type){
@@ -170,11 +175,11 @@ $(function () {
     };
 
     get_promotion_percentage = function(type,value,buy_q,get_q)
-{
+    {
         if(type=="P")
             return value;
         else if(type=="Q"){
-          sum = parseInt(buy_q)+parseInt(get_q);
+            sum = parseInt(buy_q)+parseInt(get_q);
             return (get_q/sum)*100;
         }
     };
