@@ -1,0 +1,20 @@
+<div class="promo-bubble" id="bubble<%=i%>" style="display:none">
+    <form class="promo-form" id="promo<%=i%>">
+        <p class="prom-p">
+        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
+        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>)> Percentage</label>
+        </p>
+        <p id="p_percentage<%=i%>" style="display:none">
+        <label for="promotion_percentage<%=i%>"> Percentage
+            <input type="text" id="promotion_percentage<%=i%>" class="txt-box"/>
+        </label>
+        </p> <p id="p_quantity<%=i%>" style="display:none">
+        <label for="promotion_buy<%=i%>" > Buy
+            <input type="text" id="promotion_buy<%=i%>" class="txt-box"></input>
+        </label>
+        <label for="promotion_get<%=i%>" class="get-label" > Get free
+            <input type="text" id="promotion_get<%=i%>" class="txt-box"></input>
+        </label>
+        </p>
+    </form>
+</div>

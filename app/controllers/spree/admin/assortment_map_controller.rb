@@ -8,7 +8,7 @@ module Spree
                 weekly_aggregate_for_category = WeeklySales.generate_category_aggregates()
                 return if weekly_aggregate_for_category.nil? or weekly_aggregate_for_category.empty?
                 @data = create_chart_data(weekly_aggregate_for_category)
-                @year_to_date = Date.today.cweek * -1
+                @year_to_date = Date.parse('2012-12-24').cweek * -1
                 @time_start = @taxon.from_date(@year_to_date)
                 @time_end = @taxon.to_date(@year_to_date)
                 respond_with(@data.to_json)

@@ -15,17 +15,17 @@ Spree::Taxon.class_eval do
 
     def from_date(week_number)
         if week_number < 0
-            return Date.today + 7 * week_number
+            return Date.parse('2012-12-24') + 7 * week_number
         else
-            return Date.today
+            return Date.parse('2012-12-24')
         end
     end
 
     def to_date(week_number)
         if week_number < 0
-            return Date.today
+            return Date.parse('2012-12-24')
         else
-            return Date.today + 7 * week_number
+            return Date.parse('2012-12-24') + 7 * week_number
         end
     end
 end
