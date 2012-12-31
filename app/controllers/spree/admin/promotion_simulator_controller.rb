@@ -126,7 +126,7 @@ module Spree
         cumulative_weekly_revenue = cumulative_revenue(weekly_sales)
         weekly_margin = weekly_margins(weekly_sales)
         cumulative_weekly_margin = cumulative_margin(weekly_margin)
-        replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast, REPORTING_WINDOW)
+        replenishments = InventoryReplenishment.replenishments_for_period(product.id,from_date, REPORTING_WINDOW)
         replenishments = weekly_sales.count.times.collect{0}
         inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales, replenishments).map { |p| p.closing_position }
         last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)

@@ -5,15 +5,16 @@
 <%= javascript_include_tag "admin/promotion_simulator" %>
 <%= javascript_include_tag "admin/vendor/date_format" %>
 <%= javascript_include_tag "admin/promotion_periodic_stats" %>
+<%= stylesheet_link_tag "admin/common" %>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 <link rel="stylesheet" href="/assets/admin/promotion_simulator.css"/>
 
 <div id="button-container">
-  <div id="back-forward" style="float:left">
+  <div id="back-forward" class="link-container" style="float:left">
     <a id="past-report" href="/admin/promotion_simulator/product/<%= @back %>">&lt</a>
     <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
   </div>
-  <div id="toggle" style="float:right">
+  <div id="toggle" class="link-container" style="float:right">
     <a id="weekly_view">Weekly</a>
     <a id="cumulative_view">Cumulative</a>
   </div>
@@ -67,7 +68,8 @@
       <h2>Promotion date range :</h2>
       <%= render :partial => 'range_selector' %>
 
-      <div id="simulate-button">
+      <%#<div id="simulate-button">%>
+        <div class="link-container" >
         <a id="simulate"> Simulate </a>
       </div>
     </div>
