@@ -11,48 +11,7 @@ module Spree
       end
 
       def self.simulated_sales(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
-         if(promotion_data[1].nil? || promotion_data[1][:promotion_type].nil?)
-          promotion_type =  "P"
-          promotion_percentage = 0
-         else
-           promotion_type = promotion_data[1][:promotion_type]
-           promotion_percentage =  promotion_data[1][:promotion_percentage].to_f
-        end
-        days_from_forecast_to_start_date = (start_date - date_of_forecast)
-        days_from_forecast_to_end_date = (end_date - date_of_forecast )
-
-        start_week_number = (days_from_forecast_to_start_date/NUMBER_OF_DAYS_IN_WEEK).to_i
-        ending_week_number = (days_from_forecast_to_end_date/NUMBER_OF_DAYS_IN_WEEK).to_i
-
-        simulated_promotional_sales = []
-        sales_forecast.each_with_index do |sale, index|
-          if((start_week_number .. ending_week_number).include? index )
-            daily_sale_revenue = sale.revenue/NUMBER_OF_DAYS_IN_WEEK  
-            cost_per_unit = sale.cost/sale.sales_units
-
-            daily_sale_units = sale.sales_units/NUMBER_OF_DAYS_IN_WEEK.round
-            daily_promotional_sale_units = daily_sale_units * (1+ (0.003125 * ((promotion_percentage) ** 2)))
-
-            promotion_revenue = daily_revenue_with_promotion(daily_sale_revenue,promotion_percentage,daily_sale_units, daily_promotional_sale_units)
-            number_of_promotional_days = compute_promotional_days(start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
-
-            simulated_promotional_revenue = revenue_for_this_week(number_of_promotional_days,promotion_revenue, daily_sale_revenue) 
-            simulated_promotional_sales_units = number_of_promotional_days * daily_promotional_sale_units + (NUMBER_OF_DAYS_IN_WEEK-number_of_promotional_days) *daily_sale_units
-            simulated_promotional_margin = margin_for_this_week(promotion_revenue,number_of_promotional_days,daily_sale_revenue,cost_per_unit,daily_promotional_sale_units,daily_sale_units)
-            cost_of_simulated_sales_units = daily_promotional_sale_units * cost_per_unit
-          else
-            simulated_promotional_revenue = sale.revenue
-            simulated_promotional_sales_units = sale.sales_units
-            simulated_promotional_margin = sale.revenue - sale.cost
-            cost_of_simulated_sales_units  = sale.cost
-          end
-          inventory_position = inventory_positions[index] - simulated_promotional_revenue + sale.revenue
-          sim_sales = SimulatedSales.new(simulated_promotional_revenue,simulated_promotional_sales_units,
-                                         simulated_promotional_margin,inventory_position, cost_of_simulated_sales_units)
-
-          simulated_promotional_sales << sim_sales
-        end
-        simulated_promotional_sales
+        Spree::Admin::Calculator::PromotionCalculator.compute_promotional_saless(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
       end
 
       def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
