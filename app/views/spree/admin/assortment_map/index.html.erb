@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'admin/assortment/assortment' %>
+<%= stylesheet_link_tag 'admin/assortment_map/assortment_index' %>
 <div class="assortment_map_container">
   <div style="float:left">
     <h1 style="color:#262626;line-height:0.5em"><%= @taxon.name %></h1>
@@ -8,8 +8,7 @@
   <%#<div id='treemap-div'></div>%>
   <%= render 'category_assortment_map'%>
   <%= render 'legend' %>
-  <%= stylesheet_link_tag "admin/assortment_map" %>
-  <%= stylesheet_link_tag "admin/style" %>
+  <%= stylesheet_link_tag "admin/pages/assortment_map/assortment_map" %>
   <%= javascript_include_tag 'admin/tooltip' %>
   <%= javascript_include_tag 'admin/jquery-treemap' %>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
