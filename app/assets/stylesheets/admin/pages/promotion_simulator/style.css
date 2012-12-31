@@ -156,7 +156,7 @@
 }
 .promo-bubble {
   position: absolute;
-  bottom: -63px;
+  top: 20px;
   left: -90px;
   padding: 10px;
   width: 180px;

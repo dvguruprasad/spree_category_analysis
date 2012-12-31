@@ -6,15 +6,18 @@
         </p>
         <p id="p_percentage<%=i%>" style="display:none">
         <label for="promotion_percentage<%=i%>"> Percentage
-            <input type="text" id="promotion_percentage<%=i%>" class="txt-box"/>
+            <input type="number" min="0" max="100" id="promotion_percentage<%=i%>" class="txt-box"/>
         </label>
         </p> <p id="p_quantity<%=i%>" style="display:none">
         <label for="promotion_buy<%=i%>" > Buy
-            <input type="text" id="promotion_buy<%=i%>" class="txt-box"></input>
+            <input type="number" min="0" max="10" id="promotion_buy<%=i%>" class="txt-box"></input>
         </label>
         <label for="promotion_get<%=i%>" class="get-label" > Get free
-            <input type="text" id="promotion_get<%=i%>" class="txt-box"></input>
+            <input type="number" min="0" max="10"id="promotion_get<%=i%>" class="txt-box"></input>
         </label>
         </p>
+            <input type="button" class="ok_butotn">Ok</input>
+            <input type="button" class="remove_button">Remove</input>
+
     </form>
 </div>
