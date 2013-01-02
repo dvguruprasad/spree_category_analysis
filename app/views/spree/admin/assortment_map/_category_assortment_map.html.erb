@@ -3,14 +3,18 @@
         <ul class="group">
             <% for box in @data%>
                 <li style="background-color: <%= box.color%>">
-                <a href="assortment_map/<%=box.id %>/<%= @year_to_date %>">
+            <a href="assortment_map/<%=box.id %>/-4">
                 <h2><%= box.label %></h2>
                 <ul class="util-bar group">
                 </ul>
                 <div class="pro-meter-wrapper">
                     <div class="pro-meter group">
-                        <span class="down"></span>
-                        <em><%= box.profit_change %></em>
+                        <% if box.percent_revenue_difference < 0 %>
+                            <span class="down"></span>
+                    <% else %>
+                            <span class="up"></span>
+                    <% end %>
+                        <em><%= box.percent_revenue_difference %></em>
                     </div>
                 </div>
             </a>

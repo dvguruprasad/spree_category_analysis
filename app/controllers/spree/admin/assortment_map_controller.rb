@@ -37,10 +37,13 @@ module Spree
                     profit_last_period = distribution["last_period_revenue"] - distribution["last_period_cost"]
                     label, @type = create_label_for_child(child_id)
                     revenue_change = distribution["last_period_revenue"]
+                    revenue_difference = distribution["total_revenue"] - distribution["total_target_revenue"]
                     profit_change = distribution["previous_period_profit"]
                     @legend = ColorGenerator.legend
+                    permalink = "#"
+                    permalink = "/admin/assortment_map/#{child_id}/-4" if @type == "taxon"
                     p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
-                    AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), profit_change.round(2), distribution["total_units"])
+                    AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), revenue_difference.round(2),profit_change.round(2), distribution["total_units"], permalink)
                 end
             end
 

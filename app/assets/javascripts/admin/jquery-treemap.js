@@ -114,6 +114,7 @@
                 'word-wrap':'break-word'
             });
             $box.append($content);
+            $box.append("<a href=" + node.permalink + "></a>");
             $box.append(hoverDiv);
 
             //this.fitLabelFontSize($content, node);
