@@ -34,6 +34,7 @@ module Spree
                     @jsonrep = report_forecasted_sales(product, date_of_forecast)
                 end
                 @promotion_period = date_of_forecast.to_s + " to " + (date_of_forecast + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK - 1).to_s
+                @ancestory = ancestory_list(product)
                 respond_with(@jsonrep)
             end
 
@@ -83,6 +84,14 @@ module Spree
                 create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
             end
 
+            def ancestory_list(product)
+                ancestory = []
+                taxon = product.taxons.first
+                ancestory = taxon.ancestors.collect{|t| t.name}
+                ancestory << taxon.name
+                ancestory << product.name
+                ancestory
+            end
             private
             def report_forecasted_sales(product, date_of_forecast)
                 back_date = date_of_forecast.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
