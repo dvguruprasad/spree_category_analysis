@@ -15,7 +15,11 @@
         <div class="psm_breadcrumb">
             <ul>
                 <% for name in @ancestory%>
+                    <% if name == @ancestory.last %>
+                    <li><a class="active" href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+            <%else%>
                     <li><a href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+            <% end %>
             <% end %>
             </ul>
 
