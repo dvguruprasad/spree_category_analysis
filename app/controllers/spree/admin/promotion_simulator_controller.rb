@@ -1,7 +1,7 @@
 module Spree
   module Admin
     NUMBER_OF_DAYS_IN_WEEK = 7
-    REPORTING_WINDOW = 6 #TODO USEFUL if there is flexibility in choosing the reporting window
+      REPORTING_WINDOW = 6 #TODO USEFUL if there is flexibility in choosing the reporting window
     class PromotionSimulatorController < Spree::Admin::BaseController
       respond_to :json, :html
       before_filter :validate_get, :only => [:index, :simulate]
@@ -41,17 +41,15 @@ module Spree
         return "{}" if product.nil?
         weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
         replenishments = params[:replenishment].collect{|x| x.to_i}
-
+        
         inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales,replenishments).map { |p| p.closing_position }
 
 
         prom_data.each do|promotion_data|
-          start_date = promotion_data[1][:start_date]
-          end_date = promotion_data[1][:end_date]
-          @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
+          @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
           simulated_inventory_positions = @simulation_response.simulated_inventory_positions
           inventory_positions.each_with_index do |inventory_position,index|
-            inventory_position = simulated_inventory_positions[index]
+          inventory_position = simulated_inventory_positions[index]
           end
 
           simulated_sales = @simulation_response.weekly_simulated_revenue
@@ -66,16 +64,16 @@ module Spree
         respond_with(@jsonres)
       end
 
-      def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
-        if(promotion_data[1].nil? || start_date.nil?)
+      def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales)
+        if(promotion_data[1].nil? || promotion_data[1][:start_date].nil?)
           start_date =   Date.today
         else
-          start_date =   Date.parse(start_date)
+          start_date =   Date.parse(promotion_data[1][:start_date])
         end
-        if(promotion_data[1].nil? || end_date.nil?)
+        if(promotion_data[1].nil? || promotion_data[1][:end_date].nil?)
           end_date =   Date.today
         else
-          end_date =   Date.parse(end_date)
+          end_date =   Date.parse(promotion_data[1][:end_date])
         end
         create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
       end
@@ -140,7 +138,7 @@ module Spree
         cumulative_weekly_revenue = cumulative_revenue(weekly_sales)
         weekly_margin = weekly_margins(weekly_sales)
         cumulative_weekly_margin = cumulative_margin(weekly_margin)
-        replenishments = InventoryReplenishment.replenishments_for_period(product.id,from_date, REPORTING_WINDOW)
+        replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast, REPORTING_WINDOW)
         replenishments = weekly_sales.count.times.collect{0}
         inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales, replenishments).map { |p| p.closing_position }
         last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
@@ -168,13 +166,15 @@ module Spree
         simulated_inventory_positions.each_with_index do |simulated_inventory_position, index|
           if simulated_inventory_position < 0
             for i in 1..7
-              incremental_inventories =  simulated_inventory_positions[index - 1] - ((simulated_inventory_positions[index - 1]-simulated_inventory_position)/7)*i
+            previous_week_inventory_pos = simulated_inventory_positions[index - 1]
+            incremental_inventories =  previous_week_inventory_pos - ((previous_week_inventory_pos-simulated_inventory_position)/7)*i
               if incremental_inventories < 0
-                return date_of_forecast+index*7+i
+                return (date_of_forecast+index*7+i)
               end
             end
           end
         end
+        return "-"
       end
 
       def new_simulated_chart_data(quantity_chart, percentage_chart)
