@@ -21,7 +21,7 @@ module Spree
               @mode = "simulation"
               if params.has_key?(:year)
                 param_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
-                date_of_forecast = param_date
+                @date_of_forecast = param_date
                 if param_date.past?
                   @jsonrep = report_past_sales(product, param_date)
                   @mode = "report"
@@ -29,19 +29,24 @@ module Spree
                   @jsonrep = report_forecasted_sales(product, param_date)
                 end
               else
-                date_of_forecast = Date.today().beginning_of_week
-                @jsonrep = report_forecasted_sales(product, date_of_forecast)
+                @date_of_forecast = Date.today().beginning_of_week
+                @jsonrep = report_forecasted_sales(product, @date_of_forecast)
               end
+              calendar_promotions = product.possible_promotions
+              @calendar_promotion_list = map_calendar_promotions(calendar_promotions,@date_of_forecast)
+              
+              @promotion_period = @date_of_forecast.to_s + " to " + (@date_of_forecast + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK - 1).to_s
+              @ancestory = ancestory_list(product)
               respond_with(@jsonrep)
             end
 
             def simulate
               prom_data = params[:promotion_data]
-              prom_data = [{}] if params[:promotion_data].nil?
+              prom_data = [] if prom_data.nil?
               product_id = params[:product_id]
               product = Product.find_by_id(product_id)
               date_of_forecast = Date.parse(params[:forecast_date])
-              return "{}" if product.nil?
+              return "{}" if product.nil? 
               weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
               replenishments = params[:replenishment].collect{|x| x.to_i}
 
@@ -83,6 +88,26 @@ module Spree
               create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
             end
 
+            def ancestory_list(product)
+                ancestory = []
+                taxon = product.taxons.first
+                ancestory = taxon.ancestors.collect{|t| t.name}
+                ancestory << taxon.name
+                ancestory << product.name
+                ancestory
+            end
+
+            def promotion_to_attach(index)
+              end_date = @date_of_forecast.add.index.days
+              @calendar_promotions.each do |promotion|
+                return promotion if promotion.expires_at.to_date == end_date
+              end
+            end
+
+            def has_promotion(index)
+              return @calendar_promotion_list.include?(index)
+            end
+
             private
             def report_forecasted_sales(product, date_of_forecast)
               back_date = date_of_forecast.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
@@ -95,6 +120,24 @@ module Spree
               inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales, @replenishments).map { |p| p.closing_position }
               calendar_promotions = product.possible_promotions
               apply_promotions(product,weekly_sales,calendar_promotions,inventory_positions,date_of_forecast)
+            end
+
+            def map_calendar_promotions(calendar_promotions,date_of_forecast)
+              calendar_promo_days = []
+              @calendar_promotion_values = Hash.new()
+              calendar_promotions.each do |promotion|
+                promo_start_index = (promotion.starts_at.to_date - date_of_forecast).to_i
+                promo_end_index = (promotion.expires_at.to_date - date_of_forecast).to_i
+                percentage = 25
+                p "percentage is 25"
+                (promo_start_index .. promo_end_index).each do |index|
+                  calendar_promo_days << index
+                  if(promo_end_index == index)
+                    @calendar_promotion_values [index] = percentage
+                  end
+                end
+              end
+              calendar_promo_days
             end
 
             def apply_promotions(product,weekly_sales,calendar_promotions,inventory_positions,date_of_forecast)
@@ -112,7 +155,7 @@ module Spree
                   inventory_positions = promotional_inventory_positions 
                 end
               end
-              create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions).to_json
+              create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions).to_json
             end
 
             def report_past_sales(product, from_date)
@@ -124,7 +167,7 @@ module Spree
               create_reporting_chart_data(product, weekly_sales, from_date).to_json
             end
 
-            def create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions)
+            def create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions)
               sum_target_revenue = WeeklySales.aggregate_for_child(weekly_sales)["total_target_revenue"]
               weekly_target_revenue = weekly_sales.map { |s| s.target_revenue.round(2) }
               weekly_revenue = revenue_numbers(weekly_sales)

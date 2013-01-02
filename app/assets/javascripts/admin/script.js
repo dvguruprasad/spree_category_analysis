@@ -1,5 +1,6 @@
 var startFlag = 0;
 $(document).ready(function() {
+    
     var promotion_number = 0;
     var startDate, endDate,index;
     $(".range-sel-box li a").on("click", function(){

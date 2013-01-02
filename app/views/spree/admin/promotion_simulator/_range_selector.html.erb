@@ -1,5 +1,3 @@
-    </ul>
-</div>
 <%= javascript_include_tag 'admin/script' %>
 
 
@@ -15,7 +13,6 @@ function show_percentage(i){
     $('#p_percentage'+i).toggle(true);
 };
 </script>
-
 <div class="range-sel-box">
     <%  counter= 0 %>
     <ul id="slider">
@@ -23,12 +20,12 @@ function show_percentage(i){
             <% slice.each do |i| %>
 
             <% if(counter%7==0)  %>
-            <li class="week-start wk_<%=counter/7%>">
+              <li class="week-start wk_<%=counter/7%> <%=@calendar_promotion_list.include?(i) ? ' calendar_promo date-sel' : ''%> <%@calendar_promotion_values[i] ? 'date-end' : '' %>">
         <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
         <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
         </li>
     <%  else  %>
-            <li>
+      <li class="<%=@calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : ''%><%@calendar_promotion_values[i] ? 'date-end' : '' %>">
         <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
         <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
         </li>
