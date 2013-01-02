@@ -82,28 +82,29 @@ module Spree
                 create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
             end
 
-      private
-      def report_forecasted_sales(product, date_of_forecast)
-        back_date = date_of_forecast.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
-        forward_date = date_of_forecast.beginning_of_week + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
-        @back = "#{product.id}/#{back_date.day}/#{back_date.month}/#{back_date.year}"
-        @forward = "#{product.id}/#{forward_date.day}/#{forward_date.month}/#{forward_date.year}"
-        weekly_sales = WeeklySales.sales_including_forecasts(product.id, date_of_forecast, REPORTING_WINDOW)
-        @replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast,REPORTING_WINDOW)
-        calendar_promotions = product.possible_promotions
-        apply_promotions(weekly_sales,calendar_promotions)
-        create_forecast_chart_data(product, weekly_sales, date_of_forecast).to_json
-      end
+            private
+            def report_forecasted_sales(product, date_of_forecast)
+                back_date = date_of_forecast.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
+                forward_date = date_of_forecast.beginning_of_week + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
+                @back = "#{product.id}/#{back_date.day}/#{back_date.month}/#{back_date.year}"
+                @forward = "#{product.id}/#{forward_date.day}/#{forward_date.month}/#{forward_date.year}"
+                weekly_sales = WeeklySales.sales_including_forecasts(product.id, date_of_forecast, REPORTING_WINDOW)
+                @replenishments = InventoryReplenishment.replenishments_for_period(product.id,date_of_forecast,REPORTING_WINDOW)
+                calendar_promotions = product.possible_promotions
+                apply_promotions(weekly_sales,calendar_promotions)
+                create_forecast_chart_data(product, weekly_sales, date_of_forecast).to_json
+            end
 
-      def apply_promotions(weekly_sales,calendar_promotions)
-        weekly_sales.each
-        calendar_promotions.each do |promotion|
-          actions = promotion.actions
-          actions.each do |action|
-            calculator = action.calculator
-            pref = calculator.preferences
-          end
-        end
+            def apply_promotions(weekly_sales,calendar_promotions)
+                weekly_sales.each
+                calendar_promotions.each do |promotion|
+                    actions = promotion.actions
+                    actions.each do |action|
+                        calculator = action.calculator
+                        pref = calculator.preferences
+                    end
+                end
+            end
 
             def report_past_sales(product, from_date)
                 back_date = from_date.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
