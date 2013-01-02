@@ -1,44 +1,8 @@
-.cumulative-graph-stats-wrapper {
-    clear: both;
-    text-align: center;
-}
-ul#cumulative-graph-stats {
-    text-align: left;
-    display: inline-block;
-    margin: 24px auto;
-    list-style: none;
-    overflow: hidden;
-    font-size: 14px;
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
-}
-ul#cumulative-graph-stats li {
-    list-style-type: none;
-    float: left;
-    background-color: #e0e0e0;
-}
-ul#cumulative-graph-stats li:nth-child(odd) {
-    background-color: #efefef;
-}
-
-ul#cumulative-graph-stats li strong {
-    display: inline-block;
-    width: 140px;
-    margin-right: 14px;
-    padding: 4px 12px;
-}
-ul#cumulative-graph-stats li em {
-    display: inline-block;
-    font-style: normal;
-    padding: 4px 12px;
-}
-
-#back-forward a:hover{
-    color: #003DFF;
-}
-.clear-btn{
-    float:right;
-}
-
-
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require all/font-awesome
+ *= require_self
+ *= require_tree .
+*/
