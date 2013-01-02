@@ -33,6 +33,7 @@ module Spree
                     date_of_forecast = Date.today().beginning_of_week
                     @jsonrep = report_forecasted_sales(product, date_of_forecast)
                 end
+                @promotion_period = date_of_forecast.to_s + " to " + (date_of_forecast + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK - 1).to_s
                 respond_with(@jsonrep)
             end
 
@@ -204,7 +205,6 @@ module Spree
                     sum_margin += margin.round(2)
                 end
             end
-
         end
     end
 end
