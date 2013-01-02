@@ -1,0 +1,118 @@
+@import "admin/lib/utils";
+
+.psm_header{
+  padding: 5px 10px 5px 10px;
+  background:#f0f0f0;
+  border:1px solid #cccccc;
+   @include border-radius(5px);
+
+  .psm_header_l{
+    padding:5px 0px 2px 0px;
+    float: left;
+    .psm_name{
+      border-right:1px solid #B3B3B3;
+      padding-right:10px;
+      float:left;
+    }
+    .psm_breadcrumb{
+      float: left;
+      padding-left:10px;
+        ul{
+          margin: 0px;
+          padding: 0px;
+          li{
+                float:left;
+                list-style: none;
+                a{
+                    float: left;
+                    color:#7F7F7F !important;
+                    span{float:left;}
+                    span.d_arrow{
+                      margin: 8px 0px 0px 5px;
+                      width: 0px;
+                      height: 0px;
+                      border-left: 5px solid transparent;
+                      border-right: 5px solid transparent;
+                      border-top: 5px solid #7F7F7F;
+                      visibility:hidden;
+                    }
+                  &.active{
+                         font-weight: bold;
+                         span.d_arrow{
+                           visibility: visible;
+                         }
+                  }
+
+                }
+          }
+        }
+    }
+  }
+  .psm_header_r{
+      float:right;
+      .link-container{
+        float:left;
+      }
+      .link-container:first-child{
+        border-right:1px solid #B3B3B3;
+        padding-right: 10px;
+        margin-right: 10px;
+      }
+      .psm_fromto{
+        width:170px;
+        display:inline-block;
+        text-align:center;
+      }
+  }
+
+}
+
+
+.psm_graph_container{
+    width:100%;
+    padding-top:30px;
+    .psm_graph_container_l{
+      float: left;
+      width:25%;
+      min-height:700px;
+      border-right:1px solid #cecece;
+      .cumulative-graph-stats-wrapper {
+         text-align: center;
+        padding:20px 20px 0px 0px;
+        table{
+          border:1px solid #cecece;
+          caption{
+            background:none;
+            color:#999999;
+            font-weight: bold;
+            font-size:1.2em;
+          }
+          tr:nth-child(odd) {
+            background-color: #efefef;
+          }
+          td:nth-child(odd){
+            width:70%;
+            border-right:1px solid  #cecece;
+          }
+        }
+      }
+    }
+  .psm_graph_container_r{
+    float:right;
+    width:70%;
+    h4{
+      float: left;
+      width:72px;
+    }
+  }
+
+}
+
+
+#back-forward a:hover{
+  color: #003DFF;
+}
+.clear-btn{
+  float:right;
+}
+

@@ -1,13 +1,29 @@
+@import "admin/lib/utils";
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    zoom: 1
+}
+
 #content .link-container a{
-    background-color: #555555;
-    color: #FFFFFF;
+    color: #7F7F7F;
+    font-weight: bold;
     padding: 5px 15px 5px 15px;
-    border-top: 1px solid #CCC;
-    border-right: 1px solid #333;
-    border-bottom: 1px solid #333;
+    border-top: 1px solid #dcdcdc;
+    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
     border-left: 1px solid #CCC;
-    margin-left: -3px;
+    margin-left: -5px;
     display: inline-block;
+    background: #dfdfdf;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.25, #ffffff), color-stop(1, #dfdfdf));
+    background: -moz-linear-gradient(center top, #ffffff 25%, #dfdfdf 100%);
+    background: -o-linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
+    background: -ms-linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
+    background: linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
 }
 
 #content .link-container > a:first-child {
@@ -29,7 +45,14 @@
     border-bottom-right-radius: 7px;
 }
 #content .link-container a:hover, #content .link-container a:active{
-    background-color:#464646;
+    background: #dfdfdf;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.25, #ffffff), color-stop(1, #dfdfdf));
+    background: -moz-linear-gradient(center top, #dfdfdf 25%, #ffffff 100%);
+    background: -o-linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
+    background: -ms-linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
+    background: linear-gradient(top, #ffffff 25%, #dfdfdf 100%);
+    color: #7F7F7F;
+
 }
 .slider_date {
     display: none;

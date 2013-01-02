@@ -11,7 +11,7 @@ module Spree
       end
 
       def self.simulated_sales(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
-        Spree::Admin::Calculator::PromotionCalculator.compute_promotional_saless(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
+        PromotionCalculator.compute_promotional_sales(sales_forecast, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
       end
 
       def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)

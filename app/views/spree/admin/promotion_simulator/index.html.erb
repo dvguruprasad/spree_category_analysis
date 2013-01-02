@@ -9,71 +9,131 @@
 <%= stylesheet_link_tag "admin/pages/promotion_simulator/promotion_simulator" %>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 
-<div id="button-container">
-  <div id="back-forward" class="link-container" style="float:left">
-    <a id="past-report" href="/admin/promotion_simulator/product/<%= @back %>">&lt</a>
-    <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
-  </div>
-  <div id="toggle" class="link-container" style="float:right">
-    <a id="weekly_view">Weekly</a>
-    <a id="cumulative_view">Cumulative</a>
-  </div>
-</div>
+<div class="psm_header clearfix">
+    <div class="psm_header_l">
+        <div class="psm_name"><strong>Promotion Simulator</strong></div>
+        <div class="psm_breadcrumb">
+            <ul>
+                <% for name in @ancestory%>
+                    <% if name == @ancestory.last %>
+                    <li><a class="active" href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+            <%else%>
+                    <li><a href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+            <% end %>
+            <% end %>
+            </ul>
 
-
-<div class="cumulative-graph-stats-wrapper">
-  <ul id="cumulative-graph-stats">
-
-    <li>
-      <strong>Total revenue</strong>
-      <em id="total_sales" value="total_sales"></em>
-      <br/>
-      <strong>Target revenue</strong><em id="target_sales"></em>
-    </li>
-    <li>
-      <strong>Target Variation</strong><em id="revenue_variation"></em>
-      <br/>
-      <strong>Gross Profit</strong><em id="gross_profit"></em>
-    </li>
-    <li>
-      <strong>Simulated Revenue Variation</strong><em id="simulated_revenue_variation"></em>
-      <br/>
-      <strong>Stock Out Date</strong><em id="stock_out_date"></em>
-    </li>
-    <li>
-      <strong>Simulated Revenue</strong><em id="simulated_revenue"></em>
-      <br/>
-      <strong>Simulated Profit</strong><em id="simulated_profit"></em>
-    </li>
-    <li>
-      <strong>Revenue Change</strong><em id="revenue_change"></em>
-      <br/>
-      <strong>Profit Change</strong><em id="profit_change"></em>
-    </li>
-
-
-  </ul>
-</div>
-
-
-<div id="container" class="chart-container">
-</div>
-
-
-
-<% if @mode == "simulation" %>
-    <div id="simulator" class="simulator-container">
-      <h3>Replenishments :</h3>
-      <%= render :partial => 'replenishment_selector' %>
-      <h2>Promotion date range :</h2>
-      <%= render :partial => 'range_selector' %>
-
-      <%#<div id="simulate-button">%>
-        <div class="link-container" >
-        <a id="simulate"> Simulate </a>
-      </div>
+        </div>
     </div>
-<% end %>
-<script>
-    window.onload = show_sales_statistics(response.stats_report);
-</script>
+
+    <div class="psm_header_r" id="button-container">
+        <div id="back-forward" class="link-container">
+            <a id="past-report" href="/admin/promotion_simulator/product/<%= @back %>">&lt</a>
+            <div class="psm_fromto" ><%= @promotion_period%> </div>
+            <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
+        </div>
+        <div id="toggle" class="link-container">
+            <a id="weekly_view">Weekly</a>
+            <a id="cumulative_view">Cumulative</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="psm_graph_container clearfix">
+    <div class="psm_graph_container_l">
+
+        <div class="cumulative-graph-stats-wrapper">
+            <table>
+                <caption>Forecast</caption>
+                <tr>
+                    <td>Total revenue</td>
+                    <td><em id="total_sales" value="total_sales"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Target revenue</td>
+                    <td><em id="target_sales"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Target Variation</td>
+                    <td><em id="revenue_variation"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Gross Profit</td>
+                    <td><em id="gross_profit"></em></td>
+                </tr>
+
+
+            </table>
+
+
+            <table>
+                <caption>Simulated</caption>
+                <tr>
+                    <td>Simulated Revenue Variation</td>
+                    <td><em id="simulated_revenue_variation"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Stock Out Date</td>
+                    <td><em id="stock_out_date"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Simulated Revenue</td>
+                    <td><em id="simulated_revenue"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Simulated Profit</td>
+                    <td><em id="simulated_profit"></em></td>
+                </tr>
+                <tr>
+                    <td>Revenue Change</td>
+                    <td><em id="revenue_change"></em></td>
+                </tr>
+
+                <tr>
+                    <td>Profit Change</td>
+                    <td><em id="profit_change"></em></td>
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    </div>
+    <div class="psm_graph_container_r">
+        <div id="container" class="chart-container">
+        </div>
+
+        <% if @mode == "simulation" %>
+            <div id="simulator" class="simulator-container">
+            <h4>Replenishments :</h4>
+            <%= render :partial => 'replenishment_selector' %>
+            <h4>Promotion  :</h4>
+            <%= render :partial => 'range_selector' %>
+
+            <%#<div id="simulate-button">%>
+                <div class="link-container">
+                    <a href="."> Reset</a>
+                </div>
+
+                <div class="link-container" >
+                    <a id="simulate"> Simulate </a>
+                </div>
+            </div>
+        <% end %>
+        </div>
+    </div>
+
+
+
+
+    <script>
+window.onload = show_sales_statistics(response.stats_report);
+    </script>
