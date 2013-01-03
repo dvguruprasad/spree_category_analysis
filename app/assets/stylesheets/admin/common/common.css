@@ -1,6 +1,19 @@
 @import "admin/lib/utils";
-
-
+ h1{
+     font-size:1.8em;
+     margin-bottom:5px;
+ }
+h3{
+    font-size:1.3em;
+}
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    zoom: 1;
+}
 #content .link-container a{
     color: #7F7F7F;
     font-weight: bold;

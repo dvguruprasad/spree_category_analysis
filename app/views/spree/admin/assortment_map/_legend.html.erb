@@ -5,7 +5,7 @@
     <ul class='legend-labels'>
       <% if !@legend.nil? %>
           <% @legend.each do |description, color| %>
-              <li><span style="background:<%= color %>;"><%= description %></span></li>
+              <li><div class="clear"><span class="circle" style="background:<%= color %>;"></span><span class="legend-txt"><%= description %></span></div></li>
           <% end %>
       <% end %>
     </ul>

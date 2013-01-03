@@ -12,8 +12,8 @@
 <% if !@data.nil? %>
     <div class="assortment_map_container">
     <div style="float:left">
-        <h1 style="color:#262626;line-height:0.5em"><%= @taxon.name %></h1>
-        <h3 style="color:#262626"> <label>In the period:</label> <%= @time_start%> to <%= @time_end%></h3>
+        <h1 ><%= @taxon.name %></h1>
+        <h3 > <%= @time_start%> to <%= @time_end%></h3>
         <div class="link-container" >
             <a href='/app/assets/stylesheets/admin/pages/assortment_map'> ^^ Home</a>
             <% if @taxon.parent.id != Spree::Admin::WeeklySales.category_taxon_id %>

@@ -5,14 +5,7 @@
     More info at: http://lesselements.com
   ---------------------------------------------------*/
 
-.clear:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-    zoom: 1;
-}
+@import "admin/common/common";
 .chart-container,
 .simulator-container {
   width: 90%;

@@ -1,9 +1,10 @@
 <%= stylesheet_link_tag 'admin/pages/assortment_map/assortment_index' %>
+<%= stylesheet_link_tag "admin/common/common" %>
 <div class="assortment_map_container">
-  <div style="float:left">
-    <h1 style="color:#262626;line-height:0.5em"><%= @taxon.name %></h1>
+  <div >
+    <h1><%= @taxon.name %></h1>
 
-    <h3 style="color:#262626"><label>In the period:</label> <%= @time_start %> to <%= @time_end %></h3>
+    <h3><%= @time_start %> to <%= @time_end %></h3>
   </div>
   <%#<div id='treemap-div'></div>%>
   <%= render 'category_assortment_map'%>
