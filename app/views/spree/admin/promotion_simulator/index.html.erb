@@ -39,7 +39,7 @@
     </div>
 
 </div>
-
+  	
 <div class="psm_graph_container clearfix">
     <div class="psm_graph_container_l">
 
@@ -69,6 +69,7 @@
 
             </table>
 
+        <% if @mode == "simulation" %>
 
             <table>
                 <caption>Simulated</caption>
@@ -103,14 +104,13 @@
 
             </table>
 
-
+          <% end%>
         </div>
 
     </div>
     <div class="psm_graph_container_r">
         <div id="container" class="chart-container">
         </div>
-
         <% if @mode == "simulation" %>
             <div id="simulator" class="simulator-container clear">
               <!--<h4>Replenishments :</h4>-->
