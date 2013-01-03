@@ -1,8 +1,33 @@
 var startFlag = 0;
 $(document).ready(function() {
-    
     var promotion_number = 0;
     var startDate, endDate,index;
+    var add_promotion_details = function(parent){
+        parent.addClass("promotion_" + promotion_number.toString());
+        parent.data("promotion-number",promotion_number)
+    };
+
+    $(".calendar_promo.date-end").each(function(index,value){
+      var parent = $(value);
+      promotion_number += 1;
+
+      add_promotion_details(parent);
+      add_promotion_details(parent.find('form.promo-form'));
+      add_promotion_details(parent.find('form.promo-form input.remove_button'));
+      $(parent.find('form.promo-form input.remove_button')).click(
+        function(){
+        promotion_number = $(this).data("promotion-number");
+        remove_promotion(promotion_number);
+      }
+      );
+
+    });
+
+    $(".calendar_promo").each(function(index,value){
+      var parent = $(value);
+      add_promotion_details(parent);
+    });
+
     $(".range-sel-box li a").on("click", function(){
         var parent = $(this).parent();
 
@@ -78,10 +103,6 @@ $(document).ready(function() {
     }
 
 
-    var add_promotion_details = function(parent){
-        parent.addClass("promotion_" + promotion_number.toString());
-        parent.data("promotion-number",promotion_number)
-    };
 
     var remove_promotion = function(promotion_number){
         $('form.promotion_'+promotion_number.toString()).each(function(){this.reset();});
@@ -114,7 +135,7 @@ $(document).ready(function() {
                 }
 
              }
-        }
+        };
 
 
 });
