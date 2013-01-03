@@ -8,9 +8,6 @@ var ReportChart = function(view) {
             renderTo: 'container',
             zoomType: 'xy'
         },
-        title: {
-            text: 'Promotion Simulator'
-        },
         xAxis: [{
             labels: {
               formatter:  function(){
@@ -44,9 +41,8 @@ var ReportChart = function(view) {
             legend: {
                 layout: 'horizontal',
                 align: 'center',
-                x: 120,
                 verticalAlign: 'top',
-                y: 25,
+                y: -5,
                 floating: true,
                 backgroundColor: '#FFFFFF'
             },

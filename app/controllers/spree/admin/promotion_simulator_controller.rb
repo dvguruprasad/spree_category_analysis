@@ -97,17 +97,6 @@ module Spree
                 ancestory
             end
 
-            def promotion_to_attach(index)
-              end_date = @date_of_forecast.add.index.days
-              @calendar_promotions.each do |promotion|
-                return promotion if promotion.expires_at.to_date == end_date
-              end
-            end
-
-            def has_promotion(index)
-              return @calendar_promotion_list.include?(index)
-            end
-
             private
             def report_forecasted_sales(product, date_of_forecast)
               back_date = date_of_forecast.beginning_of_week - REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK
@@ -128,8 +117,7 @@ module Spree
               calendar_promotions.each do |promotion|
                 promo_start_index = (promotion.starts_at.to_date - date_of_forecast).to_i
                 promo_end_index = (promotion.expires_at.to_date - date_of_forecast).to_i
-                percentage = 25
-                p "percentage is 25"
+                percentage = promotion.actions[0].calculator.preferences[:flat_percent].to_i
                 (promo_start_index .. promo_end_index).each do |index|
                   calendar_promo_days << index
                   if(promo_end_index == index)

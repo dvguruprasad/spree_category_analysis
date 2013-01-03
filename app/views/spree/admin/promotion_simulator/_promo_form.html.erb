@@ -2,11 +2,11 @@
     <form class="promo-form" id="promo<%=i%>">
         <p class="prom-p">
         <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
-        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) > Percentage</label>
+        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) checked> Percentage</label>
         </p>
-        <p id="p_percentage<%=i%>" style="display:none">
+        <p id="p_percentage<%=i%>" >
         <label for="promotion_percentage<%=i%>"> Percentage
-          <input type="number" min="0" max="100" id="promotion_percentage<%=i%>" class="txt-box" value=<%=@calendar_promotion_values[i]%>/>
+          <input type="number" min="0" max="100" id="promotion_percentage<%=i%>" class="txt-box" value=<%=@calendar_promotion_values[i]%>>
         </label>
         </p> <p id="p_quantity<%=i%>" style="display:none">
         <label for="promotion_buy<%=i%>" > Buy
