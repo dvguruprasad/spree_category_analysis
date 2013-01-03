@@ -30,7 +30,7 @@
         <div id="back-forward" class="link-container">
             <a id="past-report" href="/admin/promotion_simulator/product/<%= @back %>">&lt</a>
             <div class="psm_fromto" ><%= @promotion_period%> </div>
-            <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
+            <a id="future-simulate" href= "<%=@mode=="simulation" ? "#" : "/admin/promotion_simulator/product/"+@forward %>">&gt</a>
         </div>
         <div id="toggle" class="link-container">
             <a id="weekly_view" href="#">Weekly</a>
