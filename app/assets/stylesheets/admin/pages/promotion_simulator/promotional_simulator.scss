@@ -11,12 +11,16 @@
     float: left;
     .psm_name{
       border-right:1px solid #B3B3B3;
-      padding-right:10px;
+      padding-right:30px;
+      padding-bottom:5px;
       float:left;
+      font-size: 1.5em;
+      line-height: 21px;
     }
     .psm_breadcrumb{
       float: left;
       padding-left:10px;
+      padding-top: 3px;
         ul{
           margin: 0px;
           padding: 0px;
@@ -74,7 +78,7 @@
     .psm_graph_container_l{
       float: left;
       width:25%;
-      min-height:700px;
+      min-height:646px;
       border-right:1px solid #cecece;
       .cumulative-graph-stats-wrapper {
          text-align: center;
@@ -99,7 +103,7 @@
     }
   .psm_graph_container_r{
     float:right;
-    width:70%;
+    width:72%;
     h4{
       float: left;
       width:72px;
@@ -107,7 +111,17 @@
   }
 
 }
-
+#content #simulate{
+  @include linear-gradient($startColor: #75D6F4, $stopColor: #1DC2F0);
+  color:#ffffff;
+  padding:5px 10px;
+  font-size: 1.2em;
+  border:1px solid #1DC2F0;
+  font-weight:normal;
+}
+#content a#simulate:hover{
+  @include linear-gradient($startColor: #1DC2F0, $stopColor: #8BDBF5);
+}
 
 #back-forward a:hover{
   color: #003DFF;

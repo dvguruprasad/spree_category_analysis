@@ -33,8 +33,8 @@
             <a id="future-simulate" href="/admin/promotion_simulator/product/<%= @forward %>">&gt</a>
         </div>
         <div id="toggle" class="link-container">
-            <a id="weekly_view">Weekly</a>
-            <a id="cumulative_view">Cumulative</a>
+            <a id="weekly_view" href="#">Weekly</a>
+            <a id="cumulative_view" href="#">Cumulative</a>
         </div>
     </div>
 
@@ -112,19 +112,22 @@
         </div>
 
         <% if @mode == "simulation" %>
-            <div id="simulator" class="simulator-container">
-            <h4>Replenishments :</h4>
+            <div id="simulator" class="simulator-container clear">
+              <!--<h4>Replenishments :</h4>-->
             <%= render :partial => 'replenishment_selector' %>
-            <h4>Promotion  :</h4>
+
             <%= render :partial => 'range_selector' %>
 
             <%#<div id="simulate-button">%>
-                <div class="link-container">
-                    <a href="."> Reset</a>
-                </div>
 
-                <div class="link-container" >
-                    <a id="simulate"> Simulate </a>
+              <div class="clear">
+              <div class="link-container" style="float:right;padding-right:40px;">
+                <a href="" > Reset</a>
+              </div>
+
+               <div class="link-container" style="float: left;">
+                    <a id="simulate" href="#"> Simulate </a>
+                </div>
                 </div>
             </div>
         <% end %>

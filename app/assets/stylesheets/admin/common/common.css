@@ -1,12 +1,5 @@
 @import "admin/lib/utils";
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-    zoom: 1
-}
+
 
 #content .link-container a{
     color: #7F7F7F;

@@ -30,8 +30,14 @@ $(document).ready(function() {
                         );
                         startFlag = 0;
                         index = endDate;
-                        parent.prevUntil(".date-start").addClass("date-sel");
-                        add_promotion_details(parent.prevUntil(".date-start"));
+                        //alert('dsf'+preUntilAcrosSiblings(parent).length);
+                        var precodes= preUntilAcrosSiblings(parent);
+                        $.each(precodes,function(){
+                            $(this).addClass("date-sel");
+                        })
+                        //parent.prevUntil(".date-start").addClass("date-sel");  //alert(parent.prevUntil(".date-start").length);
+                        //add_promotion_details(parent.prevUntil(".date-start"));
+                        add_promotion_details(precodes);
                     }
                     else{
                         alert("Overlaping promotions not allowed");
@@ -57,7 +63,7 @@ $(document).ready(function() {
     });
 
     var is_overlapping = function(element){
-        list_of_inbetween_li = element.prevUntil(".date-start");
+        list_of_inbetween_li = preUntilAcrosSiblings(element);
         for(i=0; i< list_of_inbetween_li.length ; i++){
             $target = $(list_of_inbetween_li[i]);
             if($target.is(".date-sel") || $target.is(".date-end") || $target.is(".date-start"))
@@ -82,5 +88,33 @@ $(document).ready(function() {
         clear_promotion_data(promotion_number);
         $(".promo-bubble").toggle(false);
     };
+        var preUntilAcrosSiblings = function(sel){
+            if(sel.closest(".week_wrapper").find('.date-start').length){
+                 var obj= sel.prevUntil(".date-start");
+                return obj;
+            }
+            else {
+                var obj1= sel.prevUntil(".date-start"); //alert('nearest obj1'+obj1.length);
+                var current =sel.closest(".week_wrapper");
+
+                for(var i=0;i<5;i++)
+                {
+                    var check=current.prev().find('.date-start');
+                    if(check.length){
+                        var obj2= check.first().nextUntil(".date-end");      // alert("obj1"+obj1.length+" obj2 "+obj2.length);
+                        var obj=$().add(obj1).add(obj2);   //  alert("obj "+obj.length);
+                        return obj;
+                    }
+                    else {
+                        current = current.prev();
+                        var obj1=$().add(obj1).add(current.find("li")); // alert("else obj1" +obj1.length) ;
+
+                    }
+
+                }
+
+             }
+        }
+
 
 });

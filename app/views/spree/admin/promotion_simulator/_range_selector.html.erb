@@ -2,7 +2,6 @@
 
 
 <%= stylesheet_link_tag "admin/pages/promotion_simulator/style"%>
-<%= stylesheet_link_tag "admin/pages/promotion_simulator/css3mixin"%>
 <script>
 function show_quantity(i){
     $('#p_percentage'+i).toggle(false);
@@ -14,35 +13,37 @@ function show_percentage(i){
 };
 </script>
 <div class="range-sel-box">
-    <%  counter= 0 %>
-    <ul id="slider">
-        <% (0..41).each_slice(7).with_index do |slice,index|%>
-            <% slice.each do |i| %>
-
+  <span class="range-txt">Promotion:</span>
+  <!-- <h4>Promotion  :</h4> -->
+  <div class="range-sel-wrapper clear">
+  <%  counter= 0 %>
+  <ul id="slider">
+    <% (0..41).each_slice(7).with_index do |slice,index|%>
+        <li class="week_wrapper psm_col"><ul>
+        <% slice.each do |i| %>
             <% if(counter%7==0)  %>
-      <div style="display:none">
-      <%=class_name = @calendar_promotion_values.has_key?(i) ? ' calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
-    </div>
-              
-    <li class="week-start wk_<%=counter/7%> <%=class_name%> ">
-        <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-        <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
-        </li>
-    <%  else  %>
-      <div style="display:none">
-      <%=class_name = @calendar_promotion_values.has_key?(i) ? 'calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
-    </div>
-      <li class="<%=class_name%>">
-        <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-        <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
-        </li>
-    <% end %>
-        <% counter = counter+1 %>
-    <% end %>
-    <% end%>
+                <div style="display:none">
+                  <%=class_name = @calendar_promotion_values.has_key?(i) ? ' calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                </div>
+                <li class="week-start wk_<%=counter/7%> <%=class_name%> ">
+                <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
+                </li>
+            <%  else  %>
+                <div style="display:none">
+                  <%=class_name = @calendar_promotion_values.has_key?(i) ? 'calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                </div>
+                <li class="<%=class_name%>">
+                <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
+                </li>
+            <% end %>
+            <% counter = counter+1 %>
+            <% end %>
+          </ul></li>
+        <% end%>
+
     </ul>
-</div>
-<div class="link-container">
-    <a href="" > Clear Promotions</a>
+  </div>
 </div>
 <%#<INPUT TYPE="button" class = "clear-btn" onClick="history.go(0)" VALUE="Clear promotions">%>

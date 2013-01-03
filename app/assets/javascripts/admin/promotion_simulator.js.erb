@@ -81,7 +81,7 @@ $(function () {
             $(".promo-bubble").toggle(false);
             var promotion_data=[];
             var date_data = {};
-            var h = $("#slider").children();
+            var h = $("#slider").find("ul li");
             h.each(function(index, value) {
                 elmt = h[index];
                 start_class = elmt.classList.contains("date-start");
@@ -106,7 +106,7 @@ $(function () {
                         }
             });
             var replenishment = [];
-            slider_replenishments = $('.replenishment-select-box').children();
+            slider_replenishments = $('.replenishment-select-box').find(".spinner");
             for(i in slider_replenishments){
                 replenishment.push(slider_replenishments[i].value);
             }

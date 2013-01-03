@@ -4,33 +4,70 @@
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
+
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    zoom: 1;
+}
 .chart-container,
 .simulator-container {
-  width: 95%;
+  width: 90%;
   margin: 0 auto;
+  position:relative;
+    padding-left:40px;
+}
+.psm_col{
+    padding: 5px 0px;
+    float: left;
+    text-align: center;
+    width:16.5%;
+    background:#f0f0f0;
+    margin-right:0.1%;
 }
 .replenishment-select-box {
-  margin-bottom: 10px;
+  padding-left:68px;
+  padding-top:20px;
+}
+.replenishment-txt,.range-txt{
+    position: relative;
+    left:-40px;
+    top:67px;
+    font-weight: bold;
+}
+.range-txt{
+    top:26px;
+}
+
+.range-sel-wrapper{
+  padding-bottom: 10px;
+  padding-left:68px;
+}
+.range-sel-wrapper  ul{
+    margin:0px;
 }
 .replenishment-select-box .spinner {
-  margin-left: 120px;
+  /*margin-left: 120px;    */
+    width:74px;
 }
 .range-sel-box {
-  /*margin: 0 0 15px 0;*/
-  /*padding: 15px;*/
-  /*height: 80px;*/
-  background: #eee;
-  border: 1px solid #ddd;
+
+    margin: 0 auto;
+    position:relative;
+    position: relative;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+  padding-bottom:20px;
 }
 .range-sel-box ul {
   list-style: none;
-  margin: 0 0 0 25px;
   padding: 0;
 }
 .range-sel-box li {
@@ -154,6 +191,7 @@
   float: right;
 }
 .promo-bubble {
+  z-index:99999;
   position: absolute;
   top: 20px;
   left: -90px;
