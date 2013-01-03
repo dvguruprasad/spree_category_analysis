@@ -12,28 +12,28 @@ $(function () {
     date_date = '17-01-14';
     series = {"weekly":[
         {
-        name:'Weekly Forecast',
+        name:'Revenue',
         <%#color: '#FF33CC',%>
         type:'line',
         yAxis:0,
         data:response.weekly_revenue
     },
     {
-        name:'Weekly Margin',
+        name:'Profit',
         <%#color: '#0033CC',%>
         type:'line',
         yAxis:0,
         data:response.weekly_margin
     },
     {
-        name:'Sales Last Year',
+        name:'Revenue Last Year',
         color:'#8B2500',
         type:'line',
         yAxis:0,
         data:response.weekly_last_year_revenue
     },
     {
-        name:'Weekly Target Revenue',
+        name:'Target Revenue',
         <%#color: '#003333',%>
         type:'line',
         yAxis:0,
@@ -50,21 +50,21 @@ $(function () {
         data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
     },
     {
-        name:'Sales Last Year',
+        name:'Revenue Last Year',
         color:'#8B2500',
         type:'line',
         yAxis:0,
         data:response.cumulative_last_year_revenue
     },
     {
-        name:'Margin',
+        name:'Profit',
         color:'#CC0033',
         type:'line',
         yAxis:0,
         data:response.cumulative_weekly_margin
     },
     {
-        name:'Forecast',
+        name:'Revenue',
         color:'#A54E89',
         type:'line',
         yAxis:0,
