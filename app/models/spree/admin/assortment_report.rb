@@ -1,7 +1,7 @@
 module Spree
     module Admin
         class  AssortmentReport
-            attr_accessor :id, :revenue,:label,:color,:target, :profit, :revenue_change, :profit_change, :units, :permalink, :revenue_difference,:percent_revenue_difference
+            attr_accessor :id, :value,:label,:color,:total_target, :profit, :revenue_change, :profit_change, :total_units, :permalink, :revenue_difference,:percent_revenue_difference
             def initialize(id, revenue,label,color, target, profit, revenue_change, revenue_difference, profit_change,units,permalink)
                 @id = id
                 @value = revenue

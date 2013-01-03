@@ -2,41 +2,33 @@
     <%= javascript_tag "var list = #{@data}" %>;
 <%= javascript_tag "var type = '#{@type}'" %>;
 <%= javascript_tag "var year_to_date = #{@year_to_date}" %>;
-<% end %>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<%= stylesheet_link_tag "admin/pages/assortment_map/assortment_index" %>
 <%= stylesheet_link_tag "admin/pages/assortment_map/assortment_map" %>
 <%= stylesheet_link_tag "admin/common/common" %>
 <%= javascript_include_tag 'admin/tooltip' %>
 <%= javascript_include_tag 'admin/jquery-treemap' %>
 <%= javascript_include_tag "admin/assortment_map" %>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<% end %>
 <% if !@data.nil? %>
     <div class="assortment_map_container">
-    <div style="float:left">
-        <h1 ><%= @taxon.name %></h1>
-        <h3 > <%= @time_start%> to <%= @time_end%></h3>
-        <div class="link-container" >
-            <a href='/app/assets/stylesheets/admin/pages/assortment_map'> ^^ Home</a>
-            <% if @taxon.parent.id != Spree::Admin::WeeklySales.category_taxon_id %>
-                <a href='/admin/assortment_map/<%= @taxon.parent.id%>/<%= @year_to_date%>'> ^ <%= @taxon.parent.name%></a>
-        <% end %>
-        </div>
-
+    <%= render 'header' %>
+</div>
+<div class="weekly_range">
+    <div class="link-container" >
+        <a href='-1'>Last Week</a>
+        <a href='-4'>Last Four Weeks</a>
+        <a href='<%= @year_to_date%>'>Year to Date</a>
+        <a href='1'>Next Week</a>
+        <a href='4'>Next Four Weeks</a>
     </div>
-    <div class="weekly_range">
-        <div class="link-container" >
-            <a href='-1'>Last Week</a>
-            <a href='-4'>Last Four Weeks</a>
-            <a href='<%= @year_to_date%>'>Year to Date</a>
-            <a href='1'>Next Week</a>
-            <a href='4'>Next Four Weeks</a>
-        </div>
-    </div>
+</div>
 
-    <%= render 'legend'%>
-    <div id='treemap-div'></div>
+<%= render 'legend'%>
+<div id='treemap-div'></div>
 </div>
 
 <% else %>
-    <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
+<div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
 <% end %>
 

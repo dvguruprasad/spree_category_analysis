@@ -1,27 +1,20 @@
-<%= stylesheet_link_tag 'admin/pages/assortment_map/assortment_index' %>
+<% content_for :head do %>
+    <%= stylesheet_link_tag 'admin/pages/assortment_map/assortment_index' %>
 <%= stylesheet_link_tag "admin/common/common" %>
+<%= stylesheet_link_tag "admin/pages/promotion_simulator/promotion_simulator" %>
+<%= stylesheet_link_tag "admin/pages/assortment_map/assortment_map" %>
+<%= javascript_include_tag 'admin/tooltip' %>
+<%= javascript_include_tag 'admin/jquery-treemap' %>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+<% end %>
+
 <div class="assortment_map_container">
-  <div >
-    <h1><%= @taxon.name %></h1>
-
-    <h3><%= @time_start %> to <%= @time_end %></h3>
-  </div>
-  <%#<div id='treemap-div'></div>%>
-  <%= render 'category_assortment_map'%>
-  <%= render 'legend' %>
-  <%= stylesheet_link_tag "admin/pages/assortment_map/assortment_map" %>
-  <%= javascript_include_tag 'admin/tooltip' %>
-  <%= javascript_include_tag 'admin/jquery-treemap' %>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
-  <% if !@data.nil? %>
-
-      <script>
-          var list = <%= raw @data.to_json %>;
-          var type = '<%= @type %>';
-          var year_to_date = <%= @year_to_date%>;
-      </script>
-  <% else %>
-      <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
-  <% end %>
-  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <% if !@data.nil? %>
+        <%= render 'header' %>
+    <%= render 'category_assortment_map' %>
+    <%= render 'legend' %>
+<% else %>
+        <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
+<% end %>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 </div>

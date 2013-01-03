@@ -7,10 +7,8 @@ module Spree
                 @taxon = Spree::Taxon.find_by_id(Spree::Admin::WeeklySales.category_taxon_id)
                 weekly_aggregate_for_category = WeeklySales.generate_category_aggregates()
                 return if weekly_aggregate_for_category.nil? or weekly_aggregate_for_category.empty?
-                @data = create_chart_data(weekly_aggregate_for_category)
                 @year_to_date = Date.parse('2012-12-24').cweek * -1
-                @time_start = @taxon.from_date(@year_to_date)
-                @time_end = @taxon.to_date(@year_to_date)
+                @data = create_chart_data(weekly_aggregate_for_category)
                 respond_with(@data.to_json)
             end
 
@@ -21,16 +19,18 @@ module Spree
                 weekly_sales_for_taxon = @taxon.weekly_sales_by_time_frame(params[:week].to_i)
                 weekly_aggregate_for_taxon = WeeklySales.generate_aggregates(weekly_sales_for_taxon)
                 return if weekly_sales_for_taxon.nil? or weekly_sales_for_taxon.empty?
+                @year_to_date =  Date.today.cweek * -1
                 if !weekly_aggregate_for_taxon.nil?
                     @data = create_chart_data(weekly_aggregate_for_taxon).to_json
                 end
-                @time_start = @taxon.from_date(week)
-                @time_end = @taxon.to_date(week)
-                @year_to_date =  Date.today.cweek * -1
                 respond_with(@data)
             end
 
             def create_chart_data(sales_distribution)
+                @time_start = @taxon.from_date(@year_to_date)
+                @time_end = @taxon.to_date(@year_to_date)
+                @period = "#{@time_start} to #{@time_end}"
+                @ancestory = ancestory_list(@taxon)
                 sales_distribution.map do |child_id, distribution|
                     color_value = ColorGenerator.generate(distribution["total_revenue"],distribution["total_target_revenue"])
                     profit = distribution["total_revenue"] - distribution["total_cost"]
@@ -56,6 +56,17 @@ module Spree
                 end
             end
 
+            def ancestory_list(taxon)
+                ancestory = {}
+                taxon.ancestors.each do |t|
+                    if t.id == Spree::Admin::WeeklySales.category_taxon_id
+                        ancestory[t.name]= "/admin/assortment_map"
+                    else
+                        ancestory[t.name]= "/admin/assortment_map/#{t.id}/-4"
+                    end
+                end
+                ancestory
+            end
         end
     end
 end

@@ -5,8 +5,6 @@
                 <li style="background-color: <%= box.color%>">
             <a href="assortment_map/<%=box.id %>/-4">
                 <h2><%= box.label %></h2>
-                <ul class="util-bar group">
-                </ul>
                 <div class="pro-meter-wrapper">
                     <div class="pro-meter group">
                         <% if box.percent_revenue_difference < 0 %>
@@ -14,9 +12,14 @@
                     <% else %>
                             <span class="up"></span>
                     <% end %>
-                        <em><%= box.percent_revenue_difference %></em>
+                        <em><%= box.percent_revenue_difference %>%</em>
                     </div>
                 </div>
+                <ul class="util-bar">
+                    <li><%= box.value%></li>
+                    <li><%= box.total_target%></li>
+                    <li><%= box.total_units%></li>
+                </ul>
             </a>
             </li>
         <% end %>
