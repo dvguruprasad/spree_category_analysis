@@ -55,8 +55,8 @@ module Spree
 
 
               prom_data.each do|promotion_data|
-                start_date = has_valid_start_date(promotion_data) ? date_of_forecast.to_s : promotion_data[1][:start_date]
-                end_date = has_valid_end_date(promotion_data) ? date_of_forecast.to_s : promotion_data[1][:end_date]
+                start_date = has_valid_start_date(promotion_data) ? promotion_data[1][:start_date] : date_of_forecast.to_s
+                end_date = has_valid_end_date(promotion_data) ? promotion_data[1][:end_date] : date_of_forecast.to_s
                 @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
                 simulated_inventory_positions = @simulation_response.simulated_inventory_positions
                 inventory_positions.each_with_index do |inventory_position,index|
