@@ -53,7 +53,6 @@ module Spree
 
               inventory_positions = ProductWeeklyInventoryPosition.inventory_positions(weekly_sales,replenishments).map { |p| p.closing_position }
 
-
               prom_data.each do|promotion_data|
                 start_date = has_valid_start_date(promotion_data) ? promotion_data[1][:start_date] : date_of_forecast.to_s
                 end_date = has_valid_end_date(promotion_data) ? promotion_data[1][:end_date] : date_of_forecast.to_s
@@ -134,7 +133,7 @@ module Spree
                 (promo_start_index .. promo_end_index).each do |index|
                   calendar_promo_days << index
                   if(promo_end_index == index)
-                    @calendar_promotion_values [index] = percentage
+                    @calendar_promotion_values[index] = percentage
                   end
                 end
               end
@@ -178,7 +177,8 @@ module Spree
               last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
               weekly_last_year_revenue = revenue_numbers(last_year_sales)
               cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
-              stats_report = PeriodicStats.generate(weekly_sales)
+              stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)
+              stats_report = PeriodicStats.generate(weekly_sales, stock_out_date_before_promotion)
               ForecastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue,
                                  cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions,
                                  cumulative_last_year_revenue, weekly_last_year_revenue, date_of_forecast, stats_report)
@@ -197,22 +197,23 @@ module Spree
               last_year_sales = WeeklySales.sales_last_year(product, from_date, REPORTING_WINDOW)
               cumulative_last_year_revenue = cumulative_revenue(last_year_sales)
               weekly_last_year_revenue = revenue_numbers(last_year_sales)
-              stats_report = PeriodicStats.generate(weekly_sales)
+              stock_out_date_before_promotion = stock_out_date(inventory_positions, from_date)
+              stats_report = PeriodicStats.generate(weekly_sales, stock_out_date_before_promotion)
               PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_revenue, weekly_last_year_revenue, from_date, stats_report)
             end
 
             def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions)
               promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data_for_percentage)
               simulated_sales = PromotionCalculator.compute_simulated_promotional_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_percentage, inventory_positions)
-
               weekly_simulated_sales_units = simulated_sales.map { |s| s.sales_units }
               weekly_simulated_revenue = simulated_sales.map { |s| s.revenue }
               cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
               weekly_simulated_margin = simulated_sales.map { |s| s.margin }
               cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
               simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
+              stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)
               stock_out_date = stock_out_date(simulated_inventory_positions, date_of_forecast)
-              stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date)
+              stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date, stock_out_date_before_promotion)
               SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
             end
 
