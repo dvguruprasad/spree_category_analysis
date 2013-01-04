@@ -1,4 +1,4 @@
-<div class="promo-bubble" id="bubble<%=i%>" style="display:none">
+<div class="promo-bubble hidden" id="bubble<%=i%>" >
     <form class="promo-form" id="promo<%=i%>">
         <p class="prom-p">
         <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
@@ -16,7 +16,7 @@
             <input type="number" min="0" max="10"id="promotion_get<%=i%>" class="txt-box"></input>
         </label>
         </p>
-            <input type="button" class="ok_butotn" value="OK" />
+            <input type="button" class="ok_button" value="OK" />
             <input type="button" class="remove_button" value="Remove" />
 
     </form>
