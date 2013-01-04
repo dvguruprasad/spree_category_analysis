@@ -79,7 +79,7 @@ module Spree
               has_valid_promotional_data(promotion_data) && !promotion_data[1][:start_date].nil?
             end
 
-            def has_valid_start_date(promotion_data)
+            def has_valid_end_date(promotion_data)
               has_valid_promotional_data(promotion_data) && !promotion_data[1][:start_date].nil?
             end
 
