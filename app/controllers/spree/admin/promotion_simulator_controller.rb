@@ -42,7 +42,8 @@ module Spree
 
             def simulate
               prom_data = params[:promotion_data]
-              prom_data = [] if prom_data.nil?
+              
+              prom_data = [{}] if prom_data.nil?
               product_id = params[:product_id]
               product = Product.find_by_id(product_id)
               date_of_forecast = Date.parse(params[:forecast_date])
@@ -54,8 +55,8 @@ module Spree
 
 
               prom_data.each do|promotion_data|
-                start_date = promotion_data[1][:start_date]
-                end_date = promotion_data[1][:end_date]
+                start_date = has_valid_start_date(promotion_data) ? date_of_forecast.to_s : promotion_data[1][:start_date]
+                end_date = has_valid_end_date(promotion_data) ? date_of_forecast.to_s : promotion_data[1][:end_date]
                 @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
                 simulated_inventory_positions = @simulation_response.simulated_inventory_positions
                 inventory_positions.each_with_index do |inventory_position,index|
@@ -72,6 +73,18 @@ module Spree
               end
               @jsonres = @simulation_response.to_json
               respond_with(@jsonres)
+            end
+            
+            def has_valid_start_date(promotion_data)
+              has_valid_promotional_data(promotion_data) && !promotion_data[1][:start_date].nil?
+            end
+
+            def has_valid_start_date(promotion_data)
+              has_valid_promotional_data(promotion_data) && !promotion_data[1][:start_date].nil?
+            end
+
+            def has_valid_promotional_data(promotion_data)
+              !(promotion_data.nil? || promotion_data[1].nil? || promotion_data[1][:start_date].nil?)
             end
 
             def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)

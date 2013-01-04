@@ -97,14 +97,17 @@ module Spree
             end
 
             def self.compute_promotional_days (start_week_number,start_date,date_of_forecast,ending_week_number,end_date,index)
-                if(index == start_week_number)
-                    number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
-                elsif(index == ending_week_number)
-                    number_of_promotional_days =((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
-                else
-                    number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
-                end
-                number_of_promotional_days
+              if(index == start_week_number)
+                number_of_promotional_days =  NUMBER_OF_DAYS_IN_WEEK - ((start_date - date_of_forecast)%NUMBER_OF_DAYS_IN_WEEK)
+              elsif(index == ending_week_number)
+                days = ((end_date - date_of_forecast)+1)%NUMBER_OF_DAYS_IN_WEEK
+                number_of_promotional_days = days == 0 ? 7 : days 
+              elsif(index > start_week_number && index < ending_week_number)
+                number_of_promotional_days = NUMBER_OF_DAYS_IN_WEEK
+              else
+                number_of_promotional_days = 0
+              end
+              number_of_promotional_days
             end
 
             def self.daily_revenue_with_promotion(sale,promotion_percentage)
