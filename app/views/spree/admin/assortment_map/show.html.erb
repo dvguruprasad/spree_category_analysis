@@ -1,33 +1,36 @@
 <% content_for :head do %>
-    <%= javascript_tag "var list = #{@data}" %>;
-<%= javascript_tag "var type = '#{@type}'" %>;
-<%= javascript_tag "var year_to_date = #{@year_to_date}" %>;
-<%= stylesheet_link_tag "admin/pages/assortment_map/assortment_index" %>
-<%= stylesheet_link_tag "admin/pages/assortment_map/assortment_map" %>
-<%= stylesheet_link_tag "admin/common/common" %>
-<%= javascript_include_tag 'admin/tooltip' %>
-<%= javascript_include_tag 'admin/jquery-treemap' %>
-<%= javascript_include_tag "admin/assortment_map" %>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
+    <%= javascript_tag "var list = #{@data}" %>
+    <%= javascript_tag "var type = '#{@type}'" %>
+    <%= javascript_tag "var year_to_date = #{@year_to_date}" %>
+    <%= stylesheet_link_tag "admin/pages/assortment_map/assortment_index" %>
+    <%= stylesheet_link_tag "admin/pages/promotion_simulator/promotion_simulator" %>
+    <%= stylesheet_link_tag "admin/common/common" %>
+    <%= javascript_include_tag 'admin/tooltip' %>
+    <%= javascript_include_tag 'admin/jquery-treemap' %>
+    <%= javascript_include_tag "admin/assortment_map" %>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>
 <% end %>
+
 <% if !@data.nil? %>
     <div class="assortment_map_container">
     <%= render 'header' %>
+      <div class="weekly_range">
+        <div class="link-container" >
+          <a href='-1'>Last Week</a>
+          <a href='-4'>Last Four Weeks</a>
+          <a href='<%= @year_to_date%>'>Year to Date</a>
+          <a href='1'>Next Week</a>
+          <a href='4'>Next Four Weeks</a>
+        </div>
+      </div>
 </div>
-<div class="weekly_range">
-    <div class="link-container" >
-        <a href='-1'>Last Week</a>
-        <a href='-4'>Last Four Weeks</a>
-        <a href='<%= @year_to_date%>'>Year to Date</a>
-        <a href='1'>Next Week</a>
-        <a href='4'>Next Four Weeks</a>
-    </div>
+    <section>
+      <div id="categories">
+            <%= render 'legend'%>
+            <div id='treemap-div'></div>
+       </div>
 </div>
-
-<%= render 'legend'%>
-<div id='treemap-div'></div>
-</div>
-
+</section>
 <% else %>
 <div id='404' style="font-size:40px">ERROR Finding Taxon Information</div>
 <% end %>
