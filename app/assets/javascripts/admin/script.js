@@ -97,7 +97,6 @@ $(document).ready(function() {
         $("li.promotion_" + promotion_number).click(function(event){
             promotion_number = $(this).data("promotion-number");
             $(".promo-bubble.promotion_" + promotion_number).toggle(true);
-            return false;
         });
 
         $(parent.find('form.promo-form input.remove_button')).click(
@@ -107,19 +106,17 @@ $(document).ready(function() {
         }
         );
         console.log(parent.data("promotion-number"));
-        $(parent.find('form.promo-form input.ok_button.promotion_'+parent.data("promotion-number"))).click(
+        $(parent.find('form.promo-form input.ok_button')).click(
             function(){
             promotion_number = $(this).data("promotion-number");
             $(".promo-bubble.promotion_" + promotion_number).toggle(false);
             return false;
-
         }
         );
     });
     $("li.calendar_promo").click(function(event){
         promotion_number = $(this).data("promotion-number");
         $(".promo-bubble.promotion_" + promotion_number).toggle(true);
-        return false;
     });
 
 
@@ -155,16 +152,14 @@ $(document).ready(function() {
                         $("li.promotion_" + promotion_number).click(function(event){
                             promotion_number = $(this).data("promotion-number");
                             $(".promo-bubble.promotion_" + promotion_number).toggle(true);
-                            return false;
                         });
                         $(parent.find('form.promo-form input.remove_button')).click(
                             function(event){
                             promotion_number = $(this).data("promotion-number");
                             remove_promotion(promotion_number);
-                            return false;
                         }
                         );
-                        $(parent.find('form.promo-form input.ok_button.promotion_'+promotion_number)).click(
+                        $(parent.find('form.promo-form input.ok_button')).click(
                             function(event){
                             promotion_number = $(this).data("promotion-number");
                             console.log(promotion_number);
