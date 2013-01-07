@@ -2,6 +2,8 @@ module Spree
     module Admin
         NUMBER_OF_DAYS_IN_WEEK = 7
         REPORTING_WINDOW = 6 #TODO USEFUL if there is flexibility in choosing the reporting window
+        INVENTORY_THRESHOLD = 50 * 8.1
+
         class PromotionSimulatorController < Spree::Admin::BaseController
             respond_to :json, :html
             before_filter :validate_get, :only => [:index, :simulate]
@@ -220,20 +222,20 @@ module Spree
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
             end
 
-            def stock_out_date(simulated_inventory_positions, date_of_forecast)
+              def stock_out_date(simulated_inventory_positions, date_of_forecast)
                 simulated_inventory_positions.each_with_index do |simulated_inventory_position, index|
-                    if simulated_inventory_position < 0
-                        for i in 1..7
-                            previous_week_inventory_pos = simulated_inventory_positions[index - 1]
-                            incremental_inventories =  previous_week_inventory_pos - ((previous_week_inventory_pos-simulated_inventory_position)/7)*i
-                            if incremental_inventories < 0
-                                return (date_of_forecast+index*7+i)
-                            end
+                  if simulated_inventory_position < INVENTORY_THRESHOLD
+                    for i in 1..7
+                      previous_week_inventory_pos = simulated_inventory_positions[index - 1]
+                      incremental_inventories = previous_week_inventory_pos - ((previous_week_inventory_pos-simulated_inventory_position)/7)*i
+                        if incremental_inventories < INVENTORY_THRESHOLD
+                          return (date_of_forecast+index*7+i)
                         end
                     end
+                  end
                 end
                 return "-"
-            end
+              end
 
             def new_simulated_chart_data(quantity_chart, percentage_chart)
 

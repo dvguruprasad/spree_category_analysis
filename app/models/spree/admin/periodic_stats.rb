@@ -30,7 +30,7 @@ module Spree
                 simulated_revenue_variation = (simulated_revenue_sum - target_revenue).to_i
                 revenue_variation = (total_revenue - target_revenue ).to_i
                 total_cost =  WeeklySales.total_cost(weekly_sales)
-                gross_profit = (total_revenue - total_cost).to_i
+                gross_profit = (total_revenue - WeeklySales.total_cost(weekly_sales)).to_i
                 growth_over_previous_period = WeeklySales.growth_over_previous_period(weekly_sales, gross_profit).to_i
 
                 unit_cost =  weekly_sales[1].cost/weekly_sales[1].sales_units

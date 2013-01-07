@@ -56,7 +56,7 @@ module Spree
                 cost = cost_previous_period(start_time(weekly_sales), end_time(weekly_sales), weekly_sales.first.parent_id, weekly_sales.first.child_id)
 
                 previous_period_profit = revenue - cost
-                previous_period_profit
+              previous_period_profit
             end
 
             def self.total_target_revenue(weekly_sales)
