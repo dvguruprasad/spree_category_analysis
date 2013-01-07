@@ -238,3 +238,11 @@
   background-color: #EA26DC !important;
   border: 1px solid #C31820 !important;
 }
+
+.red-report{
+  color: RED;
+}
+
+.green-report{
+  color: GREEN;
+}
