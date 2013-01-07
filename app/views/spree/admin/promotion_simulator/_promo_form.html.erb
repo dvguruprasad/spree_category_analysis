@@ -1,7 +1,7 @@
 <div class="promo-bubble hidden" id="bubble<%=i%>" >
     <form class="promo-form" id="promo<%=i%>">
         <p class="prom-p">
-        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
+        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) <%=promotion_value.nil? ? "" : "disabled"%>> Quantity</label>
         <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) <%=promotion_value.nil? ? "" : "checked"%>> Percentage</label>
         </p>
         <p id="p_percentage<%=i%>" >
