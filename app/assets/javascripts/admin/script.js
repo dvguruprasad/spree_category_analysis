@@ -2,6 +2,22 @@ var startFlag = 0;
 var promotion_number = 0;
 $(document).ready(function() {
     var startDate, endDate,index;
+    var hoverBinder = function(){
+        $(".date-start , .date-sel, .date-end").hover(function(){
+        promotion_number = $(this).data("promotion-number");
+        type = $(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val();
+        console.log($(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val());
+        if(type == "Percentage"){
+            percentage = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_percentage]').val();
+            console.log(percentage);
+        }else{
+            buy = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_buy]').val();
+            get = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_get]').val();
+            console.log(buy);
+            console.log(get);
+        }
+    })};
+    hoverBinder();
     var preUntilAcrosSiblings = function(sel){
         if(sel.closest(".week_wrapper").find('.date-start').length){
             var obj= sel.prevUntil(".date-start");
@@ -37,14 +53,20 @@ $(document).ready(function() {
     $(".calendar_promo.date-end").each(function(index,value){
         var parent = $(value);
         promotion_number += 1;
-        //var precodes= preUntilAcrosSiblings(parent);
-        //add_promotion_details(precodes);
-
         add_promotion_details(parent);
         add_promotion_details(parent.find('form.promo-form'));
         add_promotion_details(parent.find('form.promo-form input.remove_button'));
         add_promotion_details(parent.find('form.promo-form input.ok_button'));
         add_promotion_details(parent.find('.promo-bubble'));
+        var precodes= preUntilAcrosSiblings(parent);
+        add_promotion_details(precodes.first().prev());
+        add_promotion_details(precodes);
+        $("li.promotion_" + promotion_number).click(function(event){
+            promotion_number = $(this).data("promotion-number");
+            $(".promo-bubble.promotion_" + promotion_number).toggle(true);
+            return false;
+        });
+
         $(parent.find('form.promo-form input.remove_button')).click(
             function(){
             promotion_number = $(this).data("promotion-number");
@@ -55,7 +77,7 @@ $(document).ready(function() {
         $(parent.find('form.promo-form input.ok_button.promotion_'+parent.data("promotion-number"))).click(
             function(){
             promotion_number = $(this).data("promotion-number");
-            $(".promo-bubble.promotion_" + promotion_number).toggle(true);
+            $(".promo-bubble.promotion_" + promotion_number).toggle(false);
             return false;
 
         }
@@ -117,6 +139,7 @@ $(document).ready(function() {
                             return false;
                         }
                         );
+                        hoverBinder();
 
                     }
                     else{

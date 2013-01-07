@@ -23,19 +23,21 @@ function show_percentage(i){
         <% slice.each do |i| %>
             <% if(counter%7==0)  %>
                 <div style="display:none">
-                  <%=class_name = @calendar_promotion_values.has_key?(i) ? ' calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                <% class_name = @calendar_promotion_values.has_key?(i) ? "calendar_promo date-#{@calendar_promotion_values[i].last}" : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                  <% promotion_value = @calendar_promotion_values[i].first if @calendar_promotion_values.has_key?(i) %>
                 </div>
                 <li class="week-start wk_<%=counter/7%> <%=class_name%> ">
                 <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
+                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i, :promotion_value => promotion_value } %>
                 </li>
             <%  else  %>
                 <div style="display:none">
-                  <%=class_name = @calendar_promotion_values.has_key?(i) ? 'calendar_promo  date-sel date-end' : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                  <% class_name = @calendar_promotion_values.has_key?(i) ? "calendar_promo date-#{@calendar_promotion_values[i].last}" : @calendar_promotion_list.include?(i) ? 'calendar_promo  date-sel' : '' %>
+                  <% promotion_value = @calendar_promotion_values[i].first if @calendar_promotion_values.has_key?(i) %>
                 </div>
                 <li class="<%=class_name%>">
                 <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
-                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i}%>
+                <%= render :partial => 'promo_form', :locals => {:index => index, :i => i , :promotion_value => promotion_value }%>
                 </li>
             <% end %>
             <% counter = counter+1 %>
