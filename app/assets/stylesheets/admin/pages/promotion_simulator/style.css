@@ -188,13 +188,49 @@
 .pull-right {
   float: right;
 }
+.promo-wrapper{
+    padding:0px 8px 0px 8px;
+}
+.promo-wrapper input{
+    margin-left:1px;
+}
+
+.promo-wrapper p{
+    margin-bottom: 7px;
+}
+.promo-btn{
+    background: #FCE388;
+    padding: 4px 0px;
+    border-top: 1px solid #AA9966;
+}
+
+.promo-btn input{
+    border-radius:5px;
+    margin:0px 5px;
+    color: #ffffff;
+    padding:4px 7px;
+    background-image: linear-gradient(bottom, rgb(60,60,58) 15%, rgb(90,90,87) 58%, rgb(117,117,114) 79%);
+    background-image: -o-linear-gradient(bottom, rgb(60,60,58) 15%, rgb(90,90,87) 58%, rgb(117,117,114) 79%);
+    background-image: -moz-linear-gradient(bottom, rgb(60,60,58) 15%, rgb(90,90,87) 58%, rgb(117,117,114) 79%);
+    background-image: -webkit-linear-gradient(bottom, rgb(60,60,58) 15%, rgb(90,90,87) 58%, rgb(117,117,114) 79%);
+    background-image: -ms-linear-gradient(bottom, rgb(60,60,58) 15%, rgb(90,90,87) 58%, rgb(117,117,114) 79%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.15, rgb(60,60,58)),
+        color-stop(0.58, rgb(90,90,87)),
+        color-stop(0.79, rgb(117,117,114))
+    );
+}
 .promo-bubble {
   z-index:99999;
   position: absolute;
   top: 20px;
   left: -90px;
-  padding: 10px;
-  width: 180px;
+  padding: 10px 0px 1px 0px;
+  width: 200px;
   -ms-box-sizing: 'border-box';
   -moz-box-sizing: 'border-box';
   -webkit-box-sizing: 'border-box';

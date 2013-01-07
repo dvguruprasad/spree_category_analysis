@@ -1,20 +1,30 @@
 <div class="promo-bubble hidden" id="bubble<%=i%>" >
-    <form class="promo-form" id="promo<%=i%>">
-        <p class="prom-p">
-        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
-        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) <%=promotion_value.nil? ? "" : "checked"%> > Percentage</label>
+    <form class="promo-form clearfix" id="promo<%=i%>">
+      <div class="promo-wrapper clearfix">
+        <p class="prom-p clearfix">
+          <span class="fl"><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>)><label> Quantity</label></span>
+
+          <span class="fr"><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) <%=promotion_value.nil? ? "" : "checked"%> > <label>Percentage</label></span>
+
         </p>
-        <p id="p_percentage<%=i%>">
-        <label for="promotion_percentage<%=i%>"> Percentage</label>
-          <input type="number" min="0" max="100" id="promotion_percentage<%=i%>" class="txt-box" value=<%= promotion_value%>>
+        <p id="p_percentage<%=i%>" class="clearfix">
+          <span class="fl">
+                <label for="promotion_percentage<%=i%>"> Percentage</label>
+                <input type="number" min="0" max="100" id="promotion_percentage<%=i%>" class="txt-box" value=<%= promotion_value%>>
+          </span>
         </p>
-        <p id="p_quantity<%=i%>" style="display:none;float: left;">
-        <label for="promotion_buy<%=i%>" > Buy</label>
-          <input type="number" min="0" max="10" id="promotion_buy<%=i%>" class="txt-box"></input>
-        <label for="promotion_get<%=i%>" class="get-label" > Get free</label>
-          <input type="number" min="0" max="10"id="promotion_get<%=i%>" class="txt-box"></input>
+        <p id="p_quantity<%=i%>" style="display:none;" class="clearfix">
+         <span class="fl">
+            <label for="promotion_buy<%=i%>" > Buy</label>
+            <input type="number" min="0" max="10" id="promotion_buy<%=i%>" class="txt-box"></input>
+         </span>
+          <span class="fr">
+            <label for="promotion_get<%=i%>" class="get-label" > Get free</label>
+            <input type="number" min="0" max="10"id="promotion_get<%=i%>" class="txt-box"></input>
+          </span>
         </p>
-      <div class="clear">
+      </div>
+      <div class="clear promo-btn">
             <input type="button" class="ok_button" value="OK" />
             <input type="button" class="remove_button" value="Remove" />
       </div>
