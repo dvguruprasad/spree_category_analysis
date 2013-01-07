@@ -16,7 +16,8 @@ $(function () {
         <%#color: '#FF33CC',%>
         type:'line',
         yAxis:0,
-        data:response.weekly_revenue
+        data:response.weekly_revenue,
+        lineWidth: 4
     },
     {
         name:'Profit',
@@ -126,16 +127,16 @@ $(function () {
                 success: function(response) {
                     show_sales_statistics(response.stats_report);
                     if(current_view == "cumulative"){
-                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue, 4);
                         weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue,4);
                         cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
                         set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart);
                     }
                     else if(current_view == "weekly"){
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue);
+                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue,4);
                         cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue);
+                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue,4);
                         weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
                         set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);
                     }

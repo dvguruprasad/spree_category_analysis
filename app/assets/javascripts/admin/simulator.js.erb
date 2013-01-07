@@ -76,7 +76,8 @@ var ReportChart = function(view) {
         this.draw();
     };
 
-    this.create_or_replace = function(name, value) {
+    this.create_or_replace = function(name, value, lineWidth) {
+        width = lineWidth || 2;
         console.log(name + value+" this is i found");
         index = this.find_chart(name);
         value_chart = this.series[this.current_view][index]
@@ -96,7 +97,8 @@ var ReportChart = function(view) {
                 name: name,
                 type: "line",
                 yAxis: 0,
-                dashStyle: 'Dash'
+                dashStyle: 'Dash',
+                lineWidth: width
             });
             this.redraw();
         }
