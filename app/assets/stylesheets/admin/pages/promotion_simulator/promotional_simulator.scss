@@ -1,5 +1,6 @@
 @import "admin/lib/utils";
 
+
 .psm_header{
   padding: 5px 10px 5px 10px;
   background:#f0f0f0;
@@ -74,7 +75,7 @@
 
 .psm_graph_container{
     width:100%;
-    padding-top:30px;
+    padding:25px 0px 20px 0px;
     .growth-note{
       float: left;
     }
@@ -120,7 +121,7 @@
 
 }
 #content #simulate{
-  @include linear-gradient($startColor: #75D6F4, $stopColor: #1DC2F0);
+  @include linear-gradient($startColor: #3B5998, $stopColor: #35aae0);
   color:#ffffff;
   padding:5px 10px;
   font-size: 1.2em;
@@ -139,7 +140,7 @@
   float:left;
 }
 #content a#simulate:hover{
-  @include linear-gradient($startColor: #1DC2F0, $stopColor: #8BDBF5);
+  @include linear-gradient($startColor: #35aae0, $stopColor: #3B5998);
 }
 
 #back-forward a:hover{

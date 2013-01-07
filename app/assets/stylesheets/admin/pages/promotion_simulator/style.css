@@ -209,7 +209,7 @@
   background-clip: padding-box;
 }
 .promo-bubble .txt-box {
-  width: 25px;
+  width: 40px;
 }
 .promo-bubble :after {
   content: "";
