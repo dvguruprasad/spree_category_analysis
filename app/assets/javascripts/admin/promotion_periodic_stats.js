@@ -12,6 +12,7 @@ var show_sales_statistics = function (report) {
     var simulated_profit = document.getElementById('simulated_profit');
     var simulated_revenue_variation = document.getElementById('simulated_revenue_variation');
     var Stock_out_date_before_promotion = document.getElementById('Stock_out_date_before_promotion');
+    var target_sales_in_simulation = document.getElementById('target_sales_in_simulation');
 
 
     total_sales.innerHTML = report.total_sales + " " + "(" + report.growth_over_previous_period + "%" + ")"+"*"
@@ -21,6 +22,7 @@ var show_sales_statistics = function (report) {
     Stock_out_date_before_promotion.innerHTML = report.stock_out_date_before_promotion
     if (mode == "simulation") {
         simulated_revenue.innerHTML = report.simulated_revenue
+        target_sales_in_simulation.innerHTML = report.target_sales
         simulated_profit.innerHTML = report.simulated_profit
         revenue_change.innerHTML = report.promotional_revenue_change
         profit_change.innerHTML = report.promotional_profit_change

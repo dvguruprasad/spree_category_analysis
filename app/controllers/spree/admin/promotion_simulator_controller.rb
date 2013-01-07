@@ -3,7 +3,6 @@ module Spree
         NUMBER_OF_DAYS_IN_WEEK = 7
         REPORTING_WINDOW = 6 #TODO USEFUL if there is flexibility in choosing the reporting window
         INVENTORY_THRESHOLD = 50 * 8.1
-
         class PromotionSimulatorController < Spree::Admin::BaseController
             respond_to :json, :html
             before_filter :validate_get, :only => [:index, :simulate]
@@ -49,7 +48,8 @@ module Spree
                 product_id = params[:product_id]
                 product = Product.find_by_id(product_id)
                 date_of_forecast = Date.parse(params[:forecast_date])
-                return "{}" if product.nil? 
+                return "{}" if product.nil?
+                initial_weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
                 weekly_sales = WeeklySales.sales_including_forecasts(product_id, date_of_forecast, REPORTING_WINDOW)
                 replenishments = params[:replenishment].collect{|x| x.to_i}
 
@@ -58,7 +58,7 @@ module Spree
                 prom_data.each do|promotion_data|
                     start_date = has_valid_start_date(promotion_data) ? promotion_data[1][:start_date] : date_of_forecast.to_s
                     end_date = has_valid_end_date(promotion_data) ? promotion_data[1][:end_date] : date_of_forecast.to_s
-                    @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
+                    @simulation_response = percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,initial_weekly_sales,start_date,end_date)
                     simulated_inventory_positions = @simulation_response.simulated_inventory_positions
                     inventory_positions.each_with_index do |inventory_position,index|
                         inventory_position = simulated_inventory_positions[index]
@@ -88,7 +88,7 @@ module Spree
                 !(promotion_data.nil? || promotion_data[1].nil? || promotion_data[1][:start_date].nil?)
             end
 
-            def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,start_date,end_date)
+            def percentage_promotion(product, product_id, promotion_data, date_of_forecast,inventory_positions,weekly_sales,weekly_sales_initial,start_date,end_date)
                 if(promotion_data[1].nil? || start_date.nil?)
                     start_date =   Date.today
                 else
@@ -99,7 +99,7 @@ module Spree
                 else
                     end_date =   Date.parse(end_date)
                 end
-                create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
+                create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
             end
 
             def ancestory_list(product)
@@ -206,7 +206,7 @@ module Spree
                 PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_revenue, weekly_last_year_revenue, from_date, stats_report)
             end
 
-            def create_simulation_chart_data(product, weekly_sales, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions)
+            def create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions)
                 promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data_for_percentage)
                 simulated_sales = PromotionCalculator.compute_simulated_promotional_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_percentage, inventory_positions)
 
@@ -218,7 +218,7 @@ module Spree
                 simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
                 stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)
                 stock_out_date = stock_out_date(simulated_inventory_positions, date_of_forecast)
-                stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date, stock_out_date_before_promotion)
+                stats_report = PeriodicStats.generate_with_promotion(weekly_sales,weekly_sales_initial, simulated_sales, stock_out_date, stock_out_date_before_promotion)
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
             end
 
