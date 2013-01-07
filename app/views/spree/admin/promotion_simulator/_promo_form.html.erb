@@ -1,8 +1,8 @@
 <div class="promo-bubble hidden" id="bubble<%=i%>" >
     <form class="promo-form" id="promo<%=i%>">
         <p class="prom-p">
-         <input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>)><label> Quantity</label>
-        <input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) > <label>Percentage</label>
+        <label><input id="quantity<%=i%>" class="promo-radio" type="radio" name="group1" value="Quantity" onclick=show_quantity(<%=i%>) > Quantity</label>
+        <label><input id="percentage<%=i%>" class="promo-radio" type="radio" name="group1" value="Percentage" onclick=show_percentage(<%=i%>) <%=promotion_value.nil? ? "" : "checked"%> > Percentage</label>
         </p>
         <p id="p_percentage<%=i%>">
         <label for="promotion_percentage<%=i%>"> Percentage</label>
