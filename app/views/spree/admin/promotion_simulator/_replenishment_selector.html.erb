@@ -2,7 +2,7 @@
 <div class="replenishment-select-box clear">
         <% for i in 0..5 %>
             <div class="psm_col"><input class="spinner" type="number" min="0" max="1000" step="50" data-week='<%= i %>' name="<%= "replenishment_week_" + i.to_s %>" value=<%= @replenishments[i]%> />
-            <div class="replenishment-info">1000</div>
+              <div class="replenishment-info"><%=@replenishments[i]%></div>
             </div>
     <% end %>
 </div>
