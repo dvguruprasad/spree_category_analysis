@@ -63,4 +63,23 @@ h3{
 .slider_date {
     display: none;
 }
+.tooltip-ul{
+  padding:0px;
+  list-style-type:none;
+}
+.tooltip-ul li{
+  line-height:1.2em;
+}
+
+.left-label{
+  clear:both;
+  width:50%;
+  text-align: right;
+  float:left;
+}
+.right-label{
+  width:45%;
+  margin-left: 5px;
+  float:left;
+}
 

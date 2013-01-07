@@ -27,7 +27,7 @@ function show_percentage(i){
                   <% promotion_value = @calendar_promotion_values[i].first if @calendar_promotion_values.has_key?(i) %>
                 </div>
                 <li class="week-start wk_<%=counter/7%> <%=class_name%> ">
-                <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+                <a href="javascript:void(0);"  class="date w<%=index%>" title="<%= (@date_of_forecast + counter).strftime("%d-%b-%Y")%>"></a><div class="slider_date"><%=i%></div>
                 <%= render :partial => 'promo_form', :locals => {:index => index, :i => i, :promotion_value => promotion_value } %>
                 </li>
             <%  else  %>
@@ -36,7 +36,7 @@ function show_percentage(i){
                   <% promotion_value = @calendar_promotion_values[i].first if @calendar_promotion_values.has_key?(i) %>
                 </div>
                 <li class="<%=class_name%>">
-                <a href="javascript:void(0);"  class="date w<%=index%>" title="dd/mm/yyyyy"></a><div class="slider_date"><%=i%></div>
+                <a href="javascript:void(0);"  class="date w<%=index%>" title="<%= (@date_of_forecast + counter).strftime("%d-%b-%Y")%>"></a><div class="slider_date"><%=i%></div>
                 <%= render :partial => 'promo_form', :locals => {:index => index, :i => i , :promotion_value => promotion_value }%>
                 </li>
             <% end %>

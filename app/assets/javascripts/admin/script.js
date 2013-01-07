@@ -3,21 +3,54 @@ var promotion_number = 0;
 $(document).ready(function() {
     var startDate, endDate,index;
     var hoverBinder = function(){
-        $(".date-start , .date-sel, .date-end").hover(function(){
-        promotion_number = $(this).data("promotion-number");
-        type = $(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val();
-//        console.log($(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val());
-        if(type == "Percentage"){
-            percentage = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_percentage]').val();
-//            console.log(percentage);
-        }else{
-            buy = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_buy]').val();
-            get = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_get]').val();
-            console.log(buy);
-            console.log(get);
+        for(i=1;i<=promotion_number;i++){
+            console.log(i);
+            selected = $(".date-start , .date-sel, .date-end").siblings(".promotion_"+i.toString());
+            type = $(".date-end.promotion_" + i.toString()).find("form input:radio[name=group1]:checked").val();
+            duration = selected.siblings("li.date-start").find("a").attr("title")+ ' to ' + selected.siblings("li.date-end").find("a").attr("title");
+            durationLabel = "<li><p class='left-label'>Period:</p><p class='right-label'>"+duration+"</p></li>";
+            var hoverData = "";
+            if(type == "Percentage"){
+                percentage = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_percentage]').val();
+                typeLabel = "<li><p class='left-label'>Type:</p> <p class='right-label'>" + type +"</p></li>";
+                percentageLabel = "<li><p class='left-label'> Value:</p> <p class='right-label'>" + percentage.toString() +"</p></li>";
+                hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+percentageLabel+"</ul></div>"
+            }else{
+                buy = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_buy]').val();
+                get = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_get]').val();
+                typeLabel = "<li><p class='left-label'>Type:</p> <p class='right-label'>" + type +"</p></li>";
+                offerLabel = "<li><p class='left-label'> Value:</p> <p class='right-label'> Buy " + buy.toString() + "and Get "+get.toString()+"</p></li>";
+                hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+offerLabel+"</ul></div>"
+            }
+
+            $(selected).qtip({
+                content:hoverData,
+                style: {
+                    width: 200,
+                    border: {
+                        width: 2,
+                        radius: 3,
+                        color: '#262626'
+                    },
+                    tip: { // Now an object instead of a string
+                        corner: 'bottomLeft', // We declare our corner within the object using the corner sub-option
+                    },
+                    padding: 5,
+                    textAlign: 'left',
+                    //tip: 'auto',
+                    // Give it a speech bubble tip with automatic corner detection
+                    background: '#262626',//children[i].style.backgroundColor,// Style it according to the preset 'cream' style
+                    color: '#E5E2CF'
+                },
+                position: {
+                    corner: {
+                        target: 'center',
+                        tooltip: 'bottomLeft'
+                    }
+                }
+            });
         }
-    })};
-    hoverBinder();
+        }
     var preUntilAcrosSiblings = function(sel){
         if(sel.closest(".week_wrapper").find('.date-start').length){
             var obj= sel.prevUntil(".date-start");
@@ -90,6 +123,7 @@ $(document).ready(function() {
     });
 
 
+    hoverBinder();
     $(".range-sel-box li a").on("click", function(){
         var parent = $(this).parent();
 
@@ -133,8 +167,8 @@ $(document).ready(function() {
                         $(parent.find('form.promo-form input.ok_button.promotion_'+promotion_number)).click(
                             function(event){
                             promotion_number = $(this).data("promotion-number");
-//                            console.log(promotion_number);
-//                            console.log('.promo-bubble.hidden.promotion_'+promotion_number);
+                            console.log(promotion_number);
+                            console.log('.promo-bubble.hidden.promotion_'+promotion_number);
                             $('.promo-bubble.promotion_'+promotion_number).toggle(false);
                             return false;
                         }
