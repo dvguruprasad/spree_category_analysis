@@ -3,15 +3,12 @@
 
 <%= stylesheet_link_tag "admin/pages/promotion_simulator/promotional_simulator"%>
 <div class="range-sel-box">
-  <span class="period-txt">Period:</span>
-  <div class="range-sel-wrapper clear">
-    <ul>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-      <li class="psm_col">14-Jan-2013<br/> to<br/>20-jan-2013</li>
-    </ul>
-  </div>
+    <span class="range-txt">Period:</span>
+    <div class="range-sel-wrapper clear">
+        <ul>
+            <% (0..5).each do |i|%>
+                <li class="psm_col"><%= (@date_of_forecast + 7*i).strftime('%d %b %y')%><br/> to<br/><%= (@date_of_forecast + 7*i + 6 ).strftime('%d %b %y')%></li>
+        <% end %>
+        </ul>
+    </div>
 </div>

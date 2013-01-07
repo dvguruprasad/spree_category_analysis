@@ -37,7 +37,7 @@ module Spree
                 calendar_promotions = product.possible_promotions
                 @calendar_promotion_list = map_calendar_promotions(calendar_promotions,@date_of_forecast)
 
-                @promotion_period = @date_of_forecast.to_s + " to " + (@date_of_forecast + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK - 1).to_s
+                @promotion_period = @date_of_forecast.strftime('%d %b %y') + " to " + (@date_of_forecast + REPORTING_WINDOW * NUMBER_OF_DAYS_IN_WEEK - 1).strftime('%d %b %y')
                 @ancestory = ancestory_list(product)
                 respond_with(@jsonrep)
             end

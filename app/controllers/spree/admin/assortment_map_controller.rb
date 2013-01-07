@@ -41,7 +41,7 @@ module Spree
                     profit_change = distribution["previous_period_profit"]
                     @legend = ColorGenerator.legend
                     permalink = "#"
-                    permalink = "/admin/assortment_map/#{child_id}/-4" if @type == "taxon"
+                    permalink = "/admin/assortment_map/#{child_id}/-4" if @type == "taxon" and has_assortment_map?(child_id)
                     p "###################### profits now:#{profit }   last period profits: #{profit_last_period}"
                     AssortmentReport.new(child_id,distribution["total_revenue"].round(2),label,'#' + color_value, distribution["total_target_revenue"],profit.round(2), revenue_change.round(2), revenue_difference.round(2),profit_change.round(2), distribution["total_units"], permalink)
                 end
@@ -61,11 +61,23 @@ module Spree
                 taxon.ancestors.each do |t|
                     if t.id == Spree::Admin::WeeklySales.category_taxon_id
                         ancestory[t.name]= "/admin/assortment_map"
-                    else
+                    elsif has_assortment_map?(t.id)
                         ancestory[t.name]= "/admin/assortment_map/#{t.id}/-4"
+                    else
+                        ancestory[t.name] = "#"
                     end
                 end
+                if taxon.id == Spree::Admin::WeeklySales.category_taxon_id
+                    ancestory[taxon.name]= "/admin/assortment_map"
+                elsif has_assortment_map?(taxon.id)
+                    ancestory[taxon.name]= "/admin/assortment_map/#{taxon.id}/-4"
+                else
+                    ancestory[taxon.name] = "#"
+                end
                 ancestory
+            end
+            def has_assortment_map?(taxon_id)
+                !Spree::Admin::WeeklySales.find_by_parent_id(taxon_id).nil?
             end
         end
     end

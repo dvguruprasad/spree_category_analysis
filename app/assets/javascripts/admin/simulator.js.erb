@@ -13,43 +13,37 @@ var ReportChart = function(view) {
             enabled:false
         },
         xAxis: [{
+            categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6']
+        }],
+        yAxis: [{ // Primary yAxis
             labels: {
-              formatter:  function(){
-                boo = response.date_of_forecast ? get_legend_date(response.date_of_forecast, this.value) : get_legend_date(response.from_date, this.value);
-                return boo;
-              }
-
-            },
-            categories: ['0', '1', '2', '3', '4', '5']}],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value;
-                    },
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: '<%= Spree::Config[:currency] %>',
-                    style: {
-                        color: '#89A54E'
-                    }
-                }}
-            ],
-            tooltip: {
                 formatter: function() {
-                    return '' + this.x + ': ' + this.y + ' ' + '<%= Spree::Config[:currency] %>';
+                    return this.value;
+                },
+                style: {
+                    color: '#89A54E'
                 }
             },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
-            series: this.series[this.current_view]
+            title: {
+                text: '<%= Spree::Config[:currency] %>',
+                style: {
+                    color: '#89A54E'
+                }
+            }}
+        ],
+        tooltip: {
+            formatter: function() {
+                return '' + this.x + ': ' + this.y + ' ' + '<%= Spree::Config[:currency] %>';
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            floating: true,
+            backgroundColor: '#FFFFFF'
+        },
+        series: this.series[this.current_view]
     };
 
     this.add_series = function(series_object){

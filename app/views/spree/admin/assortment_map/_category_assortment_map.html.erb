@@ -4,7 +4,7 @@
         <ul class="group">
             <% for box in @data%>
                 <li style="background-color: <%= box.color%>">
-            <a href="assortment_map/<%=box.id %>/-4">
+            <a href="<%=box.permalink %>">
                 <h2><%= box.label %></h2>
                 <div class="pro-meter-wrapper">
                     <div class="pro-meter group">
