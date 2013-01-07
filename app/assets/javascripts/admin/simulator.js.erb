@@ -76,10 +76,10 @@ var ReportChart = function(view) {
     };
 
     this.create_or_replace = function(name, value) {
-        console.log(name + value);
+        console.log(name + value+" this is i found");
         index = this.find_chart(name);
         value_chart = this.series[this.current_view][index]
-        console.log(value_chart);
+//        console.log(value_chart);
         if (value_chart) {
             if(value_chart.name == "Inventory"){
                 this.setDataFor(index, this.inventory_chart_object(value));

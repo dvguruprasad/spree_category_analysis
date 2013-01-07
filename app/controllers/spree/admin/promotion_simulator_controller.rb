@@ -216,7 +216,7 @@ module Spree
                 simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
                 stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)
                 stock_out_date = stock_out_date(simulated_inventory_positions, date_of_forecast)
-                stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date)
+                stats_report = PeriodicStats.generate_with_promotion(weekly_sales, simulated_sales, stock_out_date, stock_out_date_before_promotion)
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
             end
 

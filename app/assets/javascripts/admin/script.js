@@ -6,10 +6,10 @@ $(document).ready(function() {
         $(".date-start , .date-sel, .date-end").hover(function(){
         promotion_number = $(this).data("promotion-number");
         type = $(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val();
-        console.log($(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val());
+//        console.log($(".date-end.promotion_" + promotion_number).find("form input:radio[name=group1]:checked").val());
         if(type == "Percentage"){
             percentage = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_percentage]').val();
-            console.log(percentage);
+//            console.log(percentage);
         }else{
             buy = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_buy]').val();
             get = $(".date-end.promotion_" + promotion_number).find('form input[id^=promotion_get]').val();
@@ -133,8 +133,8 @@ $(document).ready(function() {
                         $(parent.find('form.promo-form input.ok_button.promotion_'+promotion_number)).click(
                             function(event){
                             promotion_number = $(this).data("promotion-number");
-                            console.log(promotion_number);
-                            console.log('.promo-bubble.hidden.promotion_'+promotion_number);
+//                            console.log(promotion_number);
+//                            console.log('.promo-bubble.hidden.promotion_'+promotion_number);
                             $('.promo-bubble.promotion_'+promotion_number).toggle(false);
                             return false;
                         }
