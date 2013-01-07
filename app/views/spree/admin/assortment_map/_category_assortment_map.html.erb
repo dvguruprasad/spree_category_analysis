@@ -1,6 +1,6 @@
 <section>
     <div id="categories">
-      <div class="categories_date" ><%= @period %> </div>
+        <div class="categories_date" ><%= @period %> </div>
         <ul class="group">
             <% for box in @data%>
                 <li style="background-color: <%= box.color%>">
@@ -13,7 +13,7 @@
                     <% else %>
                             <span class="up"></span>
                     <% end %>
-                        <em><%= box.percent_revenue_difference %>%</em>
+                        <em><%= box.percent_revenue_difference * 100 %>%</em>
                     </div>
                 </div>
                 <ul class="util-bar">

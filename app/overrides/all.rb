@@ -6,5 +6,5 @@ Deface::Override.new(:virtual_path => "spree/layouts/admin",
 Deface::Override.new(:virtual_path => "spree/layouts/admin",
                      :name => "assortment_map",
                      :insert_bottom => "[data-hook='admin_tabs']",
-                     :text => '<li><a href="/admin/assortment_map">Assortment Map</a></li>')
+                     :text => '<li><a href="/admin/assortment_map">Category Analysis</a></li>')
 

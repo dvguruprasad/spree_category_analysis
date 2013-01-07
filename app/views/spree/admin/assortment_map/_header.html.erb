@@ -5,9 +5,9 @@
             <ul>
                 <% for name,url in @ancestory%>
                     <% if name == @ancestory.keys.last %>
-                        <li><a class="active" href="<%= url%>"><span><%= name%></span><span class="d_arrow"></span></a></li>
+                    <li><a class="active" href="<%= url%>"><span><%= name%></span><span class="d_arrow"></span></a></li>
             <%else%>
-                <li><a href="<%= url %>"><span><%= name%></span><span class="d_arrow"></span></a></li>
+                    <li><a href="<%= url %>"><span><%= name%></span><span class="d_arrow"></span></a></li>
             <% end %>
             <% end %>
             </ul>
@@ -20,3 +20,4 @@
         </div>
     </div>
 </div>
+

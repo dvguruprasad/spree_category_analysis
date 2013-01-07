@@ -110,6 +110,7 @@ $(document).ready(function() {
             function(){
             promotion_number = $(this).data("promotion-number");
             $(".promo-bubble.promotion_" + promotion_number).toggle(false);
+            hoverBinder();
             return false;
         }
         );
@@ -165,6 +166,7 @@ $(document).ready(function() {
                             console.log(promotion_number);
                             console.log('.promo-bubble.hidden.promotion_'+promotion_number);
                             $('.promo-bubble.promotion_'+promotion_number).toggle(false);
+                            hoverBinder();
                             return false;
                         }
                         );
