@@ -4,6 +4,12 @@ $(function(){
         $('div#treemap-div').treemap(list, {
             backgroundColor:function (node, box) {
                 return node.color;
+            },
+            click:function (node, box) {
+                if(node.permalink == "#" && type == "taxon")
+                    {
+                        alert("Data Not Available");
+                    }
             }
         });
     }

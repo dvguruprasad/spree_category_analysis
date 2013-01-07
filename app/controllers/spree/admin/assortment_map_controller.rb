@@ -60,7 +60,7 @@ module Spree
                 ancestory = {}
                 taxon.ancestors.each do |t|
                     if t.id == Spree::Admin::WeeklySales.category_taxon_id
-                        ancestory[t.name]= "/admin/assortment_map"
+                        ancestory["Home"]= "/admin/assortment_map"
                     elsif has_assortment_map?(t.id)
                         ancestory[t.name]= "/admin/assortment_map/#{t.id}/-4"
                     else
@@ -68,7 +68,7 @@ module Spree
                     end
                 end
                 if taxon.id == Spree::Admin::WeeklySales.category_taxon_id
-                    ancestory[taxon.name]= "/admin/assortment_map"
+                    ancestory["Home"]= "/admin/assortment_map"
                 elsif has_assortment_map?(taxon.id)
                     ancestory[taxon.name]= "/admin/assortment_map/#{taxon.id}/-4"
                 else
