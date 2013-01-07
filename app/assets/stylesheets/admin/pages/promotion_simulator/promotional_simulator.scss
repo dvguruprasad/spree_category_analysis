@@ -127,6 +127,17 @@
   border:1px solid #1DC2F0;
   font-weight:normal;
 }
+.psm-left-label{
+  clear:both;
+  width:20%;
+  text-align: right;
+  float:left;
+}
+.psm-right-label{
+  width:75%;
+  margin-left: 5px;
+  float:left;
+}
 #content a#simulate:hover{
   @include linear-gradient($startColor: #1DC2F0, $stopColor: #8BDBF5);
 }

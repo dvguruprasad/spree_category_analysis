@@ -65,6 +65,7 @@ h3{
 }
 .tooltip-ul{
   padding:0px;
+   margin: 0px;
   list-style-type:none;
 }
 .tooltip-ul li{

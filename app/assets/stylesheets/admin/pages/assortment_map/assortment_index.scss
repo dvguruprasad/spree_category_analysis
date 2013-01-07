@@ -9,13 +9,6 @@ html {
   body {
     section {
       position: relative;
-      .categories_date{
-        position: absolute;
-        left:10px;
-        top:10px;
-        font-weight:bold;
-        color:#C60F0F;
-      }
       #categories {
         width: 61%;
         margin: 0 auto;
@@ -113,6 +106,13 @@ html {
     }
 
   }
+}
+.categories_date{
+  position: absolute;
+  left:10px;
+  top:10px;
+  font-weight:bold;
+  color:#C60F0F;
 }
 div.legend-scale{
   position:absolute;
