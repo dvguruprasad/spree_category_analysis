@@ -6,7 +6,8 @@ var ReportChart = function(view) {
     this.chart_options = {
         chart: {
             renderTo: 'container',
-            zoomType: 'xy'
+            zoomType: 'xy',
+            marginRight:180
         },
         xAxis: [{
             labels: {
@@ -41,8 +42,8 @@ var ReportChart = function(view) {
             legend: {
                 layout: 'vertical',
                 align: 'right',
-                horizontalAlign: 'right',
-                floating: false,
+                verticalAlign: 'top',
+                floating: true,
                 backgroundColor: '#FFFFFF'
             },
             series: this.series[this.current_view]

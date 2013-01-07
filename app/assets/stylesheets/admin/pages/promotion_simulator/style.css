@@ -6,12 +6,17 @@
   ---------------------------------------------------*/
 
 @import "admin/common/common";
-.chart-container,
-.simulator-container {
-  width: 90%;
+.chart-container {
+  width: 97%;
   margin: 0 auto;
   position:relative;
     padding-left:40px;
+}
+.simulator-container {
+    width: 81%;
+    margin: 0 auto;
+    position:relative;
+    margin-right:165px;
 }
 .psm_col{
     padding: 5px 0px;
