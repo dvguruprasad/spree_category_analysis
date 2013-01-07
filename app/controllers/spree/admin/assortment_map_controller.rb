@@ -9,6 +9,7 @@ module Spree
                 return if weekly_aggregate_for_category.nil? or weekly_aggregate_for_category.empty?
                 @year_to_date = Date.parse('2012-12-24').cweek * -1
                 @data = create_chart_data(weekly_aggregate_for_category)
+                @number_of_products = number_of_products_for_categories()
                 respond_with(@data.to_json)
             end
 
@@ -78,6 +79,14 @@ module Spree
             end
             def has_assortment_map?(taxon_id)
                 !Spree::Admin::WeeklySales.find_by_parent_id(taxon_id).nil?
+            end
+            def number_of_products_for_categories
+                product_count_hash = {}
+                taxons_under_categories = Spree::Taxon.find_all_by_parent_id(Spree::Admin::WeeklySales.category_taxon_id)
+                taxons_under_categories.map do |taxon|
+                    product_count_hash[taxon.id] = Spree::Product.in_taxon(taxon).count
+                end
+                product_count_hash
             end
         end
     end
