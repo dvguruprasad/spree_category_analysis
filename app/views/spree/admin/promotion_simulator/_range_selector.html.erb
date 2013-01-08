@@ -6,10 +6,12 @@
 function show_quantity(i){
     $('#p_percentage'+i).toggle(false);
     $('#p_quantity'+i).toggle(true);
+    return false;
 };
 function show_percentage(i){
     $('#p_quantity'+i).toggle(false);
     $('#p_percentage'+i).toggle(true);
+    return false;
 };
 </script>
 <div class="range-sel-box">
