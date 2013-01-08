@@ -23,7 +23,7 @@ $(document).ready(function() {
                 hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+offerLabel+"</ul></div>"
             }
 
-            $(selected).qtip({
+            $(selected).removeData('qtip').qtip({
                 content:hoverData,
                 style: {
                     width: 270,
@@ -47,42 +47,98 @@ $(document).ready(function() {
                         target: 'center',
                         tooltip: 'bottomLeft'
                     }
+                },
+                events:{
+                    hide:function(event, api) { api.destroy();}
                 }
             });
         }
-        }
+    }
     var preUntilAcrosSiblings = function(sel){
-        if(sel.closest(".week_wrapper").find('.date-start').length){
-            var obj= sel.prevUntil(".date-start");
-            return obj;
+        var start_in_same_wrapper = sel.prevUntil(".date-start").andSelf().prev("li").first();
+        if(start_in_same_wrapper.is(".date-start")){
+            return sel.prevUntil(".date-start");
         }
-        else {
-            var obj1= sel.prevUntil(".date-start"); //alert('nearest obj1'+obj1.length);
-            var current =sel.closest(".week_wrapper");
+        var tarck_for_start= sel.prevUntil(".date-start");
+        var nearest_wrapper =sel.closest(".week_wrapper");
 
-            for(var i=0;i<5;i++)
-            {
-                var check=current.prev().find('.date-start');
-                if(check.length){
-                    var obj2= check.first().nextUntil(".date-end");      // alert("obj1"+obj1.length+" obj2 "+obj2.length);
-                    var obj=$().add(obj1).add(obj2);   //  alert("obj "+obj.length);
-                    return obj;
-                }
-                else {
-                    current = current.prev();
-                    var obj1=$().add(obj1).add(current.find("li")); // alert("else obj1" +obj1.length) ;
-
-                }
+        for(var i=0;i<5;i++)
+        {
+            var check=nearest_wrapper.prev().find('.date-start');
+            if(check.length){
+                var tarck_for_end = check.first().nextUntil(".date-end");
+                var selected_elements = $().add(tarck_for_start).add(tarck_for_end);
+                return selected_elements;
+            }
+            else {
+                nearest_wrapper = nearest_wrapper.prev();
+                var tarck_for_start=$().add(tarck_for_start).add(nearest_wrapper.find("li"));
 
             }
 
         }
+
+        //}
     };
 
     var add_promotion_details = function(parent){
         parent.addClass("promotion_" + promotion_number.toString());
         parent.data("promotion-number",promotion_number)
     };
+
+    var is_overlapping = function(element){
+        list_of_inbetween_li = preUntilAcrosSiblings(element);
+        for(i=0; i< list_of_inbetween_li.length ; i++){
+            $target = $(list_of_inbetween_li[i]);
+            if($target.is(".date-sel") || $target.is(".date-end") || $target.is(".date-start"))
+                return true;
+        }
+        return false;
+    };
+
+    var clear_promotion_data = function (promo_number) {
+        selected = $(".date-start , .date-sel, .date-end").siblings(".promotion_"+promo_number.toString());
+        //$(selected).qtip('hide');
+        $(".promotion_" + promo_number.toString()).each(function (index, element) {
+            //$(element).removeData('qtip');
+            if($(element).data('qtip')) $(element).qtip('hide');
+            if ($(element).is(".week-start") || $(element).is(".hidden")) {
+                $(element).removeClass("date-sel");
+                $(element).removeClass("date-start");
+                $(element).removeClass("date-end");
+                $(element).removeClass("calendar_promo");
+                $(element).removeClass("^=promotion_");
+            }
+            else {
+                $(element).removeClass();
+            }
+        });
+    }
+
+    var remove_promotion = function(promo_number){
+        $('form.promotion_'+promo_number.toString()).each(function(){this.reset();$(this).removeAttr('value');});
+        clear_promotion_data(promo_number);
+        $(".promo-bubble").toggle(false);
+    };
+
+    $(".date-start , .date-sel, .date-end").live("click", function(){
+        promo_number = $(this).data("promotion-number");
+        $(".promo-bubble.promotion_" + promo_number).toggle(true);
+        return false;
+    });
+    $('form.promo-form input.remove_button').live("click",function(event){
+        promo_number = $(this).data("promotion-number");
+        remove_promotion(promo_number);
+        return false;
+    });
+    $('form.promo-form input.ok_button').live("click",function(event){
+        promo_number = $(this).data("promotion-number");
+        console.log('.promo-bubble.hidden.promotion_'+promo_number);
+        $('.promo-bubble.promotion_'+promo_number).toggle(false);
+        hoverBinder();
+        return false;
+    });
+
     $(".calendar_promo.date-end").each(function(index,value){
         var parent = $(value);
         promotion_number += 1;
@@ -93,35 +149,12 @@ $(document).ready(function() {
         add_promotion_details(parent.find('.promo-bubble'));
         var precodes= preUntilAcrosSiblings(parent);
         add_promotion_details(precodes.first().prev());
-        add_promotion_details(precodes);
-        $("li.promotion_" + promotion_number).click(function(event){
-            promotion_number = $(this).data("promotion-number");
-            $(".promo-bubble.promotion_" + promotion_number).toggle(true);
+        $.each(precodes,function(){
+            $(this).addClass("date-sel");
         });
-
-        $(parent.find('form.promo-form input.remove_button')).click(
-            function(){
-            promotion_number = $(this).data("promotion-number");
-            remove_promotion(promotion_number);
-        }
-        );
-        console.log(parent.data("promotion-number"));
-        $(parent.find('form.promo-form input.ok_button')).click(
-            function(){
-            promotion_number = $(this).data("promotion-number");
-            $(".promo-bubble.promotion_" + promotion_number).toggle(false);
-            hoverBinder();
-            return false;
-        }
-        );
-    });
-    $("li.calendar_promo").click(function(event){
-        promotion_number = $(this).data("promotion-number");
-        $(".promo-bubble.promotion_" + promotion_number).toggle(true);
+        add_promotion_details(precodes);
     });
 
-
-    hoverBinder();
     $(".range-sel-box li a").on("click", function(){
         var parent = $(this).parent();
 
@@ -134,7 +167,6 @@ $(document).ready(function() {
                 startFlag = 1;
             } else {
                 endDate = parseInt(parent.text().trim());
-
                 if(endDate > startDate ) {
                     if(!is_overlapping(parent)){
                         parent.addClass("date-end");
@@ -150,84 +182,27 @@ $(document).ready(function() {
                             $(this).addClass("date-sel");
                         })
                         add_promotion_details(precodes);
-                        $("li.promotion_" + promotion_number).click(function(event){
-                            promotion_number = $(this).data("promotion-number");
-                            $(".promo-bubble.promotion_" + promotion_number).toggle(true);
-                        });
-                        $(parent.find('form.promo-form input.remove_button')).click(
-                            function(event){
-                            promotion_number = $(this).data("promotion-number");
-                            remove_promotion(promotion_number);
-                        }
-                        );
-                        $(parent.find('form.promo-form input.ok_button')).click(
-                            function(event){
-                            promotion_number = $(this).data("promotion-number");
-                            console.log(promotion_number);
-                            console.log('.promo-bubble.hidden.promotion_'+promotion_number);
-                            $('.promo-bubble.promotion_'+promotion_number).toggle(false);
-                            hoverBinder();
-                            return false;
-                        }
-                        );
-                        hoverBinder();
-
+                        $(".promo-bubble").toggle(false);
+                        $("#bubble"+index).toggle();
                     }
                     else{
+                        remove_promotion(promotion_number);
+                        startFlag = 0;
                         alert("Overlaping promotions not allowed");
                     }
-                    $(".promo-bubble").toggle(false);
-                    $("#bubble"+index).toggle();
-
                 }
                 else {
                     alert("Please select a date after the start date");
                 }
 
             }
-        } else if (parent.is(".date-end")) {
-
-            index = parseInt(parent.text().trim());
-            $(".promo-bubble").toggle(false);
-            $("#bubble"+index).toggle();
         }
         else{
             $(".promo-bubble").toggle(false);
         }
     });
 
-    var is_overlapping = function(element){
-        list_of_inbetween_li = preUntilAcrosSiblings(element);
-        for(i=0; i< list_of_inbetween_li.length ; i++){
-            $target = $(list_of_inbetween_li[i]);
-            if($target.is(".date-sel") || $target.is(".date-end") || $target.is(".date-start"))
-                return true;
-        }
-        return false;
-    };
-
-    var clear_promotion_data = function (promotion_number) {
-        $(".promotion_" + promotion_number.toString()).each(function (index, element) {
-            if ($(element).is(".week-start") || $(element).is(".hidden")) {
-                $(element).removeClass("date-sel");
-                $(element).removeClass("date-start");
-                $(element).removeClass("date-end");
-                $(element).removeClass("calendar_promo");
-                $(element).removeClass("promotion_" + promotion_number.toString());
-            }
-            else {
-                $(element).removeClass();
-            }
-        });
-        promotion_number -= 1;
-    }
-
-
-    var remove_promotion = function(promotion_number){
-        $('form.promotion_'+promotion_number.toString()).each(function(){this.reset();});
-        clear_promotion_data(promotion_number);
-        $(".promo-bubble").toggle(false);
-    };
+    hoverBinder();
 
 
 });
