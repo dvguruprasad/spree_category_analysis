@@ -23,10 +23,12 @@ var show_sales_statistics = function (report) {
     color_code_report(gross_profit, report.gross_profit,0);
 
     Stock_out_date_before_promotion.innerHTML = report.stock_out_date_before_promotion
-    if (mode == "simulation") {
+
+    if (mode == "simulation" && report.promotion_applied == true) {
+        $('.simulation').show("fast");
       simulated_revenue.innerHTML = report.simulated_revenue
       color_code_report(simulated_revenue, report.simulated_revenue, report.target_sales);
-//      target_sales_in_simulation.innerHTML = report.target_sales
+      target_sales_in_simulation.innerHTML = report.target_sales
 //      color_code_report(target_sales_in_simulation, report.target_sales, report.simulated_revenue);
       simulated_profit.innerHTML = report.simulated_profit
       color_code_report(simulated_profit, report.simulated_profit,0);

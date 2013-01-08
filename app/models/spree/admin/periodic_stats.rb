@@ -23,7 +23,7 @@ module Spree
 
             end
 
-            def self.generate_with_promotion(weekly_sales,weekly_sales_initial, simulated_sales, stock_out_date, stock_out_date_before_promotion)
+            def self.generate_with_promotion(weekly_sales,weekly_sales_initial, simulated_sales, stock_out_date, stock_out_date_before_promotion, promotion_applied)
                 total_revenue = WeeklySales.total_revenue(weekly_sales_initial).to_i
                 target_revenue = WeeklySales.total_target_revenue(weekly_sales).to_i
                 simulated_revenue_sum  = simulated_sales.inject(0) { |sum, s| sum + s.revenue }
@@ -50,7 +50,8 @@ module Spree
                  :promotional_profit_change=>promotional_profit_change,
                  :simulated_revenue => simulated_revenue, :simulated_profit=> simulated_profit,
                  :simulated_revenue_variation =>simulated_revenue_variation, :stock_out_date => stock_out_date,
-                 :stock_out_date_before_promotion => stock_out_date_before_promotion}
+                 :stock_out_date_before_promotion => stock_out_date_before_promotion,
+                 :promotion_applied => promotion_applied}
             end
             def self.revenue_change(total_revenue, simulated_sales)
                 total_simulated_revenue = simulated_sales.each.inject(0.0){|sum,s|sum+s.revenue}

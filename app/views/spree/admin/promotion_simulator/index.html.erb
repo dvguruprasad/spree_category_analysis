@@ -80,7 +80,7 @@
 
         <% if @mode == "simulation" %>
 
-            <table>
+            <table class="simulation" style="display:none">
                 <caption>Simulated</caption>
 
               <tr>
@@ -88,10 +88,10 @@
                 <td><em id="simulated_revenue"></em></td>
               </tr>
 
-              <!--<tr>-->
-                <!--<td>Target revenue ($)</td>-->
-                <!--<td><em id="target_sales_in_simulation"></em></td>-->
-              <!--</tr>-->
+              <tr>
+                <td>Target revenue ($)</td>
+                <td><em id="target_sales_in_simulation"></em></td>
+              </tr>
 
               <tr>
                 <td>Target Gap ($)</td>

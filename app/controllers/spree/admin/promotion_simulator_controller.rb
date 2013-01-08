@@ -20,7 +20,6 @@ module Spree
                 product = Product.find_by_id(product_id)
                 return "{}" if product.nil?
                 @mode = "simulation"
-                @promotion_applied = false
                 if params.has_key?(:year)
                     param_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
                     @date_of_forecast = param_date
@@ -44,7 +43,6 @@ module Spree
 
             def simulate
                 prom_data = params[:promotion_data]
-                @promotion_applied = true
                 prom_data = [{}] if prom_data.nil?
                 product_id = params[:product_id]
                 product = Product.find_by_id(product_id)
@@ -216,7 +214,7 @@ module Spree
             def create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions,weekly_margin)
                 promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data_for_percentage)
                 simulated_sales = PromotionCalculator.compute_simulated_promotional_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_percentage, inventory_positions)
-
+                @promotion_applied = true
                 weekly_simulated_sales_units = simulated_sales.map { |s| s.sales_units }
                 weekly_simulated_revenue = simulated_sales.map { |s| s.revenue }
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
@@ -225,7 +223,7 @@ module Spree
                 simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
                 stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)
                 stock_out_date = stock_out_date(simulated_inventory_positions, date_of_forecast)
-                stats_report = PeriodicStats.generate_with_promotion(weekly_sales,weekly_sales_initial, simulated_sales, stock_out_date, stock_out_date_before_promotion)
+                stats_report = PeriodicStats.generate_with_promotion(weekly_sales,weekly_sales_initial, simulated_sales, stock_out_date, stock_out_date_before_promotion,@promotion_applied)
                 SimulationReport.new(product.id, date_of_forecast, cumulative_simulated_revenue, weekly_simulated_revenue, weekly_simulated_margin, cumulative_simulated_margin, stats_report, simulated_inventory_positions, weekly_simulated_sales_units)
             end
 
