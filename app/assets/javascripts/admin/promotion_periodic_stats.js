@@ -16,7 +16,7 @@ var show_sales_statistics = function (report) {
 
 
     total_sales.innerHTML = report.total_sales + " " + "(" + report.growth_over_previous_period + "%" + ")"+"*"
-    color_code_report(total_sales,report.target_sales, report.total_sales);
+    color_code_report(total_sales, report.total_sales,report.target_sales);
     target_sales.innerHTML = report.target_sales 
     reveneue_variation.innerHTML = report.revenue_variation 
     gross_profit.innerHTML = report.gross_profit
@@ -25,8 +25,9 @@ var show_sales_statistics = function (report) {
     Stock_out_date_before_promotion.innerHTML = report.stock_out_date_before_promotion
     if (mode == "simulation") {
       simulated_revenue.innerHTML = report.simulated_revenue
-      target_sales_in_simulation.innerHTML = report.target_sales
-      color_code_report(target_sales_in_simulation, report.target_sales, report.simulated_revenue);
+      color_code_report(simulated_revenue, report.simulated_revenue, report.target_sales);
+//      target_sales_in_simulation.innerHTML = report.target_sales
+//      color_code_report(target_sales_in_simulation, report.target_sales, report.simulated_revenue);
       simulated_profit.innerHTML = report.simulated_profit
       color_code_report(simulated_profit, report.simulated_profit,0);
 

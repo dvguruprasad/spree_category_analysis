@@ -1,6 +1,7 @@
 <% content_for :head do %>
     <%= javascript_tag "var response = #{@jsonrep}" %>
     <%= javascript_tag "var mode = '#{@mode}'" %>
+    <%= javascript_tag "var promotion_applied = '#{@promotion_applied}'" %>
 
 <% end %>
 <%= javascript_include_tag "admin/simulator" %>
@@ -87,10 +88,10 @@
                 <td><em id="simulated_revenue"></em></td>
               </tr>
 
-              <tr>
-                <td>Target revenue ($)</td>
-                <td><em id="target_sales_in_simulation"></em></td>
-              </tr>
+              <!--<tr>-->
+                <!--<td>Target revenue ($)</td>-->
+                <!--<td><em id="target_sales_in_simulation"></em></td>-->
+              <!--</tr>-->
 
               <tr>
                 <td>Target Gap ($)</td>

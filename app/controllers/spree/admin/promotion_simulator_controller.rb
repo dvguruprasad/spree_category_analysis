@@ -20,6 +20,7 @@ module Spree
                 product = Product.find_by_id(product_id)
                 return "{}" if product.nil?
                 @mode = "simulation"
+                @promotion_applied = false
                 if params.has_key?(:year)
                     param_date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
                     @date_of_forecast = param_date
@@ -43,7 +44,7 @@ module Spree
 
             def simulate
                 prom_data = params[:promotion_data]
-
+                @promotion_applied = true
                 prom_data = [{}] if prom_data.nil?
                 product_id = params[:product_id]
                 product = Product.find_by_id(product_id)
