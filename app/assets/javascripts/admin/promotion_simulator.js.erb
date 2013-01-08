@@ -20,18 +20,12 @@ $(function () {
         lineWidth: 4
     },
     {
-        name:'Profit',
-        <%#color: '#0033CC',%>
-        type:'line',
-        yAxis:0,
-        data:response.weekly_margin
-    },
-    {
         name:'Revenue Last Year',
         color:'#8B2500',
         type:'line',
         yAxis:0,
-        data:response.weekly_last_year_revenue
+        data:response.weekly_last_year_revenue,
+        visible:false
     },
     {
         name:'Target Revenue',
@@ -40,38 +34,46 @@ $(function () {
         yAxis:0,
         data:response.weekly_target_revenue
 
+    },{
+        name:'Profit',
+        <%#color: '#0033CC',%>
+        type:'line',
+        yAxis:0,
+        data:response.weekly_margin
     }
     ],
     "cumulative":[
         {
-        name:'Target Sale for Period',
-        color:'#89A54E',
+        name:'Revenue',
+        color:'#A54E89',
         type:'line',
         yAxis:0,
-        data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
+        data:response.cumulative_weekly_revenue,
+        lineWidth: 4
     },
     {
         name:'Revenue Last Year',
         color:'#8B2500',
         type:'line',
         yAxis:0,
-        data:response.cumulative_last_year_revenue
+        data:response.cumulative_last_year_revenue,
+        visible:false
     },
-    {
+        {
+        name:'Target Revenue',
+        color:'#89A54E',
+        type:'line',
+        yAxis:0,
+        data:[response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue, response.sum_target_revenue]
+    },
+        {
         name:'Profit',
         color:'#CC0033',
         type:'line',
         yAxis:0,
         data:response.cumulative_weekly_margin
-    },
-    {
-        name:'Revenue',
-        color:'#A54E89',
-        type:'line',
-        yAxis:0,
-        data:response.cumulative_weekly_revenue
-
-    }]
+    }
+    ]
     };
 
 
@@ -127,17 +129,17 @@ $(function () {
                 success: function(response) {
                     show_sales_statistics(response.stats_report);
                     if(current_view == "cumulative"){
-                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue, 4);
-                        weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue,4);
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
+                        weekly_view_chart.create_or_replace("Simulated Revenue", response.weekly_simulated_revenue, 4);
+                        weekly_view_chart.create_or_replace("Simulated Profit", response.weekly_simulated_margin);
+                        cumulative_view_chart.create_or_replace("Simulated Revenue", response.cumulative_simulated_revenue,4);
+                        cumulative_view_chart.create_or_replace("Simulated Profit", response.cumulative_simulated_margin);
                         set_inventory_data(response.simulated_inventory_positions,cumulative_view_chart);
                     }
                     else if(current_view == "weekly"){
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Sales", response.cumulative_simulated_revenue,4);
-                        cumulative_view_chart.create_or_replace("Cumulative Simulated Margin", response.cumulative_simulated_margin);
-                        weekly_view_chart.create_or_replace("Simulated Sales", response.weekly_simulated_revenue,4);
-                        weekly_view_chart.create_or_replace("Simulated Margin", response.weekly_simulated_margin);
+                        cumulative_view_chart.create_or_replace("Simulated Revenue", response.cumulative_simulated_revenue,4);
+                        cumulative_view_chart.create_or_replace("Simulated Profit", response.cumulative_simulated_margin);
+                        weekly_view_chart.create_or_replace("Simulated Revenue", response.weekly_simulated_revenue,4);
+                        weekly_view_chart.create_or_replace("Simulated Profit", response.weekly_simulated_margin);
                         set_inventory_data(response.simulated_inventory_positions,weekly_view_chart);
                     }
                     else
