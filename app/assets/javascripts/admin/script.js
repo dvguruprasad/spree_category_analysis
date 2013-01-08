@@ -8,17 +8,17 @@ $(document).ready(function() {
             selected = $(".date-start , .date-sel, .date-end").siblings(".promotion_"+i.toString());
             type = $(".date-end.promotion_" + i.toString()).find("form input:radio[name=group1]:checked").val();
             duration = selected.siblings("li.date-start").find("a").attr("title")+ ' to ' + selected.siblings("li.date-end").find("a").attr("title");
-            durationLabel = "<li><span class='psm-left-label'>Period : </span><span class='psm-right-label'>"+duration+"</span></li>";
+            durationLabel = "<li><span class='psm-left-label'>Period </span><span class='psm-right-label'>: "+duration+"</span></li>";
             var hoverData = "";
             if(type == "Percentage"){
                 percentage = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_percentage]').val();
-                typeLabel = "<li><span class='psm-left-label'>Type :</span> <span class='psm-right-label'>" + type +"</span></li>";
-                percentageLabel = "<li><span class='psm-left-label'> Value : </span> <span class='psm-right-label'>" + percentage.toString() +"</span></li>";
+                typeLabel = "<li><span class='psm-left-label'>Type </span> <span class='psm-right-label'>: " + type +"</span></li>";
+                percentageLabel = "<li><span class='psm-left-label'> Value  </span> <span class='psm-right-label'>: " + percentage.toString() +"</span></li>";
                 hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+percentageLabel+"</ul></div>"
             }else{
                 buy = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_buy]').val();
                 get = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_get]').val();
-                typeLabel = "<li><span class='psm-left-label'>Type :</span> <span class='psm-right-label'>" + type +"</span></li>";
+                typeLabel = "<li><span class='psm-left-label'>Type</span> <span class='psm-right-label'>: " + type +"</span></li>";
                 offerLabel = "<li><span class='psm-left-label'> Value :</span> <span class='psm-right-label'> Buy " + buy.toString() + "and Get "+get.toString()+"</span></li>";
                 hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+offerLabel+"</ul></div>"
             }
