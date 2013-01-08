@@ -14,7 +14,6 @@ module Spree
 
                 simulated_promotional_revenue = compute_promotional_sale_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 simulated_promotional_sales_units = compute_promotional_sales_units_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
-                simulated_promotional_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 cost_of_simulated_sales_units = compute_promotional_product_cost(sale,index,start_week_number,ending_week_number,promotion_percentage)
 
                 sale.revenue = simulated_promotional_revenue
@@ -24,6 +23,23 @@ module Spree
                 simulated_promotional_sales << sale 
               end
               simulated_promotional_sales
+            end
+
+            def self.compute_promotional_margin(sales_forecast,date_of_forecast,promotion_start_date,promotion_end_date,promotion_percentage)
+              days_from_forecast_to_start_date = (promotion_start_date - date_of_forecast)
+              days_from_forecast_to_end_date = (promotion_end_date - date_of_forecast )
+
+              start_week_number = (days_from_forecast_to_start_date/NUMBER_OF_DAYS_IN_WEEK).to_i
+              ending_week_number = (days_from_forecast_to_end_date/NUMBER_OF_DAYS_IN_WEEK).to_i
+
+              promotional_margin = []
+              sales_forecast.each_with_index do |sale, index|
+                number_of_promotional_days = compute_promotional_days(start_week_number,promotion_start_date,date_of_forecast,ending_week_number,promotion_end_date,index)
+                simulated_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
+                promotional_margin << simulated_margin
+              end
+              promotional_margin
+
             end
 
             def self.compute_promotional_sale_for_a_week(sale,index,start_week_number,end_week_number,promotion_percentage,number_of_promotional_days)
@@ -50,9 +66,7 @@ module Spree
             def self.compute_promotional_margin_for_a_week(sale,index,start_week_number,end_week_number,promotion_percentage,number_of_promotional_days)
                 if((start_week_number .. end_week_number).include? index )
                     cost_per_unit = sale.cost/sale.sales_units
-
                     promotion_revenue = daily_revenue_with_promotion(sale,promotion_percentage)
-
                     promotional_margin_for_this_week = margin_for_this_week(sale,promotion_revenue,number_of_promotional_days,cost_per_unit,promotion_percentage)
                 else
                     promotional_margin_for_this_week =  sale.revenue - sale.cost

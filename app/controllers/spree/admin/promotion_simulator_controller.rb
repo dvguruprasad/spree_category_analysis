@@ -146,6 +146,7 @@ module Spree
             end
 
             def apply_promotions(product,weekly_sales,calendar_promotions,inventory_positions,date_of_forecast)
+              promotional_weekly_margin = []
                 calendar_promotions.each do |promotion|
                     actions = promotion.actions
                     actions.each do |action|
@@ -154,13 +155,15 @@ module Spree
                         promotion_percentage = pref[:flat_percent].to_f
                         start_date = promotion.starts_at.to_date
                         end_date = promotion.expires_at.to_date
+                        promotional_weekly_margin = PromotionCalculator.compute_promotional_margin(weekly_sales,date_of_forecast,start_date,end_date,promotion_percentage)
                         promotional_weekly_sales = PromotionCalculator.compute_promotional_sales(weekly_sales, date_of_forecast, start_date,end_date, promotion_percentage,inventory_positions)
                         weekly_sales = promotional_weekly_sales
                         promotional_inventory_positions = PromotionCalculator.compute_inventory_positions(weekly_sales, date_of_forecast, start_date,end_date, promotion_percentage,inventory_positions)
                         inventory_positions = promotional_inventory_positions 
+                        p promotional_weekly_margin
                     end
                 end
-                create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions).to_json
+                create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions,promotional_weekly_margin).to_json
             end
 
             def report_past_sales(product, from_date)
@@ -172,12 +175,11 @@ module Spree
                 create_reporting_chart_data(product, weekly_sales, from_date).to_json
             end
 
-            def create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions)
+            def create_forecast_chart_data(product, weekly_sales, date_of_forecast,inventory_positions,calendar_promotions,weekly_margin)
                 sum_target_revenue = WeeklySales.aggregate_for_child(weekly_sales)["total_target_revenue"]
                 weekly_target_revenue = weekly_sales.map { |s| s.target_revenue.round(2) }
                 weekly_revenue = revenue_numbers(weekly_sales)
                 cumulative_weekly_revenue = cumulative_revenue(weekly_sales)
-                weekly_margin = weekly_margins(weekly_sales)
                 cumulative_weekly_margin = cumulative_margin(weekly_margin)
                 last_year_sales = WeeklySales.sales_last_year(product, date_of_forecast, REPORTING_WINDOW)
                 weekly_last_year_revenue = revenue_numbers(last_year_sales)
