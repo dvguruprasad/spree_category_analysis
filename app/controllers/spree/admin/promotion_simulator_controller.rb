@@ -100,7 +100,11 @@ module Spree
                 else
                     end_date =   Date.parse(end_date)
                 end
-                create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data,inventory_positions)
+                promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data)
+                
+                promotional_weekly_margin = PromotionCalculator.compute_promotional_margin(weekly_sales,date_of_forecast,start_date,end_date,promotion_percentage)
+                
+                create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data,inventory_positions,promotional_weekly_margin)
             end
 
             def ancestory_list(product)
@@ -209,14 +213,14 @@ module Spree
                 PastReport.new(product.id, sum_target_revenue, weekly_target_revenue, weekly_revenue, cumulative_weekly_revenue, weekly_margin, cumulative_weekly_margin, inventory_positions, cumulative_last_year_revenue, weekly_last_year_revenue, from_date, stats_report)
             end
 
-            def create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions)
+            def create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions,weekly_margin)
                 promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data_for_percentage)
                 simulated_sales = PromotionCalculator.compute_simulated_promotional_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_percentage, inventory_positions)
 
                 weekly_simulated_sales_units = simulated_sales.map { |s| s.sales_units }
                 weekly_simulated_revenue = simulated_sales.map { |s| s.revenue }
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
-                weekly_simulated_margin = simulated_sales.map { |s| s.margin }
+                weekly_simulated_margin = weekly_margin
                 cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
                 simulated_inventory_positions= simulated_sales.map { |s| s.inventory_position }
                 stock_out_date_before_promotion = stock_out_date(inventory_positions, date_of_forecast)

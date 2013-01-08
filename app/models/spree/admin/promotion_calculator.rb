@@ -164,9 +164,9 @@ module Spree
               sales_forecast.each_with_index do |sale, index|
                 number_of_promotional_days = compute_promotional_days(start_week_number,promotion_start_date,date_of_forecast,ending_week_number,promotion_end_date,index)
 
+                simulated_promotional_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 simulated_promotional_revenue = compute_promotional_sale_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 simulated_promotional_sales_units = compute_promotional_sales_units_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
-                simulated_promotional_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 cost_of_simulated_sales_units = compute_promotional_product_cost(sale,index,start_week_number,ending_week_number,promotion_percentage)
                 inventory_position = inventory_positions[index] - simulated_promotional_revenue + sale.revenue
 
