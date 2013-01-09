@@ -21,21 +21,28 @@
       padding-bottom:5px;
       float:left;
       font-size: 1.5em;
-      line-height: 21px;
+      line-height: 19px;
     }
     .psm_breadcrumb{
       float: left;
       padding-left:10px;
-      padding-top: 3px;
+      padding-top: 2px;
+        .bc_separator{
+          width:20px;
+          float: left;
+          text-align: center;
+          }
         ul{
           margin: 0px;
           padding: 0px;
           li{
                 float:left;
                 list-style: none;
+
                 a{
                     float: left;
-                    color:#7F7F7F !important;
+                    color:#162F54 !important;
+                    font-size: 1.1em;
                     span{float:left;}
                     span.d_arrow{
                       margin: 8px 0px 0px 5px;
@@ -48,6 +55,7 @@
                     }
                   &.active{
                          font-weight: bold;
+                         color:#162F54 !important;
                          span.d_arrow{
                            visibility: visible;
                          }
@@ -77,11 +85,17 @@
 
 }
 
-
 .psm_graph_container{
     width:100%;
     padding:25px 0px 20px 0px;
-    .growth-note{
+    position: relative;
+    .legend_txt{
+      position: absolute;
+      right:28px;
+      top:156px;
+      z-index:999999;
+    }
+      .growth-note{
       float: left;
     }
     .psm_graph_container_l{
@@ -95,8 +109,8 @@
         table{
           border:1px solid #cecece;
           caption{
-            background:none;
-            color:#999999;
+            background:#162F54;
+            color:#ffffff;
             font-weight: bold;
             font-size:1.2em;
           }

@@ -20,9 +20,9 @@
             <ul>
                 <% for name in @ancestory%>
                     <% if name == @ancestory.last %>
-                    <li><a class="active" href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+                    <li><a class="active" href="#"><span><%= name%></span></a></li>
             <%else%>
-                    <li><a href="#"><span><%= name%></span><span class="d_arrow"></span></a></li>
+                    <li><a href="#"><span><%= name%></span></a><span class="bc_separator"> > </span></li>
             <% end %>
             <% end %>
             </ul>
@@ -37,7 +37,7 @@
             <a id="future-simulate" href= "<%=@mode=="simulation" ? "#" : "/admin/promotion_simulator/product/"+@forward %>">&gt</a>
         </div>
         <div id="toggle" class="link-container">
-            <a id="weekly_view" href="#">Weekly</a>
+            <a id="weekly_view" href="#" class="active-toggle">Weekly</a>
             <a id="cumulative_view" href="#">Cumulative</a>
         </div>
     </div>
@@ -45,6 +45,8 @@
 </div>
   	
 <div class="psm_graph_container clearfix">
+
+  <span class="legend_txt"><span style="color:red;font-size: 1.4em;">*</span> click to enable/disable</span>
     <div class="psm_graph_container_l">
 
             <div class="period-stat" ><%= @promotion_period%> </div>
@@ -160,4 +162,11 @@
 
     <script>
 window.onload = show_sales_statistics(response.stats_report);
+      $(function(){
+          $("#toggle a").click(function(){
+              $(this).parent().find("a").removeClass("active-toggle");
+              $(this).addClass("active-toggle");
+          })
+
+      })
     </script>

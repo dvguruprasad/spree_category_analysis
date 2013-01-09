@@ -50,7 +50,7 @@ h3{
     -moz-border-radius-bottomright: 7px;
     border-bottom-right-radius: 7px;
 }
-#content .link-container a:hover, #content .link-container a:active{
+#content .link-container a:hover, #content .link-container a:active,#content a.active-toggle{
     background: #dfdfdf;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.25, #ffffff), color-stop(1, #dfdfdf));
     background: -moz-linear-gradient(center top, #dfdfdf 25%, #ffffff 100%);
