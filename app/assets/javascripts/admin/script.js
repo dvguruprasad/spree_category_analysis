@@ -3,30 +3,34 @@ var promotion_number = 0;
 $(document).ready(function() {
     var startDate, endDate,index;
     var hoverBinder = function(){
-        for(i=1;i<=promotion_number;i++){
-            console.log(i);
-            selected = $(".date-start , .date-sel, .date-end").siblings(".promotion_"+i.toString());
-            type = $(".date-end.promotion_" + i.toString()).find("form input:radio[name=group1]:checked").val();
+        promotion_ends = $(".date-end");
+        promotion_ends.each(function(index,element){
+            this_end = $(element);
+            promo_number = $(element).data("promotion-number");
+            type = this_end.find("form input:radio[name=group1]:checked").val();
+            selected = $("li.promotion_" + promo_number.toString());
             duration = selected.siblings("li.date-start").find("a").attr("title")+ ' to ' + selected.siblings("li.date-end").find("a").attr("title");
             durationLabel = "<li><span class='psm-left-label'>Period </span><span class='psm-right-label'>: "+duration+"</span></li>";
-            var hoverData = "";
+
             if(type == "Percentage"){
-                percentage = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_percentage]').val();
+                percentage = this_end.find('form input[id^=promotion_percentage]').val();
                 typeLabel = "<li><span class='psm-left-label'>Type </span> <span class='psm-right-label'>: " + type +"</span></li>";
                 percentageLabel = "<li><span class='psm-left-label'> Value  </span> <span class='psm-right-label'>: " + percentage.toString() +"</span></li>";
                 hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+percentageLabel+"</ul></div>"
-            }else{
-                buy = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_buy]').val();
-                get = $(".date-end.promotion_" + i.toString()).find('form input[id^=promotion_get]').val();
+            }else if(type == "Quantity"){
+                buy = this_end.find('form input[id^=promotion_buy]').val();
+                get = this_end.find('form input[id^=promotion_get]').val();
                 typeLabel = "<li><span class='psm-left-label'>Type</span> <span class='psm-right-label'>: " + type +"</span></li>";
-                offerLabel = "<li><span class='psm-left-label'> Value :</span> <span class='psm-right-label'> Buy " + buy.toString() + "and Get "+get.toString()+"</span></li>";
-                hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+offerLabel+"</ul></div>"
+                offerLabel = "<li><span class='psm-left-label'> Value</span> <span class='psm-right-label'>: Buy " + buy.toString() + " and Get "+get.toString()+"</span></li>";
+                hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+typeLabel+offerLabel+"</ul></div>";
+            }else{
+                hoverData = "<div class='tooltip'><ul class='tooltip-ul'>"+durationLabel+"<li>Please Select Details By Clicking On the Selectors</li></ul></div>";
             }
 
-            $(selected).removeData('qtip').qtip({
+            $(selected).qtip({
                 content:hoverData,
                 style: {
-                    width: 270,
+                    width: 240,
                     border: {
                         width: 2,
                         radius: 3,
@@ -44,15 +48,13 @@ $(document).ready(function() {
                 },
                 position: {
                     corner: {
-                        target: 'center',
+                        target: 'right',
                         tooltip: 'bottomLeft'
                     }
-                },
-                events:{
-                    hide:function(event, api) { api.destroy();}
                 }
             });
-        }
+
+        });
     }
     var preUntilAcrosSiblings = function(sel){
         var start_in_same_wrapper = sel.prevUntil(".date-start").andSelf().prev("li").first();
@@ -77,10 +79,14 @@ $(document).ready(function() {
             }
 
         }
-
-        //}
     };
 
+    var apply_promotion_details_to_form = function(date_end_li){
+        add_promotion_details(date_end_li.find('form.promo-form'));
+        add_promotion_details(date_end_li.find('form.promo-form input.remove_button'));
+        add_promotion_details(date_end_li.find('form.promo-form input.ok_button'));
+        add_promotion_details(date_end_li.find('.promo-bubble'));
+    }
     var add_promotion_details = function(parent){
         parent.addClass("promotion_" + promotion_number.toString());
         parent.data("promotion-number",promotion_number)
@@ -98,16 +104,14 @@ $(document).ready(function() {
 
     var clear_promotion_data = function (promo_number) {
         selected = $(".date-start , .date-sel, .date-end").siblings(".promotion_"+promo_number.toString());
-        //$(selected).qtip('hide');
         $(".promotion_" + promo_number.toString()).each(function (index, element) {
-            //$(element).removeData('qtip');
-            if($(element).data('qtip')) $(element).qtip('hide');
+            if($(element).data('qtip')) {$(element).removeData('qtip');$(element).unbind('mouseover');}
             if ($(element).is(".week-start") || $(element).is(".hidden")) {
                 $(element).removeClass("date-sel");
                 $(element).removeClass("date-start");
                 $(element).removeClass("date-end");
                 $(element).removeClass("calendar_promo");
-                $(element).removeClass("^=promotion_");
+                $(element).removeClass("promotion_" + promo_number.toString());
             }
             else {
                 $(element).removeClass();
@@ -129,13 +133,14 @@ $(document).ready(function() {
     $('form.promo-form input.remove_button').live("click",function(event){
         promo_number = $(this).data("promotion-number");
         remove_promotion(promo_number);
+        hoverBinder();
         return false;
     });
     $('form.promo-form input.ok_button').live("click",function(event){
         promo_number = $(this).data("promotion-number");
-        console.log('.promo-bubble.hidden.promotion_'+promo_number);
         $('.promo-bubble.promotion_'+promo_number).toggle(false);
-        hoverBinder();
+        if(!$('.promotion_'+promo_number.toString()).data('qtip'))
+            hoverBinder();
         return false;
     });
 
@@ -143,10 +148,7 @@ $(document).ready(function() {
         var parent = $(value);
         promotion_number += 1;
         add_promotion_details(parent);
-        add_promotion_details(parent.find('form.promo-form'));
-        add_promotion_details(parent.find('form.promo-form input.remove_button'));
-        add_promotion_details(parent.find('form.promo-form input.ok_button'));
-        add_promotion_details(parent.find('.promo-bubble'));
+        apply_promotion_details_to_form(parent);
         var precodes= preUntilAcrosSiblings(parent);
         add_promotion_details(precodes.first().prev());
         $.each(precodes,function(){
@@ -171,10 +173,7 @@ $(document).ready(function() {
                     if(!is_overlapping(parent)){
                         parent.addClass("date-end");
                         add_promotion_details(parent);
-                        add_promotion_details(parent.find('form.promo-form'));
-                        add_promotion_details(parent.find('form.promo-form input.remove_button'));
-                        add_promotion_details(parent.find('form.promo-form input.ok_button'));
-                        add_promotion_details(parent.find('.promo-bubble'));
+                        apply_promotion_details_to_form(parent);
                         startFlag = 0;
                         index = endDate;
                         var precodes= preUntilAcrosSiblings(parent);
@@ -201,8 +200,5 @@ $(document).ready(function() {
             $(".promo-bubble").toggle(false);
         }
     });
-
     hoverBinder();
-
-
 });
