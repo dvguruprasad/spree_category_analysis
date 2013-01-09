@@ -139,8 +139,11 @@ $(document).ready(function() {
     $('form.promo-form input.ok_button').live("click",function(event){
         promo_number = $(this).data("promotion-number");
         $('.promo-bubble.promotion_'+promo_number).toggle(false);
-        if(!$('.promotion_'+promo_number.toString()).data('qtip'))
-            hoverBinder();
+        if(!$('.promotion_'+promo_number.toString()).data('qtip')){
+            $('.promotion_'+promo_number.toString()).removeData('qtip');
+            $('.promotion_'+promo_number.toString()).unbind('mouseover');
+        }
+        hoverBinder();
         return false;
     });
 
