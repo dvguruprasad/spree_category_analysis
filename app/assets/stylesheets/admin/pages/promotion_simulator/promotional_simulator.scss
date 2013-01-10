@@ -12,6 +12,8 @@
   border:1px solid #cccccc;
    @include border-radius(5px);
 
+  @include linear-gradient($startColor: #f0f0f0, $stopColor: #bfbdbd);
+
   .psm_header_l{
     padding:5px 0px 2px 0px;
     float: left;
@@ -80,6 +82,7 @@
         width:170px;
         display:inline-block;
         text-align:center;
+        font-weight: bold;
       }
   }
 
@@ -92,7 +95,7 @@
     .legend_txt{
       position: absolute;
       right:28px;
-      top:156px;
+      top:10px;
       z-index:999999;
     }
       .growth-note{
@@ -170,6 +173,10 @@
 }
  .hidden{
      display:none;
+ }
+ .simulate-btn{
+   float: right;
+   padding:20px 10px 0px 20px;
  }
 .period-stat{
 left: 10px;

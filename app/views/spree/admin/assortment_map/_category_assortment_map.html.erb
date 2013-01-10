@@ -17,13 +17,13 @@
                     </div>
                 </div>
                 <ul class="util-bar clearfix">
-                    <li><span  class="left-label">Number Of Products:</span> <span  class="right-label"><%= @number_of_products[box.id]%></span> </li>
-                    <li><span  class="left-label">Revenue:</span> <span  class="right-label"><%= box.value%></span> </li>
-                    <li><span  class="left-label">Revenue Last Year:</span> <span  class="right-label"><%= box.revenue_change%></span> </li>
-                    <li><span  class="left-label">Target:</span> <span  class="right-label"><%= box.total_target%></span> </li>
-                    <li><span  class="left-label">Target Gap:</span> <span  class="right-label"><%= box.revenue_difference%></span> </li>
-                    <li><span  class="left-label">Profit:</span> <span  class="right-label"><%= box.profit%></span> </li>
-                    <li><span  class="left-label">Profit Last Year:</span> <span  class="right-label"><%= box.profit_change%></span> </li>
+
+                    <li class="clearfix"><span  class="left-label">Revenue:</span> <span  class="right-label"><%= box.value%></span> </li>
+
+                    <li class="clearfix"><span  class="left-label">Target:</span> <span  class="right-label"><%= box.total_target%></span> </li>
+
+                    <li class="clearfix"><span  class="left-label">Profit:</span> <span  class="right-label"><%= box.profit%></span> </li>
+
                 </ul>
             </a>
             </li>
