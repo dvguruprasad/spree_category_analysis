@@ -108,7 +108,8 @@ module Spree
             def ancestory_list(product)
                 ancestory = []
                 taxon = product.taxons.first
-                ancestory = taxon.ancestors.collect{|t| t.name}
+                ancestory = taxon.ancestors.collect{|t| t.name if t.name != 'Categories'}
+                ancestory.delete_at(0) if ancestory.first.nil?
                 ancestory << taxon.name
                 ancestory << product.name
                 ancestory

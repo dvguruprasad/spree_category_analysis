@@ -25,18 +25,11 @@ h3{
     margin-left: -5px;
     display: inline-block;
     background: #dfdfdf;
-    background-image: linear-gradient(bottom, rgb(240,240,240) 5%, rgb(153,153,153) 49%, rgb(153,153,153) 46%);
-    background-image: -o-linear-gradient(bottom, rgb(240,240,240) 5%, rgb(153,153,153) 49%, rgb(153,153,153) 46%);
-    background-image: -moz-linear-gradient(bottom, rgb(240,240,240) 5%, rgb(153,153,153) 49%, rgb(153,153,153) 46%);
-    background-image: -webkit-linear-gradient(bottom, rgb(240,240,240) 5%, rgb(153,153,153) 49%, rgb(153,153,153) 46%);
-    background-image: -ms-linear-gradient(bottom, rgb(240,240,240) 5%, rgb(153,153,153) 49%, rgb(153,153,153) 46%);
-
     background-image: linear-gradient(bottom, rgb(230,227,230) 5%, rgb(135,135,135) 50%, rgb(153,153,153) 57%);
     background-image: -o-linear-gradient(bottom, rgb(230,227,230) 5%, rgb(135,135,135) 50%, rgb(153,153,153) 57%);
     background-image: -moz-linear-gradient(bottom, rgb(230,227,230) 5%, rgb(135,135,135) 50%, rgb(153,153,153) 57%);
     background-image: -webkit-linear-gradient(bottom, rgb(230,227,230) 5%, rgb(135,135,135) 50%, rgb(153,153,153) 57%);
     background-image: -ms-linear-gradient(bottom, rgb(230,227,230) 5%, rgb(135,135,135) 50%, rgb(153,153,153) 57%);
-
     background-image: -webkit-gradient(
         linear,
         left bottom,
@@ -48,8 +41,6 @@ h3{
     border:1px solid #777474;
     color:#000;
     box-shadow: 3px 3px 1px #888888;
-
-
 }
 
 #content .link-container > a:first-child {
