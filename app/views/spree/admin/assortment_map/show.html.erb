@@ -16,11 +16,11 @@
     <%= render 'header' %>
     <div class="weekly_range">
         <div class="link-container" >
-            <a href='-1'>Last Week</a>
-            <a href='-4'>Last Four Weeks</a>
-            <a href='<%= @year_to_date%>'>Year to Date</a>
-            <a href='1'>Next Week</a>
-            <a href='4'>Next Four Weeks</a>
+            <a href='-4' class='<%= @current_view["last_four_weeks"]%>'>Last Four Weeks</a>
+            <a href='-1' class='<%= @current_view["last_week"]%>'>Last Week</a>
+            <a href='<%= @year_to_date%>' class='<%= @current_view["year_to_date"]%>'>Year to Date</a>
+            <a href='1' class='<%= @current_view["next_week"]%>'>Next Week</a>
+            <a href='4' class='<%= @current_view["next_four_weeks"]%>'>Next Four Weeks</a>
         </div>
     </div>
 </div>

@@ -7,25 +7,32 @@ Spree::Taxon.class_eval do
         from_week_date = from_date(number_of_weeks_from_today)
         to_week_date = to_date(number_of_weeks_from_today)
         if number_of_weeks_from_today < 0
-            Spree::Admin::WeeklySales.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            weekly_sales = Spree::Admin::WeeklySales.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            if weekly_sales.count < number_of_weeks_from_today.abs
+                weekly_sales = Spree::Admin::WeeklySalesForecast.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            end
         else
-            Spree::Admin::WeeklySalesForecast.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            weekly_sales = Spree::Admin::WeeklySalesForecast.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            if weekly_sales.count < number_of_weeks_from_today.abs
+                weekly_sales  = Spree::Admin::WeeklySales.where("parent_id = ? and week_start_date >= ? and week_start_date < ?",id,from_week_date,to_week_date)
+            end
         end
+        weekly_sales
     end
 
     def from_date(week_number)
         if week_number < 0
-            return Date.today + 7 * week_number
+            return Date.today.beginning_of_week + 7 * week_number
         else
-            return Date.today
+            return Date.today.beginning_of_week
         end
     end
 
     def to_date(week_number)
         if week_number < 0
-            return Date.today
+            return Date.today.beginning_of_week
         else
-            return Date.today + 7 * week_number
+            return Date.today.beginning_of_week + 7 * week_number
         end
     end
 end

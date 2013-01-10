@@ -17,7 +17,7 @@ module Spree
             end
 
             def self.generate_category_aggregates
-                week_number = Date.today.cweek * -1
+                week_number = Date.today.cweek * -1 + 1
                 taxon = Spree::Taxon.find(CATEGORY_TAXON_ID)
                 self.generate_aggregates(taxon.weekly_sales_by_time_frame(week_number))
             end
