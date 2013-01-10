@@ -212,11 +212,11 @@ module Spree
             end
 
             def create_simulation_chart_data(product, weekly_sales,weekly_sales_initial, date_of_forecast, start_date, end_date, promotion_data_for_percentage,inventory_positions,weekly_margin)
+                @promotion_applied = true
                 promotion_percentage = PromotionCalculator.compute_promotion_percentage(promotion_data_for_percentage)
                 simulated_sales = PromotionCalculator.compute_simulated_promotional_sales(weekly_sales, date_of_forecast, start_date, end_date, promotion_percentage, inventory_positions)
-                @promotion_applied = true
                 weekly_simulated_sales_units = simulated_sales.map { |s| s.sales_units }
-                weekly_simulated_revenue = simulated_sales.map { |s| s.revenue }
+                weekly_simulated_revenue = simulated_sales.map { |s| s.revenue.round(2) }
                 cumulative_simulated_revenue = cumulative_revenue(simulated_sales)
                 weekly_simulated_margin = weekly_margin
                 cumulative_simulated_margin = cumulative_margin(weekly_simulated_margin)
@@ -259,6 +259,7 @@ module Spree
                 sum_revenue = 0.0
                 sales.map do |sale|
                     sum_revenue += sale.revenue.round(2)
+                    sum_revenue.round(2)
                 end
             end
 

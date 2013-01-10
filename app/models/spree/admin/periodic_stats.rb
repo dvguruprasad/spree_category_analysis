@@ -38,8 +38,8 @@ module Spree
                 promotional_revenue_change = revenue_change(total_revenue, simulated_sales).to_i
                 promotional_profit_change = (profit_after_simulation(simulated_sales, total_cost) - gross_profit).to_i
 
-                simulated_revenue = simulated_sales.inject(0.0){|sum,s|sum + s.revenue}.to_i
-                simulated_profit =  profit_after_simulation(simulated_sales, total_cost)
+                simulated_revenue = simulated_sales.inject(0.0){|sum,s|sum + s.revenue.round(2)}.to_i
+                simulated_profit =  profit_after_simulation(simulated_sales, total_cost).round(2)
                 #simulated_growth_over_previous_period = WeeklySales.growth_over_previous_period(weekly_sales, simulated_profit).to_i
 
 
@@ -59,8 +59,8 @@ module Spree
             end
 
             def self.profit_after_simulation(simulated_sales, total_cost)
-                total_simulated_revenue = simulated_sales.inject(0){|sum,s|sum+s.revenue}
-                simulated_sales_cost = simulated_sales.inject(0){|sum, s|sum+s.cost_of_simulated_sale_units}
+                total_simulated_revenue = simulated_sales.inject(0){|sum,s|sum+s.revenue.round(2)}
+                simulated_sales_cost = simulated_sales.inject(0){|sum, s|sum+s.cost_of_simulated_sale_units.round(2)}
                 (total_simulated_revenue - simulated_sales_cost).to_i
             end
 

@@ -3,7 +3,7 @@
     <span class="range-txt">Period:</span>
     <div class="range-sel-wrapper clear">
         <ul>
-            <% (0..5).each do |i|%>
+              <% (0..5).each do |i|%>
                 <li class="psm_col"><%= (@date_of_forecast + 7*i).strftime('%d %b %y')%><br/> to<br/><%= (@date_of_forecast + 7*i + 6 ).strftime('%d %b %y')%></li>
         <% end %>
         </ul>

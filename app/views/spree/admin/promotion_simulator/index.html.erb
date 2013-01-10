@@ -51,34 +51,40 @@
 
             <div class="period-stat" ><%= @promotion_period%> </div>
         <div class="cumulative-graph-stats-wrapper">
-            <table>
-                <caption>Forecast</caption>
+              <table>
+
+                <% if @mode == "report" %>
+                    <caption>Report</caption>
+                <% else %>
+                    <caption>Forecast</caption>
+                <% end %>
+
                 <tr>
-                    <td>Total revenue ($)</td>
-                    <td><em id="total_sales" value="total_sales"></em></td>
+                  <td>Total revenue ($)</td>
+                  <td><em id="total_sales" value="total_sales"></em></td>
                 </tr>
 
                 <tr>
-                    <td>Target revenue ($)</td>
-                    <td><em id="target_sales"></em></td>
+                  <td>Target revenue ($)</td>
+                  <td><em id="target_sales"></em></td>
                 </tr>
 
                 <tr>
-                    <td>Target Gap ($)</td>
-                    <td><em id="revenue_variation"></em></td>
+                  <td>Target Gap ($)</td>
+                  <td><em id="revenue_variation"></em></td>
                 </tr>
 
                 <tr>
-                    <td>Gross Profit ($)</td>
-                    <td><em id="gross_profit"></em></td>
+                  <td>Gross Profit ($)</td>
+                  <td><em id="gross_profit"></em></td>
                 </tr>
 
                 <tr>
-                    <td>Stock Out Date</td>
-                    <td><em id="Stock_out_date_before_promotion"></em></td>
+                  <td>Stock Out Date</td>
+                  <td><em id="Stock_out_date_before_promotion"></em></td>
                 </tr>
 
-            </table>
+              </table>
 
         <% if @mode == "simulation" %>
 
@@ -152,8 +158,11 @@
       <% else %>
           <div id="simulator" class="simulator-container clear">
             <%= render :partial => 'date_range' %>
+            <%= render :partial => 'range_selector' %>
+            <span class = "calender_promo">(Displaying calender promotions)</span>
           </div>
         <% end %>
+
         </div>
     </div>
 

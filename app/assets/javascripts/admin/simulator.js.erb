@@ -80,6 +80,10 @@ var ReportChart = function(view) {
     };
 
     this.create_or_replace = function(name, value, lineWidth) {
+        for(var i =0; i<value.length; i++)
+        {
+            value[i] = Math.round(value[i])
+        }
         width = lineWidth || 2;
         console.log(name + value+" this is i found");
         index = this.find_chart(name);

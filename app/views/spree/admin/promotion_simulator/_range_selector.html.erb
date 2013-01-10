@@ -1,4 +1,6 @@
-<%= javascript_include_tag 'admin/range_selector' %>
+<% if @mode == "simulation" %>
+    <%= javascript_include_tag 'admin/range_selector' %>
+<% end %>
 <%= stylesheet_link_tag "admin/pages/promotion_simulator/style"%>
 <script>
 function show_quantity(i){

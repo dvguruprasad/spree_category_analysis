@@ -150,7 +150,7 @@ module Spree
                 promotional_margin = (promotion_revenue - (cost_per_unit * daily_promotional_sale_units))*number_of_promotional_days
                 normal_margin = (daily_sale_revenue - (cost_per_unit*daily_sale_units)) * (NUMBER_OF_DAYS_IN_WEEK - number_of_promotional_days)
 
-                margin = promotional_margin + normal_margin
+                margin = (promotional_margin + normal_margin).round(2)
             end
 
             def self.compute_simulated_promotional_sales(sales_forecast, date_of_forecast, promotion_start_date, promotion_end_date, promotion_percentage,inventory_positions)
@@ -164,8 +164,8 @@ module Spree
               sales_forecast.each_with_index do |sale, index|
                 number_of_promotional_days = compute_promotional_days(start_week_number,promotion_start_date,date_of_forecast,ending_week_number,promotion_end_date,index)
 
-                simulated_promotional_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
-                simulated_promotional_revenue = compute_promotional_sale_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
+                simulated_promotional_margin = compute_promotional_margin_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days).round(2)
+                simulated_promotional_revenue = compute_promotional_sale_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days).round(2)
                 simulated_promotional_sales_units = compute_promotional_sales_units_for_a_week(sale,index,start_week_number,ending_week_number,promotion_percentage,number_of_promotional_days)
                 cost_of_simulated_sales_units = compute_promotional_product_cost(sale,index,start_week_number,ending_week_number,promotion_percentage)
                 inventory_position = inventory_positions[index] - simulated_promotional_revenue + sale.revenue
