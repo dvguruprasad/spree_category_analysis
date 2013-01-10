@@ -19,6 +19,12 @@ var ReportChart = function(view) {
             categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6']
         }],
         yAxis: [{ // Primary yAxis
+//            gridLineColor: "#000",
+            plotLines: [{
+                color: '#FF0000',
+                width: 2,
+                value: 2
+            }],
             labels: {
                 formatter: function() {
                     return this.value;
