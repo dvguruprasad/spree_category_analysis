@@ -1,3 +1,4 @@
+inventory_data = response.inventory_positions
 var ReportChart = function(view) {
     var chart;
     this.current_view = view;
@@ -16,7 +17,7 @@ var ReportChart = function(view) {
             text: ''
          },
         xAxis: [{
-            categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6']
+            categories: ['current week', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6']
         }],
         yAxis: [{ // Primary yAxis
 //            gridLineColor: "#000",
@@ -42,7 +43,9 @@ var ReportChart = function(view) {
         ],
         tooltip: {
             formatter: function() {
-                return '' + this.x + ': ' + this.y + ' ' + '<%= Spree::Config[:currency] %>';
+                p = this.x.split(" ")[1]
+                if(isNaN(p)){p=1}
+                return '' + this.x + ': ' + this.y + ' ' + '<%= Spree::Config[:currency]%>'+ ' ' +"inventory units:"+ ' '+ parseInt((inventory_data[p-1]/8.1));
             }
         },
         legend: {
@@ -90,6 +93,7 @@ var ReportChart = function(view) {
         {
             value[i] = Math.round(value[i])
         }
+
         width = lineWidth || 2;
         console.log(name + value+" this is i found");
         index = this.find_chart(name);
@@ -98,6 +102,7 @@ var ReportChart = function(view) {
         if (value_chart) {
             if(value_chart.name == "Inventory"){
                 this.setDataFor(index, this.inventory_chart_object(value));
+                inventory_data = value
             }
             else{
                 this.setDataFor(index, value);
