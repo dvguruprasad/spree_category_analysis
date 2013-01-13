@@ -8,7 +8,7 @@ $(function(){
             click:function (node, box) {
                 if(node.permalink == "#" && type == "taxon")
                     {
-                        alert("Data Not Available");
+                        alert("Drill Down Data Not Available");
                     }
             }
         });

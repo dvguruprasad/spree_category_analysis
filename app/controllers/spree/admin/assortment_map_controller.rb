@@ -7,7 +7,7 @@ module Spree
                 @taxon = Spree::Taxon.find_by_id(Spree::Admin::WeeklySales.category_taxon_id)
                 weekly_aggregate_for_category = WeeklySales.generate_category_aggregates()
                 return if weekly_aggregate_for_category.nil? or weekly_aggregate_for_category.empty?
-                @year_to_date = Date.parse('2012-12-24').cweek * -1
+                @year_to_date = Date.today.cweek * -1
                 @data = create_chart_data(weekly_aggregate_for_category)
                 @number_of_products = number_of_products_for_categories()
                 respond_with(@data.to_json)
@@ -30,7 +30,7 @@ module Spree
             def create_chart_data(sales_distribution)
                 @time_start = @taxon.from_date(@year_to_date)
                 @time_end = @taxon.to_date(@year_to_date)
-                @period = "#{@time_start} to #{@time_end}"
+                @period = "#{@time_start.strftime('%d %b %y')} to #{@time_end.strftime('%d %b %y')}"
                 @ancestory = ancestory_list(@taxon)
                 sales_distribution.map do |child_id, distribution|
                     color_value = ColorGenerator.generate(distribution["total_revenue"],distribution["total_target_revenue"])
